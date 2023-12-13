@@ -5,7 +5,9 @@ const languageRouter = express.Router();
 // Handles requests for fetching all results from a db table
 languageRouter.get('/:lang', async (req, res) => {
   try {
-    const results = await database.fetchAll(req.params.lang);
+    const language = req.params.lang;
+    console.log(language);
+    const results = await database.fetchAll(language);
 
     res.json(results);
   } catch (err) {
