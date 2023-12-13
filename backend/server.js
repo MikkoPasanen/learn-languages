@@ -1,5 +1,5 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 
 const app = express();
 const port = 8080;
@@ -11,6 +11,6 @@ app
   .listen(port, () => {
     console.log(`SERVER: listening on port ${port}`);
   })
-  .on('error', (err) => {
+  .on("error", (err) => {
     console.log(`SERVER: Error starting the server ${err}`);
   });
