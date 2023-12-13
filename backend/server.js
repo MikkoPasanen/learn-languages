@@ -7,7 +7,7 @@ const port = 8080;
 
 // Enable CORS so backend and frontend can communicate
 app.use(cors());
-app.use(express.json);
+app.use(express.json());
 app.use('/api/languages', languageRouter);
 
 app
