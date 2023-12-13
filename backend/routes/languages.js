@@ -1,4 +1,5 @@
 const express = require('express');
+const database = require('../database/methods');
 const languageRouter = express.Router();
 
 languageRouter.get('/languages/:lang', async (req, res) => {
