@@ -1,6 +1,6 @@
 const express = require('express');
 const homeRouter = require('./routes/home');
-const languageRouter = require('./routes/languages');
+const exerciseRouter = require('./routes/exercise');
 const cors = require('cors');
 
 const app = express();
@@ -10,7 +10,7 @@ const port = 8080;
 app.use(cors());
 app.use(express.json());
 app.use('/api/home', homeRouter);
-app.use('/api/languages', languageRouter);
+app.use('/api/exercise', exerciseRouter);
 
 app
   .listen(port, () => {

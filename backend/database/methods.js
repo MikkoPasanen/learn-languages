@@ -15,36 +15,18 @@ module.exports = {
       });
     });
   },
-  // Finds all results from selected table
-  fetchAll: (lang) => {
+  // Finds all results from selected exercise
+  fetchExercise: (id) => {
     return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM ??';
+      const sql = 'SELECT * FROM wordpairs WHERE exercise_id = ?';
 
-      pool.query(sql, [lang], (err, results) => {
+      pool.query(sql, [id], (err, results) => {
         if (err) {
           reject({ status: 500, msg: err });
         } else {
           resolve(results);
         }
       });
-    });
-  },
-  addData: (lang, { category, foreingWord, finnishWord }) => {
-    return new Promise((resolve, reject) => {
-      const sql =
-        'INSERT INTO ??(category, foreing_word, finnish_word) VALUES(?, ?, ?)';
-
-      pool.query(
-        sql,
-        [lang, category, foreingWord, finnishWord],
-        (err, results) => {
-          if (err) {
-            reject({ status: 500, msg: err });
-          } else {
-            resolve(results);
-          }
-        },
-      );
     });
   },
 };
