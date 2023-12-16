@@ -11,21 +11,6 @@ export default function App() {
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
-      ...(darkMode ? {
-        background: {
-          default: "#121212",
-        },
-        text: {
-          primary: "#fff",
-        },
-      } : {
-        background: {
-          default: "#fff",
-        },
-        text: {
-          primary: "#000",
-        },
-      })
     },
   });
 

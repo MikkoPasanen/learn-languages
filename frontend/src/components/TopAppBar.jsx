@@ -10,13 +10,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 
-import { useTheme } from '@mui/material/styles';
-
 export default function TopAppBar({darkMode, handleThemeChange}) {
-  const theme = useTheme();
 
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: theme.palette.background.default}}>
+    <Box sx={{ flexGrow: 1}}>
       <AppBar position="static">
         <Toolbar sx={{justifyContent: 'space-between'}}>
           <IconButton
