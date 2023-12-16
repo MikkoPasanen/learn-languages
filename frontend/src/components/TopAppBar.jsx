@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -5,10 +6,14 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
+import { useTheme } from '@mui/material/styles';
+import { Switch } from '@mui/material';
 
-export default function TopAppBar() {
+export default function TopAppBar({darkMode, handleThemeChange}) {
+  const theme = useTheme();
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, backgroundColor: theme.palette.background.default}}>
       <AppBar position="static">
         <Toolbar sx={{justifyContent: 'space-between'}}>
           <IconButton
@@ -22,6 +27,7 @@ export default function TopAppBar() {
               Home
             </Typography>
           </IconButton>
+          <Switch checked={darkMode} onChange={handleThemeChange}/>
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
