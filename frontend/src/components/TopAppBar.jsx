@@ -5,9 +5,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+
 import HomeIcon from '@mui/icons-material/Home';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
+
 import { useTheme } from '@mui/material/styles';
-import { Switch } from '@mui/material';
 
 export default function TopAppBar({darkMode, handleThemeChange}) {
   const theme = useTheme();
@@ -22,13 +25,22 @@ export default function TopAppBar({darkMode, handleThemeChange}) {
             color="inherit"
             aria-label="menu"
           >
-              <HomeIcon sx={{pr: 1}}/>
+              <HomeIcon sx={{pr: 1, fontSize: "2rem"}}/>
             <Typography variant="h6" component="div">
               Home
             </Typography>
           </IconButton>
-          <Switch checked={darkMode} onChange={handleThemeChange}/>
-          <Button color="inherit">Login</Button>
+          <Box>
+            <Button color="inherit" sx={{mr: 1}}>Login</Button>
+            <IconButton
+              size="large"
+              edge="end"
+              color="inherit"
+              aria-label="menu"
+              onClick={handleThemeChange}>
+              {darkMode ? <LightModeIcon sx={{fontSize: "2rem"}}/> : <DarkModeIcon sx={{fontSize: "2rem"}}/>}
+              </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
