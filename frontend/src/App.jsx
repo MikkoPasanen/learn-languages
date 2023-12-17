@@ -30,11 +30,11 @@ export default function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <TopAppBar darkMode={darkMode} handleThemeChange={() => setDarkMode(!darkMode)}/>
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Home exercises={exercises}/>} />
-            </Routes>
+            <TopAppBar darkMode={darkMode} handleThemeChange={() => setDarkMode(!darkMode)}/>
+              <Routes>
+                <Route path="/" element={<Home exercises={exercises}/>} />
+              </Routes>
           </BrowserRouter>
       </ThemeProvider>
     </>
