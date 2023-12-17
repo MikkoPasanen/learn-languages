@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 import { CssBaseline } from "@mui/material";
-import Box from "@mui/material/Box"
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from "./pages/Home.jsx";
 
 import TopAppBar from"./components/TopAppBar.jsx"
 
@@ -16,7 +17,6 @@ export default function App() {
   const fetchExercises = async () => {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/home`);
     const data = await response.json();
-    console.log(data);
     setExercises(data);
   };
 
@@ -30,12 +30,12 @@ export default function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Box sx={{ flexGrow: 1 }}>
-          <TopAppBar darkMode={darkMode} handleThemeChange={() => setDarkMode(!darkMode)}/>
-          {exercises.map((exercise) => (
-            <div key={exercise.id}>{exercise.name}</div>
-          ))}
-        </Box>
+        <TopAppBar darkMode={darkMode} handleThemeChange={() => setDarkMode(!darkMode)}/>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home exercises={exercises}/>} />
+            </Routes>
+          </BrowserRouter>
       </ThemeProvider>
     </>
   )
