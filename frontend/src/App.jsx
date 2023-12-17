@@ -6,7 +6,7 @@ import Box from "@mui/material/Box"
 import TopAppBar from"./components/TopAppBar.jsx"
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [exercises, setExercises] = useState([]);
 
   useEffect(() => {
