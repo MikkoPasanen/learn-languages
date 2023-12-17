@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import {createTheme, ThemeProvider} from "@mui/material/styles"
+import {createTheme, ThemeProvider} from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from "./pages/Home.jsx";
 
-import TopAppBar from"./components/TopAppBar.jsx"
+import Home from "./pages/Home.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
+import TopAppBar from"./components/TopAppBar.jsx";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -34,6 +35,7 @@ export default function App() {
             <TopAppBar darkMode={darkMode} handleThemeChange={() => setDarkMode(!darkMode)}/>
               <Routes>
                 <Route path="/" element={<Home exercises={exercises}/>} />
+                <Route path="*" element={<ErrorPage/>} />
               </Routes>
           </BrowserRouter>
       </ThemeProvider>
