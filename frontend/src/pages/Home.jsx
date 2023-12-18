@@ -20,7 +20,7 @@ export default function Home() {
       <>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
           {exercises.map((exercise) => (
-            <Card key={exercise.id} sx={{mt: 3}}>
+            <Card key={exercise.id} sx={{mt: 3, borderRadius: 4}}>
               <CardHeader
                 action={
                   <IconButton aria-label="settings" sx={{ml: 2}}>
