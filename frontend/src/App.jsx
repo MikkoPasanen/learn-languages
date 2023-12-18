@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from "./pages/Home.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import TopAppBar from"./components/TopAppBar.jsx";
+import SignIn from "./pages/SignIn.jsx";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -24,6 +25,7 @@ export default function App() {
             <TopAppBar darkMode={darkMode} handleThemeChange={() => setDarkMode(!darkMode)}/>
               <Routes>
                 <Route path="/" element={<Home/>} />
+                <Route path="/signin" element={<SignIn/>} />
                 <Route path="*" element={<ErrorPage/>} />
               </Routes>
           </BrowserRouter>
