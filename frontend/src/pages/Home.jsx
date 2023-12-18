@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Card, CardHeader, CardContent, Typography, IconButton } from '@mui/material';
+import { Box, Card, CardHeader, CardContent, Typography, IconButton, Chip } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState, useEffect } from 'react';
 
@@ -27,9 +27,16 @@ export default function Home() {
                     <MoreVertIcon />
                   </IconButton>
                 }
+
                 title={exercise.name}
-                subheader="Test"
-              />
+                subheader={
+                <Box sx={{mt: 1}}>
+                    <Chip sx={{mr: 1}} label={exercise.category}/>
+                    <Chip label={exercise.language}/>
+                </Box>
+                }
+                >
+              </CardHeader>
               <CardContent>
                 <Typography
                   variant="body2"
