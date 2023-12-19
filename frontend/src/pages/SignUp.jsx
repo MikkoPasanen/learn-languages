@@ -9,16 +9,60 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useState } from 'react';
 
 
 export default function SignUp() {
+  const [nameError, setNameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordRepeatError, setPasswordRepeatError] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    const isValidUserName = validateUsername(data.get('username'));
+    const isValidPassword = validatePassword(data.get('password'));
+    const isValidPasswordCheck = validatePasswordRepeat(data.get('password'), data.get('repeat-password'));
+
+    if (!isValidUserName && !isValidPassword && !isValidPasswordCheck) {
+      console.log({
+        username: data.get('username'),
+        password: data.get('password'),
+      });
+    }
+
+  }
+
+  const validateUsername = (username) => {
+    if (username.length < 3) {
+      setNameError(true);
+      return true;
+    }
+
+    setNameError(false);
+    return false;
+  };
+
+  const validatePassword = (password) => {
+    if (password.length < 8) {
+      setPasswordError(true);
+      return true;
+    }
+
+    setPasswordError(false);
+    return false;
+  };
+
+  const validatePasswordRepeat = (password, passwordRepeat) => {
+    if (password !== passwordRepeat) {
+      setPasswordRepeatError(true);
+      return true;
+    }
+
+    setPasswordRepeatError(false);
+    return false;
+
   };
 
   return (
@@ -64,7 +108,8 @@ export default function SignUp() {
                 id="username"
                 label="Username"
                 name="username"
-                autoComplete="username"
+                helperText="Username must be at least 3 characters long"
+                error={nameError}
               />
             </Grid>
             <Grid
@@ -78,7 +123,8 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="new-password"
+                helperText="Password must be at least 8 characters long"
+                error={passwordError}
               />
             </Grid>
             <Grid
@@ -90,9 +136,10 @@ export default function SignUp() {
                 fullWidth
                 name="repeat-password"
                 label="Password again"
-                type="reapeat-password"
+                type="password"
                 id="repeat-password"
-                autoComplete="repeat-password"
+                error={passwordRepeatError}
+                helperText={passwordRepeatError ? "Passwords don't match" : null}
               />
             </Grid>
           </Grid>
