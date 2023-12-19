@@ -17,7 +17,7 @@ export default function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
+      username: data.get('username'),
       password: data.get('password'),
     });
   };
@@ -55,10 +55,9 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="username"
               label="Username"
-              name="user"
-              autoComplete="username"
+              name="username"
               autoFocus
             />
             <TextField
@@ -69,7 +68,6 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
             />
             <FormControlLabel
               control={

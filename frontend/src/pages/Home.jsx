@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
-import { Box, Card, CardHeader, CardContent, Typography, IconButton, Chip } from '@mui/material';
+import { Box, Card, CardHeader, CardContent, Typography, IconButton, Chip, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState, useEffect } from 'react';
 
 export default function Home() {
     const [exercises, setExercises] = useState([]);
+    const [anchorEl, setAnchorEl] = useState(null);
 
     useEffect(() => {
       fetchExercises();
@@ -16,6 +17,14 @@ export default function Home() {
       setExercises(data);
     };
 
+    const handleOptionsClick = (e) => {
+        setAnchorEl(e.currentTarget);
+    };
+
+    const handleOptionsClose = () => {
+        setAnchorEl(null);
+    };
+
     return (
       <>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -23,9 +32,10 @@ export default function Home() {
             <Card key={exercise.id} sx={{mt: 3, borderRadius: 4}}>
               <CardHeader
                 action={
-                  <IconButton aria-label="settings" sx={{ml: 2}}>
+                  <IconButton aria-label="settings" sx={{ml: 2}} onClick={handleOptionsClick}>
                     <MoreVertIcon />
                   </IconButton>
+
                 }
 
                 title={exercise.name}
