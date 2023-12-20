@@ -7,6 +7,17 @@ export default function Exercise({ id }) {
     const [score, setScore] = useState(0);
     const [answer, setAnswer] = useState("");
 
+    useEffect(() => {
+        fetchWordPairs();
+    });
+
+    const fetchWordPairs = async () => {
+        const hr = await fetch(`${import.meta.env.VITE_API_URL}/api/exercise/${id}`);
+        const data = await hr.json();
+        setWordPairs(data);
+    };
+
+
     return (
         <>
         <Box>
