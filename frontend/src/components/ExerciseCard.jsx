@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
-import { Card, Box, CardHeader, CardContent, Typography, IconButton, Chip, Menu, MenuItem} from '@mui/material';
+import { Card, Box, CardHeader, CardContent, Typography, IconButton, Button, Chip, Menu, MenuItem} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useState} from 'react';
+import { Link } from 'react-router-dom';
 
 export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseLanguage, exerciseId }) {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -66,12 +67,14 @@ export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseL
             </MenuItem>
           </Menu>
           <CardContent>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-            >
-              Moro
-            </Typography>
+            <Button variant='contained' sx={{borderRadius: 2}}>
+              <Link
+                to={`/exercise/${exerciseId}`}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                Study🎓
+              </Link>
+            </Button>
           </CardContent>
         </Card>
       </>
