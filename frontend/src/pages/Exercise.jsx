@@ -1,6 +1,7 @@
 import { Box, Typography, TextField, Button } from "@mui/material"
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Exercise() {
     const { id } = useParams();
@@ -45,9 +46,14 @@ export default function Exercise() {
 
     if (currentQuestionIndex === wordPairs.length) {
         return (
-            <>
-                <Typography variant="h3">Your score: {score}/{wordPairs.length}</Typography>
-            </>
+            <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", mt: 5}}>
+                <Typography variant="h5" sx={{mb: 3}}>You scored: {score}/{wordPairs.length}</Typography>
+                <Link to="/">
+                    <Button variant="contained">
+                        <Typography sx={{fontWeight: "bold"}}>Go back home</Typography>
+                    </Button>
+                </Link>
+            </Box>
         );
     }
 
