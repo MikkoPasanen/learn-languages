@@ -1,7 +1,7 @@
 # Language learning app!
 
 <b>IN PROGRESS!</b>
-<img align="right" height="300px" width="300px" alt="languages" src="./pics/language-gif.gif">
+<img align="right" height="250px" width="250px" alt="languages" src="./pics/language-gif.gif">
 
 ## About
 
@@ -15,7 +15,7 @@ App was made as part of TAMK's Backend Development courses end project.
 
 ## Features
 
-- Sign in / sign up page
+- Sign in / sign up authorization
 - Admin / teacher can create new exercises or modify existing exercises when signed in
 - UI made by using material.ui
 - Dark / light theme
