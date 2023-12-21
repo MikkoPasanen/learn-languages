@@ -52,14 +52,17 @@ export default function Exercise() {
     }
 
     return (
-     <Box>
-            <Typography variant="h3">Translate the word:</Typography>
-            <Typography variant="h5">{wordPairs[currentQuestionIndex].foreign_word}</Typography>
+     <Box sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", mt: 5}}>
+            <Typography variant="h4" sx={{mb: 3}}>Translate the word:</Typography>
+            <Typography variant="h5" sx={{mb: 2}}>{wordPairs[currentQuestionIndex].foreign_word}</Typography>
             <TextField
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
+                sx={{mb: 3}}
+                size="small"
+                placeholder="Your answer"
             />
-            <Button onClick={handleNextQuestion}>Next</Button>
+            <Button onClick={handleNextQuestion} variant="contained">Next</Button>
      </Box>
     )
 }
