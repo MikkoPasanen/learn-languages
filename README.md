@@ -1,6 +1,6 @@
 # Language learning app!
 
-<b>IN PROGRESS!</b>
+<b>IN PROGRESS! ALL FEATURES MAY NOT HAVE BEEN ADDED YET</b>
 <img align="right" height="250px" width="250px" alt="languages" src="./pics/language-gif.gif">
 
 ## About
