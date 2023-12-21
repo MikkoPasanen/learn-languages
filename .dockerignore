@@ -1,0 +1,3 @@
+test.http
+./backend/.env
+node_modules
