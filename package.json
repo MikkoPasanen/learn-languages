@@ -6,7 +6,7 @@
     "scripts": {
         "install-all": "npm install",
         "start-front": "npm run dev --workspace=frontend",
-        "start-back": "npm start --workspace=backend",
+        "start-back": "npm run start-dev --workspace=backend",
         "start": "concurrently \"npm run start-front\" \"npm run start-back\""
     },
     "workspaces": [

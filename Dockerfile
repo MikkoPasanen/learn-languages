@@ -46,4 +46,4 @@ COPY --from=frontend-builder /app/frontend/dist /app/backend/frontend/dist
 EXPOSE 8080
 
 # Define the command to run the backend server
-CMD ["npm", "start"]
+CMD ["npm", "start-cloud"]
