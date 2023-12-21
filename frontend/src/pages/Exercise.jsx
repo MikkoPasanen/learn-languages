@@ -35,7 +35,11 @@ export default function Exercise() {
 
     if (currentQuestionIndex === null) {
         return (
-            <Button onClick={handlePlay}>Start studying</Button>
+            <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", mt: 7}}>
+                <Typography variant="h4" sx={{mb: 3}}>Before the exercise:</Typography>
+                <Typography variant="h5" sx={{mb: 3}}>Add toggle here for switching question type...</Typography>
+                <Button onClick={handlePlay} variant="contained">Start</Button>
+            </Box>
         );
     }
 
