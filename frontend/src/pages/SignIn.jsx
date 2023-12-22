@@ -5,7 +5,8 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -13,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 export default function SignIn() {
+  const [signInError, setSignInError] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,7 +34,12 @@ export default function SignIn() {
     });
 
     const json = await response.json();
-    console.log(json.success);
+
+    if(json.success) {
+      navigate("/");
+    } else {
+      setSignInError(!json.success);
+    }
 
   };
 
@@ -55,9 +63,18 @@ export default function SignIn() {
           <Typography
             component="h1"
             variant="h5"
+            sx={{mb: 1}}
           >
             Sign in
           </Typography>
+          {signInError && (
+            <Typography
+              variant="body1"
+              color="error"
+            >
+              Invalid username or password
+            </Typography>
+          )}
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -66,6 +83,7 @@ export default function SignIn() {
           >
             <TextField
               margin="normal"
+              sx={{mt: 0}}
               required
               fullWidth
               id="username"
