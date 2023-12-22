@@ -45,4 +45,19 @@ module.exports = {
       });
     });
   },
+
+  // Adds new user
+  addUser: (username, password) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
+
+      pool.query(sql, [username, password], (err, results) => {
+        if (err) {
+          reject({ status: 500, msg: err });
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  },
 };
