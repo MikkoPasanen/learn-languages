@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useState } from 'react';
-import { IconButton, InputAdornment, TextField, Avatar, Button, CssBaseline, Container, Typography, Box, Grid, Link } from '@mui/material';
+import { IconButton, InputAdornment, TextField, Avatar, Button, CssBaseline, Container, Typography, Box, Grid, Link, Snackbar, Alert} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function SignUp() {
@@ -10,6 +10,15 @@ export default function SignUp() {
   const [passwordRepeatError, setPasswordRepeatError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -32,7 +41,11 @@ export default function SignUp() {
         },
       });
 
-      console.log(response);
+      const responseData = await response.json();
+
+      if (responseData.affectedRows === 1) {
+        setOpen(true);
+      }
     }
   };
 
@@ -68,136 +81,143 @@ export default function SignUp() {
   };
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-    >
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 3,
-          marginBottom: 5,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
+    <>
+      <Container
+        component="main"
+        maxWidth="xs"
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography
-          component="h1"
-          variant="h5"
-        >
-          Sign up
-        </Typography>
+        <CssBaseline />
         <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit}
-          sx={{ mt: 3 }}
+          sx={{
+            marginTop: 3,
+            marginBottom: 5,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
         >
-          <Grid
-            container
-            spacing={2}
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography
+            component="h1"
+            variant="h5"
+          >
+            Sign up
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
           >
             <Grid
-              item
-              xs={12}
+              container
+              spacing={2}
             >
-              <TextField
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                helperText="Username must be at least 3 characters long"
-                error={nameError}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-            >
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type={showPassword ? 'text' : 'password'}
-                id="password"
-                helperText="Password must be at least 8 characters long"
-                error={passwordError}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setShowPassword(!showPassword)}
-                        onMouseDown={(e) => e.preventDefault()}
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-            >
-              <TextField
-                required
-                fullWidth
-                name="repeat-password"
-                label="Password again"
-                type={showRepeatPassword ? 'text' : 'password'}
-                id="repeat-password"
-                error={passwordRepeatError}
-                helperText={
-                  passwordRepeatError ? "Passwords don't match" : null
-                }
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setShowRepeatPassword(!showRepeatPassword)}
-                        onMouseDown={(e) => e.preventDefault()}
-                      >
-                        {showRepeatPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign Up
-          </Button>
-          <Grid
-            container
-            justifyContent="flex-start"
-          >
-            <Grid item>
-              <Link
-                component={RouterLink}
-                to="/signin"
-                variant="body2"
+              <Grid
+                item
+                xs={12}
               >
-                Already have an account? Sign in
-              </Link>
+                <TextField
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  helperText="Username must be at least 3 characters long"
+                  error={nameError}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+              >
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  helperText="Password must be at least 8 characters long"
+                  error={passwordError}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}
+                          onMouseDown={(e) => e.preventDefault()}
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+              >
+                <TextField
+                  required
+                  fullWidth
+                  name="repeat-password"
+                  label="Password again"
+                  type={showRepeatPassword ? 'text' : 'password'}
+                  id="repeat-password"
+                  error={passwordRepeatError}
+                  helperText={
+                    passwordRepeatError ? "Passwords don't match" : null
+                  }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                          onMouseDown={(e) => e.preventDefault()}
+                        >
+                          {showRepeatPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
             </Grid>
-          </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+            <Grid
+              container
+              justifyContent="flex-start"
+            >
+              <Grid item>
+                <Link
+                  component={RouterLink}
+                  to="/signin"
+                  variant="body2"
+                >
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+      <Snackbar open={open} autoHideDuration={8000} onClose={handleClose} anchorOrigin={{vertical: "top", horizontal: "center"}}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Successfully signed up! You can now sign in.
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
