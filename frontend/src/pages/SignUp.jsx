@@ -1,15 +1,7 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { useState } from 'react';
-import { IconButton, InputAdornment, TextField } from '@mui/material';
+import { IconButton, InputAdornment, TextField, Avatar, Button, CssBaseline, Container, Typography, Box, Grid, Link } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function SignUp() {
