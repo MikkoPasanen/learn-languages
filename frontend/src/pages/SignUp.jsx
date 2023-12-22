@@ -1,7 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
@@ -10,12 +9,15 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useState } from 'react';
-
+import { IconButton, InputAdornment, TextField } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function SignUp() {
   const [nameError, setNameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [passwordRepeatError, setPasswordRepeatError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -130,10 +132,23 @@ export default function SignUp() {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 helperText="Password must be at least 8 characters long"
                 error={passwordError}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword(!showPassword)}
+                        onMouseDown={(e) => e.preventDefault()}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
             <Grid
@@ -145,10 +160,25 @@ export default function SignUp() {
                 fullWidth
                 name="repeat-password"
                 label="Password again"
-                type="password"
+                type={showRepeatPassword ? 'text' : 'password'}
                 id="repeat-password"
                 error={passwordRepeatError}
-                helperText={passwordRepeatError ? "Passwords don't match" : null}
+                helperText={
+                  passwordRepeatError ? "Passwords don't match" : null
+                }
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                        onMouseDown={(e) => e.preventDefault()}
+                      >
+                        {showRepeatPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
           </Grid>
