@@ -24,10 +24,15 @@ adminRouter.post('/signup', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 13);
-    const newUser = await database.addUser(username, hashedPassword);
+    const userExists = await database.findUser(username);
 
-    res.json(newUser);
+    if (userExists) {
+      res.status(400).json('Username already exists');
+    } else {
+      const hashedPassword = await bcrypt.hash(password, 13);
+      const newUser = await database.addUser(username, hashedPassword);
+      res.json(newUser);
+    }
   } catch (err) {
     res.status(err.status).json(err.msg);
   }
