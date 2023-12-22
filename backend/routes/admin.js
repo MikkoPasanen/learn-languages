@@ -17,9 +17,9 @@ adminRouter.post('/signup', async (req, res) => {
     const { username, password } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 13);
-    await database.addUser(username, hashedPassword);
+    const newUser = await database.addUser(username, hashedPassword);
 
-    res.status(201);
+    res.json(newUser);
   } catch (err) {
     res.status(err.status).json(err.msg);
   }
