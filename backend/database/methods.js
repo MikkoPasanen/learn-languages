@@ -15,12 +15,28 @@ module.exports = {
       });
     });
   },
+
   // Finds all results from selected exercise
   fetchExercise: (id) => {
     return new Promise((resolve, reject) => {
       const sql = 'SELECT * FROM wordpairs WHERE exercise_id = ?';
 
       pool.query(sql, [id], (err, results) => {
+        if (err) {
+          reject({ status: 500, msg: err });
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  },
+
+  // Fetches all users
+  fetchAllUsers: () => {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT * FROM users';
+
+      pool.query(sql, (err, results) => {
         if (err) {
           reject({ status: 500, msg: err });
         } else {
