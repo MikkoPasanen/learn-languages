@@ -13,13 +13,26 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
+
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/signin`, {
+      method: 'POST',
+      body: JSON.stringify({
+        username: data.get('username'),
+        password: data.get('password'),
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+
     });
+
+    const json = await response.json();
+    console.log(json.success);
+
   };
 
   return (
