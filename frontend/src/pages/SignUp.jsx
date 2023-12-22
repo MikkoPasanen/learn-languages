@@ -17,7 +17,7 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = useState(false);
   const [passwordRepeatError, setPasswordRepeatError] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -25,43 +25,51 @@ export default function SignUp() {
     const isValidPassword = validatePassword(data.get('password'));
     const isValidPasswordCheck = validatePasswordRepeat(data.get('password'), data.get('repeat-password'));
 
-    if (!isValidUserName && !isValidPassword && !isValidPasswordCheck) {
-      console.log({
-        username: data.get('username'),
-        password: data.get('password'),
-      });
-    }
+    if (isValidUserName && isValidPassword && isValidPasswordCheck) {
 
-  }
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/signup`, {
+        method: 'POST',
+        body: JSON.stringify({
+          username: data.get('username'),
+          password: data.get('password'),
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+
+      console.log(response);
+    }
+  };
 
   const validateUsername = (username) => {
     if (username.length < 3) {
       setNameError(true);
-      return true;
+      return false;
     }
 
     setNameError(false);
-    return false;
+    return true;
   };
 
   const validatePassword = (password) => {
     if (password.length < 8) {
       setPasswordError(true);
-      return true;
+      return false;
     }
 
     setPasswordError(false);
-    return false;
+    return true;
   };
 
   const validatePasswordRepeat = (password, passwordRepeat) => {
     if (password !== passwordRepeat) {
       setPasswordRepeatError(true);
-      return true;
+      return false;
     }
 
     setPasswordRepeatError(false);
-    return false;
+    return true;
 
   };
 
