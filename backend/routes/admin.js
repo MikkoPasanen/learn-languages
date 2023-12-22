@@ -3,10 +3,18 @@ const bcrypt = require('bcrypt');
 const database = require('../database/methods');
 const adminRouter = express.Router();
 
-adminRouter.get('/signin', async (req, res) => {
+adminRouter.post('/signin', async (req, res) => {
   try {
-    const allUsers = await database.fetchAllUsers();
-    res.json(allUsers);
+    const { username, password } = req.body;
+
+    const validUser = await database.findUser(username);
+    const validPassword = await bcrypt.compare(password, validUser.password);
+
+    if (validUser && validPassword) {
+      res.send(true);
+    } else {
+      res.send(false);
+    }
   } catch (err) {
     res.status(err.status).json(err.msg);
   }

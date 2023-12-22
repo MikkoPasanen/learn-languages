@@ -31,12 +31,12 @@ module.exports = {
     });
   },
 
-  // Fetches all users
-  fetchAllUsers: () => {
+  // Find user by username
+  findUser: (username) => {
     return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM users';
+      const sql = 'SELECT * FROM users WHERE username = ?';
 
-      pool.query(sql, (err, results) => {
+      pool.query(sql, [username], (err, results) => {
         if (err) {
           reject({ status: 500, msg: err });
         } else {
