@@ -1,10 +1,11 @@
 import { Box, Typography, TextField, Button } from "@mui/material"
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 
 export default function Exercise() {
     const { id } = useParams();
+    const location = useLocation();
+    const exerciseName = location.state?.exerciseName || "Exercise";
     const [wordPairs, setWordPairs] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(null);
     const [score, setScore] = useState(0);
@@ -37,7 +38,7 @@ export default function Exercise() {
     if (currentQuestionIndex === null) {
         return (
             <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", mt: 7}}>
-                <Typography variant="h4" sx={{mb: 3}}>Before the exercise:</Typography>
+                <Typography variant="h4" sx={{mb: 3}}>{exerciseName}</Typography>
                 <Typography variant="h5" sx={{mb: 3}}>Add toggle here for switching question type...</Typography>
                 <Button onClick={handlePlay} variant="contained">Start</Button>
             </Box>

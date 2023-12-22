@@ -71,6 +71,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseL
               <Link
                 to={`/exercise/${exerciseId}`}
                 style={{ textDecoration: 'none', color: 'inherit' }}
+                state={{ exerciseName: exerciseName }}
               >
                 Study🎓
               </Link>
