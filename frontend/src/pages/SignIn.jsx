@@ -1,13 +1,21 @@
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { IconButton, InputAdornment, TextField, Link, Grid, Box, Typography, Container, Checkbox, FormControlLabel, CssBaseline, Avatar, Button } from '@mui/material';
+import { IconButton, InputAdornment, TextField, Link, Grid, Box, Typography, Container, Checkbox, FormControlLabel, CssBaseline, Avatar, Button, Snackbar, Alert } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function SignIn() {
-  const [signInError, setSignInError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,12 +38,13 @@ export default function SignIn() {
     if(json.success) {
       navigate("/");
     } else {
-      setSignInError(!json.success);
+      setOpen(true);
     }
 
   };
 
   return (
+    <>
       <Container
         component="main"
         maxWidth="xs"
@@ -59,14 +68,6 @@ export default function SignIn() {
           >
             Sign in
           </Typography>
-          {signInError && (
-            <Typography
-              variant="body1"
-              color="error"
-            >
-              Invalid username or password
-            </Typography>
-          )}
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -136,5 +137,20 @@ export default function SignIn() {
           </Box>
         </Box>
       </Container>
+      <Snackbar
+        open={open}
+        autoHideDuration={8000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity="error"
+          sx={{ width: '100%' }}
+        >
+          Invalid username or password.
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
