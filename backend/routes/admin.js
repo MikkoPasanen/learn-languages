@@ -35,13 +35,11 @@ adminRouter.post('/signup', async (req, res) => {
     const userExists = await database.findUser(username);
 
     if (userExists.length > 0) {
-      res.status(400);
-      console.log('cant do sir');
+      res.status(400).json({ userExists: true });
     } else {
       const hashedPassword = await bcrypt.hash(password, 13);
       const newUser = await database.addUser(username, hashedPassword);
       res.json(newUser);
-      console.log('yessir');
     }
   } catch (err) {
     res.status(err.status).json(err.msg);

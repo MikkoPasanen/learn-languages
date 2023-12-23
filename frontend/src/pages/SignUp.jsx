@@ -10,14 +10,16 @@ export default function SignUp() {
   const [passwordRepeatError, setPasswordRepeatError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setOpen(false);
+    setOpenSuccess(false);
+    setOpenError(false);
   };
 
   const handleSubmit = async (event) => {
@@ -44,7 +46,10 @@ export default function SignUp() {
       const responseData = await response.json();
 
       if (responseData.affectedRows === 1) {
-        setOpen(true);
+        setOpenSuccess(true);
+      }
+      if (responseData.userExists) {
+        setOpenError(true);
       }
     }
   };
@@ -177,10 +182,16 @@ export default function SignUp() {
                       <InputAdornment position="end">
                         <IconButton
                           aria-label="toggle password visibility"
-                          onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                          onClick={() =>
+                            setShowRepeatPassword(!showRepeatPassword)
+                          }
                           onMouseDown={(e) => e.preventDefault()}
                         >
-                          {showRepeatPassword ? <VisibilityOff /> : <Visibility />}
+                          {showRepeatPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -213,9 +224,32 @@ export default function SignUp() {
           </Box>
         </Box>
       </Container>
-      <Snackbar open={open} autoHideDuration={8000} onClose={handleClose} anchorOrigin={{vertical: "top", horizontal: "center"}}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+      <Snackbar
+        open={openSuccess}
+        autoHideDuration={8000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
           Successfully signed up! You can now sign in.
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openError}
+        autoHideDuration={8000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity="error"
+          sx={{ width: '100%' }}
+        >
+          A user with this username already exists.
         </Alert>
       </Snackbar>
     </>
