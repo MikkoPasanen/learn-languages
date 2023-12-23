@@ -1,11 +1,12 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const database = require('../database/methods');
 const adminRouter = express.Router();
 
 adminRouter.post('/signin', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, remember } = req.body;
 
     const databaseUser = await database.findUser(username);
 
@@ -16,12 +17,16 @@ adminRouter.post('/signin', async (req, res) => {
       );
 
       if (validPassword) {
-        res.json({ success: true });
+        const expiresIn = remember ? '7d' : '2h';
+        const token = jwt.sign({ username }, process.env.TOKEN_SECRET, {
+          expiresIn,
+        });
+        res.json({ success: true, token });
       } else {
-        res.status(400).json({ success: false });
+        res.status(401).json({ success: false });
       }
     } else {
-      res.status(400).json({ success: false });
+      res.status(401).json({ success: false });
     }
   } catch (err) {
     res.status(500).json({ success: false });
