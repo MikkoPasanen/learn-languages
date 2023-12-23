@@ -26,6 +26,7 @@ export default function SignIn() {
       body: JSON.stringify({
         username: data.get('username'),
         password: data.get('password'),
+        remember: data.get('remember'),
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -36,6 +37,13 @@ export default function SignIn() {
     const json = await response.json();
 
     if(json.success) {
+      if(data.get('remember')) {
+        localStorage.setItem('token', json.token);
+        console.log("local: " + localStorage.getItem('token'));
+      } else {
+        sessionStorage.setItem('token', json.token);
+        console.log("session: " + sessionStorage.getItem('token'));
+      }
       navigate("/");
     } else {
       setOpen(true);
@@ -111,6 +119,7 @@ export default function SignIn() {
                 <Checkbox
                   value="remember"
                   color="primary"
+                  name='remember'
                 />
               }
               label="Remember me"
