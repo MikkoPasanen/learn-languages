@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { IconButton, InputAdornment, TextField, Link, Grid, Box, Typography, Container, Checkbox, FormControlLabel, CssBaseline, Avatar, Button, Snackbar, Alert } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-export default function SignIn() {
+export default function SignIn({ setSignedIn }) {
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ export default function SignIn() {
         sessionStorage.setItem('token', json.token);
         console.log("session: " + sessionStorage.getItem('token'));
       }
+      setSignedIn(true);
       navigate("/");
     } else {
       setOpen(true);

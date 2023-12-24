@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react';
 
 import ExerciseCard from '../components/ExerciseCard';
 
-export default function Home() {
+export default function Home({ signedIn }) {
     const [exercises, setExercises] = useState([]);
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
     useEffect(() => {
       fetchExercises();
@@ -28,7 +27,7 @@ export default function Home() {
             flexDirection: 'column',
           }}
         >
-          {token && <h1>Logged in</h1>}
+          {signedIn && <h1>Signed in</h1>}
           {exercises.map((exercise) => (
             <ExerciseCard
               key={exercise.id}
