@@ -8,10 +8,11 @@ import { Link } from 'react-router-dom';
 
 import HomeIcon from '@mui/icons-material/Home';
 import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 
-export default function TopAppBar({darkMode, handleThemeChange}) {
+export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSignedIn}) {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -41,31 +42,54 @@ export default function TopAppBar({darkMode, handleThemeChange}) {
               </Typography>
             </Link>
           </IconButton>
-          <Box sx={{display: 'flex'}}>
-            <Link
-              to="/signin"
-              style={{
-                textDecoration: 'none',
-                color: 'inherit',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
+          <Box sx={{ display: 'flex' }}>
+            {!signedIn && (
+              <Link
+                to="/signin"
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                >
+                  <LoginIcon sx={{ pr: 1, fontSize: '2rem' }} />
+                  <Typography
+                    variant="h6"
+                    component="div"
+                  >
+                    Sign In
+                  </Typography>
+                </IconButton>
+              </Link>
+            )}
+            {signedIn && (
               <IconButton
                 size="large"
                 edge="start"
                 color="inherit"
                 aria-label="menu"
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  sessionStorage.removeItem('token');
+                  setSignedIn(false);
+                }}
               >
-                <LoginIcon sx={{ pr: 1, fontSize: '2rem' }} />
+                <LogoutIcon sx={{ pr: 1, fontSize: '2rem' }} />
                 <Typography
                   variant="h6"
                   component="div"
                 >
-                  Sign In
+                  Sign Out
                 </Typography>
               </IconButton>
-            </Link>
+            )}
             <IconButton
               size="large"
               edge="end"
