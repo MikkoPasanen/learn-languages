@@ -2,12 +2,16 @@
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { IconButton, InputAdornment, TextField, Link, Grid, Box, Typography, Container, Checkbox, FormControlLabel, CssBaseline, Avatar, Button, Snackbar, Alert } from '@mui/material';
+import { IconButton, InputAdornment, TextField,
+        Link, Grid, Box, Typography, Container,
+        Checkbox, FormControlLabel, CssBaseline,
+        Avatar, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function SignIn({ setSignedIn }) {
   const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleClose = (event, reason) => {
@@ -20,6 +24,7 @@ export default function SignIn({ setSignedIn }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const data = new FormData(event.currentTarget);
 
     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/signin`, {
@@ -46,9 +51,11 @@ export default function SignIn({ setSignedIn }) {
         console.log("session: " + sessionStorage.getItem('token'));
       }
       setSignedIn(true);
+      setLoading(false);
       navigate("/");
     } else {
       setOpen(true);
+      setLoading(false);
     }
 
   };
@@ -132,7 +139,18 @@ export default function SignIn({ setSignedIn }) {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {loading ? (
+                <>
+                  Checking credentials...
+                  <CircularProgress
+                    size={20}
+                    sx={{ ml: 2 }}
+                    color="inherit" />
+                </>
+              ) : (
+                'Sign In'
+              )
+              }
             </Button>
             <Grid container>
               <Grid item>
