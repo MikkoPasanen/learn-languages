@@ -1,7 +1,10 @@
 import { Link as RouterLink } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useState } from 'react';
-import { IconButton, InputAdornment, TextField, Avatar, Button, CssBaseline, Container, Typography, Box, Grid, Link, Snackbar, Alert} from '@mui/material';
+import { IconButton, InputAdornment, TextField,
+        Avatar, Button, CssBaseline, Container,
+        Typography, Box, Grid, Link, Snackbar,
+        Alert, CircularProgress} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function SignUp() {
@@ -12,6 +15,7 @@ export default function SignUp() {
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -31,6 +35,7 @@ export default function SignUp() {
     const isValidPasswordCheck = validatePasswordRepeat(data.get('password'), data.get('repeat-password'));
 
     if (isValidUserName && isValidPassword && isValidPasswordCheck) {
+      setLoading(true);
 
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/signup`, {
         method: 'POST',
@@ -51,6 +56,7 @@ export default function SignUp() {
       if (responseData.userExists) {
         setOpenError(true);
       }
+      setLoading(false);
     }
   };
 
@@ -205,7 +211,18 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {loading ? (
+                <>
+                  Signing up...
+                  <CircularProgress
+                    size={20}
+                    sx={{ ml: 2 }}
+                    color="inherit" />
+                </>
+              ) : (
+                'Sign Up'
+              )
+              }
             </Button>
             <Grid
               container
