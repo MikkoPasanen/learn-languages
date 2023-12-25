@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useState} from 'react';
 import { Link } from 'react-router-dom';
 
-export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseLanguage, exerciseId }) {
+export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseLanguage, exerciseId, signedIn }) {
     const [anchorEl, setAnchorEl] = useState(null);
 
    const handleOptionsClick = (e) => {
@@ -18,6 +18,16 @@ export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseL
      setAnchorEl(null);
    };
 
+   const action = signedIn ? (
+     <IconButton
+       aria-label="settings"
+       onClick={handleOptionsClick}
+       sx={{ ml: 2}}
+     >
+       <MoreVertIcon />
+     </IconButton>
+    ) : null;
+
     return (
       <>
         <Card
@@ -25,15 +35,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseL
           sx={{ mt: 3, borderRadius: 4 }}
         >
           <CardHeader
-            action={
-              <IconButton
-                aria-label="settings"
-                sx={{ ml: 2 }}
-                onClick={handleOptionsClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-            }
+            action={action}
             title={exerciseName}
             subheader={
               <Box sx={{ mt: 1 }}>
@@ -45,6 +47,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseL
               </Box>
             }
           ></CardHeader>
+          {signedIn &&
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -66,6 +69,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseL
               </IconButton>
             </MenuItem>
           </Menu>
+          }
           <CardContent>
             <Button variant='contained' sx={{borderRadius: 2}}>
               <Link

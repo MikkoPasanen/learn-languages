@@ -35,6 +35,7 @@ export default function Home({ signedIn }) {
               exerciseName={exercise.name}
               exerciseCategory={exercise.category}
               exerciseLanguage={exercise.language}
+              signedIn={signedIn}
             />
           ))}
         </Box>
