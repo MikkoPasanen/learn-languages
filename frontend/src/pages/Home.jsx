@@ -6,6 +6,9 @@ import ExerciseCard from '../components/ExerciseCard';
 
 export default function Home({ signedIn }) {
     const [exercises, setExercises] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const skeletons = [1, 2, 3];
 
     useEffect(() => {
       fetchExercises();
@@ -15,6 +18,7 @@ export default function Home({ signedIn }) {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/home`);
       const data = await response.json();
       setExercises(data);
+      setLoading(false);
     };
 
     return (
@@ -28,15 +32,25 @@ export default function Home({ signedIn }) {
           }}
         >
           {signedIn && <h1>Signed in</h1>}
-          {exercises.map((exercise) => (
-            <ExerciseCard
-              key={exercise.id}
-              exerciseId={exercise.id}
-              exerciseName={exercise.name}
-              exerciseCategory={exercise.category}
-              exerciseLanguage={exercise.language}
-              signedIn={signedIn}
-            />
+          {loading
+          ?
+            skeletons.map((skeleton) => (
+              <ExerciseCard
+                key={skeleton}
+                loading={loading}
+              />
+            ))
+          :
+            exercises.map((exercise) => (
+              <ExerciseCard
+                key={exercise.id}
+                exerciseId={exercise.id}
+                exerciseName={exercise.name}
+                exerciseCategory={exercise.category}
+                exerciseLanguage={exercise.language}
+                signedIn={signedIn}
+                loading={loading}
+              />
           ))}
         </Box>
       </>

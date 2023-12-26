@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
-import { Card, Box, CardHeader, CardContent, Typography, IconButton, Button, Chip, Menu, MenuItem } from '@mui/material';
+import { Card, Box, CardHeader, CardContent,
+        Typography, IconButton, Button, Chip,
+        Menu, MenuItem, Skeleton } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,7 +9,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useState} from 'react';
 import { Link } from 'react-router-dom';
 
-export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseLanguage, exerciseId, signedIn }) {
+export default function ExerciseCard({ exerciseName, exerciseCategory,
+                                       exerciseLanguage, exerciseId,
+                                       signedIn, loading }) {
     const [anchorEl, setAnchorEl] = useState(null);
 
    const handleOptionsClick = (e) => {
@@ -32,12 +36,29 @@ export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseL
       <>
         <Card
           key={exerciseId}
-          sx={{ mt: 3, borderRadius: 4 }}
+          sx={{ mt: 3, borderRadius: 4, width: 300}}
         >
           <CardHeader
             action={action}
-            title={exerciseName}
+            title={
+              loading ? (
+                <Skeleton
+                  animation="wave"
+                  height={30}
+                  width="80%"
+                  style={{ marginBottom: 6 }}
+                />
+              ) : (
+                  exerciseName
+              )}
             subheader={
+              loading ? (
+                <Skeleton
+                  animation="wave"
+                  height={20}
+                  width="40%"
+                />
+              ) : (
               <Box sx={{ mt: 1 }}>
                 <Chip
                   sx={{ mr: 1 }}
@@ -45,41 +66,53 @@ export default function ExerciseCard({ exerciseName, exerciseCategory, exerciseL
                 />
                 <Chip label={exerciseLanguage} />
               </Box>
-            }
+            )}
           ></CardHeader>
-          {signedIn &&
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleOptionsClose}
-          >
-            <MenuItem onClick={handleOptionsClose}>
-              <IconButton sx={{ padding: 0 }}>
-                <EditIcon sx={{ fontSize: 15 }} />
-                <Typography sx={{ ml: 1, fontSize: 15 }}>Edit</Typography>
-              </IconButton>
-            </MenuItem>
+          {signedIn && (
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleOptionsClose}
+            >
+              <MenuItem onClick={handleOptionsClose}>
+                <IconButton sx={{ padding: 0 }}>
+                  <EditIcon sx={{ fontSize: 15 }} />
+                  <Typography sx={{ ml: 1, fontSize: 15 }}>Edit</Typography>
+                </IconButton>
+              </MenuItem>
 
-            <MenuItem onClick={handleOptionsClose}>
-              <IconButton sx={{ padding: 0 }}>
-                <DeleteIcon sx={{ fontSize: 15, color: '#d7094f' }} />
-                <Typography sx={{ ml: 1, fontSize: 15, color: '#d7094f' }}>
-                  Delete
-                </Typography>
-              </IconButton>
-            </MenuItem>
-          </Menu>
-          }
+              <MenuItem onClick={handleOptionsClose}>
+                <IconButton sx={{ padding: 0 }}>
+                  <DeleteIcon sx={{ fontSize: 15, color: '#d7094f' }} />
+                  <Typography sx={{ ml: 1, fontSize: 15, color: '#d7094f' }}>
+                    Delete
+                  </Typography>
+                </IconButton>
+              </MenuItem>
+            </Menu>
+          )}
           <CardContent>
-            <Button variant='contained' sx={{borderRadius: 2}}>
-              <Link
-                to={`/exercise/${exerciseId}`}
-                style={{ textDecoration: 'none', color: 'inherit' }}
-                state={{ exerciseName: exerciseName }}
+            {loading ? (
+              <Skeleton
+                animation="wave"
+                variant='rounded'
+                height={40}
+                width={90}
+              />
+            ) : (
+              <Button
+                variant="contained"
+                sx={{ borderRadius: 2 }}
               >
-                Study🎓
-              </Link>
-            </Button>
+                <Link
+                  to={`/exercise/${exerciseId}`}
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                  state={{ exerciseName: exerciseName }}
+                >
+                  Study🎓
+                </Link>
+              </Button>
+            )}
           </CardContent>
         </Card>
       </>
