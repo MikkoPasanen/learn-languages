@@ -12,7 +12,7 @@ export default function AddExercise() {
                 <Typography sx={{ fontWeight: 'bold', pr: 0.5 }}>Add Exercise</Typography>
             </Button>
 
-            <Dialog open={open} onClose={() => setOpen(false)}>
+            <Dialog open={open} onClose={() => setOpen(false)} maxWidth={'md'} fullWidth={true}>
                 <DialogTitle>Add Exercise</DialogTitle>
                 <DialogContent>
                     <Typography>Content</Typography>
