@@ -1,13 +1,18 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
-        Typography, Stepper, Step, StepLabel, Divider, TextField} from "@mui/material";
+        Typography, Stepper, Step, StepLabel, Divider, TextField, Autocomplete } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 
-export default function AddExercise() {
+export default function AddExercise({ categories }) {
     const [open, setOpen] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
-    const [nameError, setNameError] = useState(false);
     const [exerciseName, setExerciseName] = useState('');
+    const [category, setCategory] = useState('');
+
+    const [nameError, setNameError] = useState(false);
+    const [categoryError, setCategoryError] = useState(false);
+
     const steps = ['Name and category', 'Word pairs', 'Check and save'];
 
 
@@ -16,12 +21,16 @@ export default function AddExercise() {
         setActiveStep(0);
         setNameError(false);
         setExerciseName('');
+        setCategory('');
+        setCategoryError(false);
     }
 
     const handleNext = () => {
         if (activeStep < 2) {
-            if (isValidName()) {
+            if (isValidName() && isValidCategory()) {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                console.log(exerciseName);
+                console.log(category);
             }
         }
     }
@@ -38,6 +47,16 @@ export default function AddExercise() {
             return false
         } else {
             setNameError(false);
+            return true
+        }
+    }
+
+    const isValidCategory = () => {
+        if (category === '') {
+            setCategoryError(true);
+            return false
+        } else {
+            setCategoryError(false);
             return true
         }
     }
@@ -60,7 +79,7 @@ export default function AddExercise() {
           onClose={handleClose}
           maxWidth={'sm'}
           fullWidth={true}
-          sx={{ mt: '-30vh' }}
+          sx={{ mt: '-10vh' }}
         >
           <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>
             Add Exercise
@@ -74,22 +93,49 @@ export default function AddExercise() {
               ))}
             </Stepper>
             <Divider sx={{mt: 2}}/>
-            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ mt: 3 }}>
                 {activeStep === 0 && (
-                    <>
+                    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
                         <TextField
-                            margin="small"
                             required
                             id="exerciseName"
                             label="Exercise Name"
                             name="exerciseName"
+                            sx={{width: '50%', mb: 2}}
                             error={nameError}
                             helperText={nameError ? 'Name cannot be empty' : ''}
                             autoFocus
                             value={exerciseName}
                             onChange={(e) => setExerciseName(e.target.value)}
                         />
-                    </>
+                        <Autocomplete
+                            value={category}
+                            onChange={(event, newValue) => {
+                                if(newValue === null) {
+                                    setCategory('');
+                                } else {
+                                    setCategory(newValue);
+                                }
+                            }}
+                            inputValue={category}
+                            onInputChange={(event, newInputValue) => {
+                                setCategory(newInputValue);
+                            }}
+                            freeSolo
+                            options={categories}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Category"
+                                    required
+                                    error={categoryError}
+                                    helperText={categoryError ? 'Category cannot be empty' : ''}
+                                    />
+                            )}
+                            sx={[{width: '50%'}, {mb: 2}]}
+                        >
+                        </Autocomplete>
+                    </Box>
                 )}
                 {activeStep === 1 && (
                     <>
