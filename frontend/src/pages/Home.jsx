@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import { Box } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from 'react';
 
 import ExerciseCard from '../components/ExerciseCard';
@@ -31,27 +32,33 @@ export default function Home({ signedIn }) {
             flexDirection: 'column',
           }}
         >
-          {signedIn && <h1>Signed in</h1>}
+          {signedIn && (
+            <Button
+              variant='contained'
+              sx={{ p: 0.5, borderRadiud: 4, mt: 3}}
+              >
+                <AddIcon sx={{ pr: 0.5, fontSize: '2rem' }} />
+                <Typography sx={{fontWeight: 'bold', pr: 0.5}}>Add Exercise</Typography>
+            </Button>
+          )}
           {loading
-          ?
-            skeletons.map((skeleton) => (
-              <ExerciseCard
-                key={skeleton}
-                loading={loading}
-              />
-            ))
-          :
-            exercises.map((exercise) => (
-              <ExerciseCard
-                key={exercise.id}
-                exerciseId={exercise.id}
-                exerciseName={exercise.name}
-                exerciseCategory={exercise.category}
-                exerciseLanguage={exercise.language}
-                signedIn={signedIn}
-                loading={loading}
-              />
-          ))}
+            ? skeletons.map((skeleton) => (
+                <ExerciseCard
+                  key={skeleton}
+                  loading={loading}
+                />
+              ))
+            : exercises.map((exercise) => (
+                <ExerciseCard
+                  key={exercise.id}
+                  exerciseId={exercise.id}
+                  exerciseName={exercise.name}
+                  exerciseCategory={exercise.category}
+                  exerciseLanguage={exercise.language}
+                  signedIn={signedIn}
+                  loading={loading}
+                />
+              ))}
         </Box>
       </>
     );
