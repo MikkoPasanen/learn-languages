@@ -141,7 +141,7 @@ export default function SignIn({ setSignedIn }) {
             >
               {loading ? (
                 <>
-                  Checking credentials...
+                  Signing in...
                   <CircularProgress
                     size={20}
                     sx={{ ml: 2 }}
