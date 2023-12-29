@@ -56,7 +56,8 @@ export default function AddExercise() {
                     <Button onClick={handleClose}>Cancel</Button>
                     <Box>
                         <Button onClick={handleBack}>Back</Button>
-                        <Button onClick={handleNext}>Next</Button>
+                        {activeStep < 2 ? <Button onClick={handleNext}>Next</Button> : <Button onClick={handleClose}>Save</Button>}
+
                     </Box>
                 </DialogActions>
             </Dialog>
