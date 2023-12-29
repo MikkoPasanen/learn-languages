@@ -1,21 +1,28 @@
 import { useState } from "react";
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
-        Typography, Stepper, Step, StepLabel, Divider } from "@mui/material";
+        Typography, Stepper, Step, StepLabel, Divider, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 
 export default function AddExercise() {
     const [open, setOpen] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
+    const [nameError, setNameError] = useState(false);
+    const [exerciseName, setExerciseName] = useState('');
     const steps = ['Name and category', 'Word pairs', 'Check and save'];
+
 
     const handleClose = () => {
         setOpen(false);
         setActiveStep(0);
+        setNameError(false);
+        setExerciseName('');
     }
 
     const handleNext = () => {
         if (activeStep < 2) {
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            if (isValidName()) {
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            }
         }
     }
 
@@ -24,6 +31,17 @@ export default function AddExercise() {
             setActiveStep((prevActiveStep) => prevActiveStep - 1);
         }
     }
+
+    const isValidName = () => {
+        if (exerciseName === '') {
+            setNameError(true);
+            return false
+        } else {
+            setNameError(false);
+            return true
+        }
+    }
+
     return (
       <>
         <Button
@@ -56,7 +74,34 @@ export default function AddExercise() {
               ))}
             </Stepper>
             <Divider sx={{mt: 2}}/>
-            <Box sx={{ mt: 3 }}></Box>
+            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+                {activeStep === 0 && (
+                    <>
+                        <TextField
+                            margin="small"
+                            required
+                            id="exerciseName"
+                            label="Exercise Name"
+                            name="exerciseName"
+                            error={nameError}
+                            helperText={nameError ? 'Name cannot be empty' : ''}
+                            autoFocus
+                            value={exerciseName}
+                            onChange={(e) => setExerciseName(e.target.value)}
+                        />
+                    </>
+                )}
+                {activeStep === 1 && (
+                    <>
+                    <Typography>Word pairs</Typography>
+                    </>
+                )}
+                {activeStep === 2 && (
+                    <>
+                    <Typography>Check and save</Typography>
+                    </>
+                )}
+            </Box>
           </DialogContent>
           <DialogActions
             sx={{ display: 'flex', justifyContent: 'space-between' }}
