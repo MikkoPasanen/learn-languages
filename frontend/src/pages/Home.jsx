@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import { Box, Typography, Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Box } from '@mui/material';
 import { useState, useEffect } from 'react';
 
 import ExerciseCard from '../components/ExerciseCard';
+import AddExercise from '../components/AddExercise';
 
 export default function Home({ signedIn }) {
     const [exercises, setExercises] = useState([]);
@@ -32,15 +32,7 @@ export default function Home({ signedIn }) {
             flexDirection: 'column',
           }}
         >
-          {signedIn && (
-            <Button
-              variant='contained'
-              sx={{ p: 0.5, borderRadiud: 4, mt: 3}}
-              >
-                <AddIcon sx={{ pr: 0.5, fontSize: '2rem' }} />
-                <Typography sx={{fontWeight: 'bold', pr: 0.5}}>Add Exercise</Typography>
-            </Button>
-          )}
+          {signedIn && <AddExercise />}
           {loading
             ? skeletons.map((skeleton) => (
                 <ExerciseCard
