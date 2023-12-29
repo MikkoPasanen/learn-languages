@@ -8,6 +8,10 @@ export default function AddExercise() {
     const [activeStep, setActiveStep] = useState(0);
     const steps = ['Name and category', 'Word pairs', 'Check and save'];
 
+    const handleClose = () => {
+        setOpen(false);
+        setActiveStep(0);
+    }
     return (
         <>
             <Button variant="contained" onClick={() => setOpen(true)} sx={{mt: 3}}>
@@ -20,20 +24,21 @@ export default function AddExercise() {
                 onClose={() => setOpen(false)}
                 maxWidth={'sm'}
                 fullWidth={true}
+                sx={{mt: '-30vh'}}
                 >
                 <DialogTitle sx={{display: 'flex', justifyContent: 'center'}}>Add Exercise</DialogTitle>
                 <DialogContent>
-                    <Stepper activeStep={activeStep} alternativeLabel>
+                    <Stepper activeStep={activeStep}>
                         {steps.map((label) => (
                             <Step key={label}>
-                            <StepLabel>{label}</StepLabel>
+                                <StepLabel>{label}</StepLabel>
                             </Step>
                         ))}
                     </Stepper>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpen(false)}>Cancel</Button>
-                    <Button onClick={() => setOpen(false)}>Add</Button>
+                <DialogActions sx={{display: 'flex', justifyContent: 'space-between'}}>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={() => setActiveStep(activeStep + 1)}>Next</Button>
                 </DialogActions>
             </Dialog>
         </>
