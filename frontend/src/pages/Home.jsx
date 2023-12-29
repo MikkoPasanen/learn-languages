@@ -8,6 +8,7 @@ import AddExercise from '../components/AddExercise';
 export default function Home({ signedIn }) {
     const [exercises, setExercises] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [categories, setCategories] = useState([]);
 
     const skeletons = [1, 2, 3];
 
@@ -19,6 +20,8 @@ export default function Home({ signedIn }) {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/home`);
       const data = await response.json();
       setExercises(data);
+      const categories = data.map((exercise) => exercise.category);
+      setCategories([...new Set(categories)]);
       setLoading(false);
     };
 
@@ -32,7 +35,7 @@ export default function Home({ signedIn }) {
             flexDirection: 'column',
           }}
         >
-          {signedIn && <AddExercise />}
+          {signedIn && <AddExercise categories={categories} />}
           {loading
             ? skeletons.map((skeleton) => (
                 <ExerciseCard
