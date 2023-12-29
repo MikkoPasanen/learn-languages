@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions,
+import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
         Typography, Stepper, Step, StepLabel } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 
@@ -12,6 +12,18 @@ export default function AddExercise() {
         setOpen(false);
         setActiveStep(0);
     }
+
+    const handleNext = () => {
+        if (activeStep < 2) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+    }
+
+    const handleBack = () => {
+        if (activeStep > 0) {
+            setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        }
+    }
     return (
         <>
             <Button variant="contained" onClick={() => setOpen(true)} sx={{mt: 3}}>
@@ -21,7 +33,7 @@ export default function AddExercise() {
 
             <Dialog
                 open={open}
-                onClose={() => setOpen(false)}
+                onClose={handleClose}
                 maxWidth={'sm'}
                 fullWidth={true}
                 sx={{mt: '-30vh'}}
@@ -35,10 +47,17 @@ export default function AddExercise() {
                             </Step>
                         ))}
                     </Stepper>
+
+                    <Box sx={{mt: 3}}>
+
+                    </Box>
                 </DialogContent>
                 <DialogActions sx={{display: 'flex', justifyContent: 'space-between'}}>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={() => setActiveStep(activeStep + 1)}>Next</Button>
+                    <Box>
+                        <Button onClick={handleBack}>Back</Button>
+                        <Button onClick={handleNext}>Next</Button>
+                    </Box>
                 </DialogActions>
             </Dialog>
         </>
