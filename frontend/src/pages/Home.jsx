@@ -9,6 +9,7 @@ export default function Home({ signedIn }) {
     const [exercises, setExercises] = useState([]);
     const [loading, setLoading] = useState(true);
     const [categories, setCategories] = useState([]);
+    const [languages, setLanguages] = useState([]);
 
     const skeletons = [1, 2, 3];
 
@@ -21,7 +22,9 @@ export default function Home({ signedIn }) {
       const data = await response.json();
       setExercises(data);
       const categories = data.map((exercise) => exercise.category);
+      const languages = data.map((exercise) => exercise.language);
       setCategories([...new Set(categories)]);
+      setLanguages([...new Set(languages)]);
       setLoading(false);
     };
 
@@ -35,7 +38,7 @@ export default function Home({ signedIn }) {
             flexDirection: 'column',
           }}
         >
-          {signedIn && <AddExercise categories={categories} />}
+          {signedIn && <AddExercise categories={categories} languages={languages}/>}
           {loading
             ? skeletons.map((skeleton) => (
                 <ExerciseCard
