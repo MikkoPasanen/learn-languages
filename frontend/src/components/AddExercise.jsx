@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
-        Typography, Stepper, Step, StepLabel, Divider, TextField, Autocomplete } from "@mui/material";
+        Typography, Stepper, Step, StepLabel, Divider, TextField, Autocomplete,
+        IconButton } from "@mui/material";
+
+import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function AddExercise({ categories, languages }) {
@@ -253,18 +256,18 @@ export default function AddExercise({ categories, languages }) {
                           onChange={(e) => handleWordChange(e, index, 'foreign')}
                           sx={{ mr: 2}}
                         />
-                        <Button
-                          variant="contained"
+                        <IconButton
                           onClick={() => handleRemovePair(index)}
+                          sx={{p: 0}}
                         >
-                          Remove
-                        </Button>
+                          <ClearIcon sx={{color: 'red', fontSize: '2rem'}}/>
+                        </IconButton>
                     </Box>
                   ))}
                   <Button
                     variant="contained"
                     onClick={handleAddPair}
-                    sx={{ mt: 1 }}
+                    sx={{ mt: 2 }}
                   >
                     Add pair
                   </Button>
@@ -286,9 +289,9 @@ export default function AddExercise({ categories, languages }) {
                 <Typography sx={{ color: 'red', mt: 1}}>
                   Word pairs cannot be empty
                 </Typography>
-
               )}
               <Button onClick={handleBack}>Back</Button>
+
               {activeStep < 2 ? (
                 <Button onClick={handleNext}>Next</Button>
               ) : (
