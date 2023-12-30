@@ -17,6 +17,7 @@ export default function AddExercise({ categories, languages }) {
     const [nameError, setNameError] = useState(false);
     const [categoryError, setCategoryError] = useState(false);
     const [languageError, setLanguageError] = useState(false);
+    const [wordPairsError, setWordPairsError] = useState(false);
 
     const steps = ['Exercise info', 'Word pairs', 'Check and save'];
 
@@ -31,11 +32,15 @@ export default function AddExercise({ categories, languages }) {
         setLanguage('');
         setLanguageError(false);
         setWordPairs([{ english: '', foreign: '' }]);
+        setWordPairsError(false);
     }
 
     const handleNext = () => {
         if (activeStep < 2) {
-            if (isValidName() && isValidCategory() && isValidLanguage()) {
+            if (activeStep === 0 && isValidName() && isValidCategory() && isValidLanguage()) {
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            }
+            else if (activeStep === 1 && isValidWordPairs()) {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             }
         }
@@ -44,6 +49,7 @@ export default function AddExercise({ categories, languages }) {
     const handleBack = () => {
         if (activeStep > 0) {
             setActiveStep((prevActiveStep) => prevActiveStep - 1);
+            setWordPairsError(false);
         }
     }
 
@@ -73,6 +79,16 @@ export default function AddExercise({ categories, languages }) {
             return false
         } else {
             setLanguageError(false);
+            return true
+        }
+    }
+
+    const isValidWordPairs = () => {
+        if (wordPairs.some((pair) => pair.english === '' || pair.foreign === '')) {
+            setWordPairsError(true);
+            return false
+        } else {
+            setWordPairsError(false);
             return true
         }
     }
@@ -224,13 +240,15 @@ export default function AddExercise({ categories, languages }) {
                         justifyContent: 'center',
                       }}>
                         <TextField
-                          label="English"
+                          label="English word"
+                          required
                           value={pair.english}
                           onChange={(e) => handleWordChange(e, index, 'english')}
                           sx={{ mr: 2}}
                         />
                         <TextField
-                          label={language}
+                          label={`${language} word`}
+                          required
                           value={pair.foreign}
                           onChange={(e) => handleWordChange(e, index, 'foreign')}
                           sx={{ mr: 2}}
@@ -263,7 +281,13 @@ export default function AddExercise({ categories, languages }) {
             sx={{ display: 'flex', justifyContent: 'space-between' }}
           >
             <Button onClick={handleClose}>Cancel</Button>
-            <Box>
+            <Box sx={{display: 'flex'}}>
+              {wordPairsError && (
+                <Typography sx={{ color: 'red', mt: 1}}>
+                  Word pairs cannot be empty
+                </Typography>
+
+              )}
               <Button onClick={handleBack}>Back</Button>
               {activeStep < 2 ? (
                 <Button onClick={handleNext}>Next</Button>
