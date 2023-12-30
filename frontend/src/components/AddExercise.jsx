@@ -85,7 +85,7 @@ export default function AddExercise({ categories }) {
             Add Exercise
           </DialogTitle>
           <DialogContent>
-            <Stepper activeStep={activeStep}>
+            <Stepper activeStep={activeStep} alternativeLabel>
               {steps.map((label) => (
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>
@@ -101,7 +101,7 @@ export default function AddExercise({ categories }) {
                             id="exerciseName"
                             label="Exercise Name"
                             name="exerciseName"
-                            sx={{width: '50%', mb: 2}}
+                            sx={{width: '80%', mb: 2}}
                             error={nameError}
                             helperText={nameError ? 'Name cannot be empty' : ''}
                             autoFocus
@@ -132,7 +132,7 @@ export default function AddExercise({ categories }) {
                                     helperText={categoryError ? 'Category cannot be empty' : ''}
                                     />
                             )}
-                            sx={[{width: '50%'}, {mb: 2}]}
+                            sx={[{width: '80%'}, {mb: 2}]}
                         >
                         </Autocomplete>
                     </Box>
