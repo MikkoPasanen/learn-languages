@@ -107,9 +107,11 @@ export default function AddExercise({ categories, languages }) {
     }
 
     function handleRemovePair(index) {
-      const newWordPairs = [...wordPairs];
-      newWordPairs.splice(index, 1);
-      setWordPairs(newWordPairs);
+      if (wordPairs.length > 1) {
+        const newWordPairs = [...wordPairs];
+        newWordPairs.splice(index, 1);
+        setWordPairs(newWordPairs);
+      }
     }
 
     return (
