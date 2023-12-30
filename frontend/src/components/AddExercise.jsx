@@ -119,7 +119,7 @@ export default function AddExercise({ categories, languages }) {
         <Button
           variant="contained"
           onClick={() => setOpen(true)}
-          sx={{ mt: 3 }}
+          sx={{ mt: 3, p: 0.5, borderRadius: 2 }}
         >
           <AddIcon sx={{ pr: 0.5, fontSize: '2rem' }} />
           <Typography sx={{ fontWeight: 'bold', pr: 0.5 }}>
