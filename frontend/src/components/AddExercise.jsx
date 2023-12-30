@@ -89,7 +89,6 @@ export default function AddExercise({ categories, languages }) {
 
         <Dialog
           open={open}
-          onClose={handleClose}
           maxWidth={'sm'}
           fullWidth={true}
           sx={{ mt: '-10vh' }}
