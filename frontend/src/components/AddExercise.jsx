@@ -137,7 +137,7 @@ export default function AddExercise({ categories, languages }) {
           <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>
             Add Exercise
           </DialogTitle>
-          <DialogContent sx={{maxHeight: '60vh'}}>
+          <DialogContent sx={{maxHeight: '61vh'}}>
             <Stepper
               activeStep={activeStep}
               alternativeLabel
@@ -269,9 +269,10 @@ export default function AddExercise({ categories, languages }) {
                   <Button
                     variant="contained"
                     onClick={handleAddPair}
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 3, borderRadius: 4, p: 0.5 }}
                   >
-                    Add pair
+                    <AddIcon sx={{ pr: 0.5, fontSize: '2rem' }} />
+                    <Typography sx={{ fontWeight: 'bold', pr: 0.5 }}>Add pair</Typography>
                   </Button>
                 </Box>
               )}
