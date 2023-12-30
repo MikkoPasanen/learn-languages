@@ -134,10 +134,10 @@ export default function AddExercise({ categories, languages }) {
           sx={{ mt: '-10vh' }}
           scroll="paper"
         >
-          <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>
-            Add Exercise
-          </DialogTitle>
-          <DialogContent sx={{maxHeight: '61vh'}}>
+          <DialogTitle>
+            <Typography sx={{ fontWeight: 'bold', fontSize: '1.2rem', textAlign: 'center', mb: 1 }}>
+              Add new exercise
+            </Typography>
             <Stepper
               activeStep={activeStep}
               alternativeLabel
@@ -148,7 +148,9 @@ export default function AddExercise({ categories, languages }) {
                 </Step>
               ))}
             </Stepper>
-            <Divider sx={{ mt: 2 }} />
+          </DialogTitle>
+          <DialogContent sx={{ maxHeight: '47vh' }}>
+            <Divider />
             <Box sx={{ mt: 3 }}>
               {activeStep === 0 && (
                 <Box
@@ -234,8 +236,9 @@ export default function AddExercise({ categories, languages }) {
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center'}}
-                  >
+                    alignItems: 'center',
+                  }}
+                >
                   {wordPairs.map((pair, index) => (
                     <Box
                       key={index}
@@ -244,27 +247,28 @@ export default function AddExercise({ categories, languages }) {
                         alignItems: 'center',
                         justifyContent: 'center',
                         mb: 0.5,
-                      }}>
-                        <TextField
-                          label="English word"
-                          required
-                          value={pair.english}
-                          onChange={(e) => handleWordChange(e, index, 'english')}
-                          sx={{ mr: 2}}
-                        />
-                        <TextField
-                          label={`${language} word`}
-                          required
-                          value={pair.foreign}
-                          onChange={(e) => handleWordChange(e, index, 'foreign')}
-                          sx={{ mr: 2}}
-                        />
-                        <IconButton
-                          onClick={() => handleRemovePair(index)}
-                          sx={{p: 0}}
-                        >
-                          <ClearIcon sx={{color: 'red', fontSize: '2rem'}}/>
-                        </IconButton>
+                      }}
+                    >
+                      <TextField
+                        label="English word"
+                        required
+                        value={pair.english}
+                        onChange={(e) => handleWordChange(e, index, 'english')}
+                        sx={{ mr: 2 }}
+                      />
+                      <TextField
+                        label={`${language} word`}
+                        required
+                        value={pair.foreign}
+                        onChange={(e) => handleWordChange(e, index, 'foreign')}
+                        sx={{ mr: 2 }}
+                      />
+                      <IconButton
+                        onClick={() => handleRemovePair(index)}
+                        sx={{ p: 0 }}
+                      >
+                        <ClearIcon sx={{ color: 'red', fontSize: '2rem' }} />
+                      </IconButton>
                     </Box>
                   ))}
                   <Button
@@ -273,7 +277,9 @@ export default function AddExercise({ categories, languages }) {
                     sx={{ mt: 3, borderRadius: 4, p: 0.5 }}
                   >
                     <AddIcon sx={{ pr: 0.5, fontSize: '2rem' }} />
-                    <Typography sx={{ fontWeight: 'bold', pr: 0.5 }}>Add pair</Typography>
+                    <Typography sx={{ fontWeight: 'bold', pr: 0.5 }}>
+                      Add pair
+                    </Typography>
                   </Button>
                 </Box>
               )}
@@ -288,9 +294,9 @@ export default function AddExercise({ categories, languages }) {
             sx={{ display: 'flex', justifyContent: 'space-between' }}
           >
             <Button onClick={handleClose}>Cancel</Button>
-            <Box sx={{display: 'flex'}}>
+            <Box sx={{ display: 'flex' }}>
               {wordPairsError && (
-                <Typography sx={{ color: 'red', mt: 1}}>
+                <Typography sx={{ color: 'red', mt: 1 }}>
                   Word pairs cannot be empty
                 </Typography>
               )}
