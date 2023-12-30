@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
         Typography, Stepper, Step, StepLabel, Divider, TextField, Autocomplete,
-        IconButton } from "@mui/material";
+        IconButton, Snackbar, Alert } from "@mui/material";
 
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
@@ -25,7 +25,7 @@ export default function AddExercise({ categories, languages }) {
     const steps = ['Exercise info', 'Word pairs', 'Check and save'];
 
 
-    const handleClose = () => {
+    const handleCloseDialog = () => {
         setOpen(false);
         setActiveStep(0);
         setNameError(false);
@@ -49,10 +49,17 @@ export default function AddExercise({ categories, languages }) {
         }
     }
 
+    const handleCloseAlert = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setWordPairsError(false);
+    };
+
+
     const handleBack = () => {
         if (activeStep > 0) {
             setActiveStep((prevActiveStep) => prevActiveStep - 1);
-            setWordPairsError(false);
         }
     }
 
@@ -135,7 +142,14 @@ export default function AddExercise({ categories, languages }) {
           scroll="paper"
         >
           <DialogTitle>
-            <Typography sx={{ fontWeight: 'bold', fontSize: '1.2rem', textAlign: 'center', mb: 1 }}>
+            <Typography
+              sx={{
+                fontWeight: 'bold',
+                fontSize: '1.2rem',
+                textAlign: 'center',
+                mb: 1,
+              }}
+            >
               Add new exercise
             </Typography>
             <Stepper
@@ -293,23 +307,32 @@ export default function AddExercise({ categories, languages }) {
           <DialogActions
             sx={{ display: 'flex', justifyContent: 'space-between' }}
           >
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleCloseDialog}>Cancel</Button>
             <Box sx={{ display: 'flex' }}>
-              {wordPairsError && (
-                <Typography sx={{ color: 'red', mt: 1 }}>
-                  Word pairs cannot be empty
-                </Typography>
-              )}
               <Button onClick={handleBack}>Back</Button>
-
               {activeStep < 2 ? (
                 <Button onClick={handleNext}>Next</Button>
               ) : (
-                <Button onClick={handleClose}>Save</Button>
+                <Button onClick={handleCloseDialog}>Save</Button>
               )}
             </Box>
           </DialogActions>
         </Dialog>
+
+        <Snackbar
+          open={wordPairsError}
+          autoHideDuration={5000}
+          onClose={handleCloseAlert}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={handleCloseAlert}
+            severity="error"
+            sx={{ width: '100%' }}
+          >
+            Word pairs cannot be empty.
+          </Alert>
+        </Snackbar>
       </>
     );
 }
