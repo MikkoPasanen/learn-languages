@@ -12,6 +12,8 @@ export default function AddExercise({ categories, languages }) {
     const [category, setCategory] = useState('');
     const [language, setLanguage] = useState('');
 
+    const [wordPairs, setWordPairs] = useState([{ english: '', foreign: '' }]);
+
     const [nameError, setNameError] = useState(false);
     const [categoryError, setCategoryError] = useState(false);
     const [languageError, setLanguageError] = useState(false);
@@ -28,6 +30,7 @@ export default function AddExercise({ categories, languages }) {
         setCategoryError(false);
         setLanguage('');
         setLanguageError(false);
+        setWordPairs([{ english: '', foreign: '' }]);
     }
 
     const handleNext = () => {
@@ -74,6 +77,22 @@ export default function AddExercise({ categories, languages }) {
         }
     }
 
+    function handleWordChange(e, index, language) {
+      const newWordPairs = [...wordPairs];
+      newWordPairs[index][language] = e.target.value;
+      setWordPairs(newWordPairs);
+    }
+
+    function handleAddPair() {
+      setWordPairs([...wordPairs, { english: '', foreign: '' }]);
+    }
+
+    function handleRemovePair(index) {
+      const newWordPairs = [...wordPairs];
+      newWordPairs.splice(index, 1);
+      setWordPairs(newWordPairs);
+    }
+
     return (
       <>
         <Button
@@ -92,11 +111,12 @@ export default function AddExercise({ categories, languages }) {
           maxWidth={'sm'}
           fullWidth={true}
           sx={{ mt: '-10vh' }}
+          scroll="paper"
         >
           <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>
             Add Exercise
           </DialogTitle>
-          <DialogContent>
+          <DialogContent sx={{maxHeight: '60vh'}}>
             <Stepper
               activeStep={activeStep}
               alternativeLabel
@@ -189,9 +209,48 @@ export default function AddExercise({ categories, languages }) {
                 </Box>
               )}
               {activeStep === 1 && (
-                <>
-                  <Typography>Word pairs</Typography>
-                </>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'}}
+                  >
+                  {wordPairs.map((pair, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                        <TextField
+                          label="English"
+                          value={pair.english}
+                          onChange={(e) => handleWordChange(e, index, 'english')}
+                          sx={{ mr: 2}}
+                        />
+                        <TextField
+                          label={language}
+                          value={pair.foreign}
+                          onChange={(e) => handleWordChange(e, index, 'foreign')}
+                          sx={{ mr: 2}}
+                        />
+                        <Button
+                          variant="contained"
+                          onClick={() => handleRemovePair(index)}
+                        >
+                          Remove
+                        </Button>
+                    </Box>
+                  ))}
+                  <Button
+                    variant="contained"
+                    onClick={handleAddPair}
+                    sx={{ mt: 1 }}
+                  >
+                    Add pair
+                  </Button>
+                </Box>
               )}
               {activeStep === 2 && (
                 <>
