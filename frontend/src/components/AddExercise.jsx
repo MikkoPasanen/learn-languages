@@ -260,7 +260,7 @@ export default function AddExercise({ categories, languages }) {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        mb: 0.5,
+                        mb: 1,
                       }}
                     >
                       <TextField
