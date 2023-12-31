@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
         Typography, Stepper, Step, StepLabel, Divider, TextField, Autocomplete,
-        IconButton, Snackbar, Alert } from "@mui/material";
+        IconButton, Snackbar, Alert, CircularProgress } from "@mui/material";
 
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
@@ -22,6 +22,8 @@ export default function AddExercise({ categories, languages }) {
     const [languageError, setLanguageError] = useState(false);
     const [wordPairsError, setWordPairsError] = useState(false);
 
+    const [loading, setLoading] = useState(false);
+
     const steps = ['Exercise info', 'Word pairs', 'Check and save'];
 
 
@@ -36,6 +38,7 @@ export default function AddExercise({ categories, languages }) {
         setLanguageError(false);
         setWordPairs([{ english: '', foreign: '' }]);
         setWordPairsError(false);
+        //setLoading(false);
     }
 
     const handleNext = () => {
@@ -103,22 +106,33 @@ export default function AddExercise({ categories, languages }) {
         }
     }
 
-    function handleWordChange(e, index, language) {
+    const handleWordChange = (e, index, language) => {
       const newWordPairs = [...wordPairs];
       newWordPairs[index][language] = e.target.value;
       setWordPairs(newWordPairs);
     }
 
-    function handleAddPair() {
+    const handleAddPair = () => {
       setWordPairs([...wordPairs, { english: '', foreign: '' }]);
     }
 
-    function handleRemovePair(index) {
+    const handleRemovePair = (index) => {
       if (wordPairs.length > 1) {
         const newWordPairs = [...wordPairs];
         newWordPairs.splice(index, 1);
         setWordPairs(newWordPairs);
       }
+    }
+
+    const handleSaveExercise = () => {
+      setLoading(!loading);
+      const data = {
+        name: exerciseName,
+        category: category,
+        language: language,
+        word_pairs: wordPairs,
+      }
+      console.log(data);
     }
 
     return (
@@ -351,7 +365,20 @@ export default function AddExercise({ categories, languages }) {
               {activeStep < 2 ? (
                 <Button onClick={handleNext}>Next</Button>
               ) : (
-                <Button onClick={handleCloseDialog}>Save</Button>
+                <Button onClick={handleSaveExercise}>
+                  {loading ? (
+                    <>
+                      Saving...
+                      <CircularProgress
+                        size={20}
+                        sx={{ ml: 1 }}
+                        color="inherit"
+                      />
+                    </>
+                  ) : (
+                    'Save'
+                  )}
+                </Button>
               )}
             </Box>
           </DialogActions>
