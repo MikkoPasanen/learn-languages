@@ -298,9 +298,47 @@ export default function AddExercise({ categories, languages }) {
                 </Box>
               )}
               {activeStep === 2 && (
-                <>
-                  <Typography>Check and save</Typography>
-                </>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography
+                    sx={{ fontWeight: 'bold', fontSize: '1.3rem', mb: 1 }}
+                  >
+                    {steps[0]}
+                  </Typography>
+                  <Typography sx={{ mb: 0.5 }}>{exerciseName}</Typography>
+                  <Typography sx={{ mb: 0.5 }}>{category}</Typography>
+                  <Typography>{language}</Typography>
+                  <Typography
+                    sx={{
+                      fontWeight: 'bold',
+                      fontSize: '1.3rem',
+                      mb: 1,
+                      mt: 2,
+                    }}
+                  >
+                    {steps[1]}
+                  </Typography>
+                  {wordPairs.map((pair, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        mb: 0.5,
+                      }}
+                    >
+                      <Typography sx={{ mr: 1 }}>{pair.english}</Typography>
+                      <Typography sx={{ mr: 1 }}>-</Typography>
+                      <Typography>{pair.foreign}</Typography>
+                    </Box>
+                  ))}
+                </Box>
               )}
             </Box>
           </DialogContent>
