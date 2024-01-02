@@ -81,7 +81,7 @@ export default function SignIn({ setSignedIn }) {
           <Typography
             component="h1"
             variant="h5"
-            sx={{mb: 1}}
+            sx={{ mb: 1 }}
           >
             Sign in
           </Typography>
@@ -93,7 +93,7 @@ export default function SignIn({ setSignedIn }) {
           >
             <TextField
               margin="normal"
-              sx={{mt: 0}}
+              sx={{ mt: 0 }}
               required
               fullWidth
               id="username"
@@ -128,7 +128,7 @@ export default function SignIn({ setSignedIn }) {
                 <Checkbox
                   value="remember"
                   color="primary"
-                  name='remember'
+                  name="remember"
                 />
               }
               label="Remember me"
@@ -145,12 +145,12 @@ export default function SignIn({ setSignedIn }) {
                   <CircularProgress
                     size={20}
                     sx={{ ml: 2 }}
-                    color="inherit" />
+                    color="inherit"
+                  />
                 </>
               ) : (
                 'Sign In'
-              )
-              }
+              )}
             </Button>
             <Grid container>
               <Grid item>
@@ -170,12 +170,12 @@ export default function SignIn({ setSignedIn }) {
         open={open}
         autoHideDuration={8000}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center', mt: '5vh' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert
           onClose={handleClose}
           severity="error"
-          sx={{ width: '100%' }}
+          sx={{ width: '100%', fontSize: '1.2rem', mt: '10vh' }}
         >
           Invalid username or password.
         </Alert>

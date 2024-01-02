@@ -1,4 +1,4 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useState } from 'react';
 import { IconButton, InputAdornment, TextField,
@@ -16,6 +16,8 @@ export default function SignUp() {
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -52,6 +54,9 @@ export default function SignUp() {
 
       if (responseData.affectedRows === 1) {
         setOpenSuccess(true);
+        setTimeout(() => {
+          navigate('/signin');
+        }, 5000);
       }
       if (responseData.userExists) {
         setOpenError(true);
@@ -243,28 +248,30 @@ export default function SignUp() {
       </Container>
       <Snackbar
         open={openSuccess}
-        autoHideDuration={8000}
+        autoHideDuration={6000}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center', mt: '5vh' }}
       >
         <Alert
           onClose={handleClose}
           severity="success"
-          sx={{ width: '100%' }}
+          sx={{ width: '100%', fontSize: '1.2rem', mt: '10vh' }}
         >
-          Successfully signed up! You can now sign in.
+          Successfully signed up!
+          <br/>
+          Redirecting to sign in page...
         </Alert>
       </Snackbar>
       <Snackbar
         open={openError}
-        autoHideDuration={8000}
+        autoHideDuration={6000}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center', mt: '5vh' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert
           onClose={handleClose}
           severity="error"
-          sx={{ width: '100%' }}
+          sx={{ width: '100%', fontSize: '1.2rem', mt: '10vh' }}
         >
           A user with this username already exists.
         </Alert>
