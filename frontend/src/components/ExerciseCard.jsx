@@ -83,7 +83,10 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
               </MenuItem>
 
               <MenuItem onClick={handleOptionsClose}>
-                <DeleteExercise exerciseId={exerciseId} handleReload={handleReload} />
+                <DeleteExercise
+                  exerciseId={exerciseId}
+                  exerciseName={exerciseName}
+                  handleReload={handleReload}/>
               </MenuItem>
             </Menu>
           )}
