@@ -15,9 +15,9 @@ app.use('/api/home', homeRouter);
 app.use('/api/exercise', exerciseRouter);
 app.use('/api/admin', adminRouter);
 
-// If no route is matched, redirect to error page
-app.use('*', (req, res) => {
-  res.redirect('/error');
+// If no route is matched, return the frontend
+app.get('*', (req, res) => {
+  res.sendFile('index.html', { root: './frontend/dist' });
 });
 
 app

@@ -39,7 +39,7 @@ export default function App() {
                 <Route path="/exercise/:id" element={<Exercise/>} />
                 <Route path="/signin" element={<SignIn setSignedIn={setSignedIn}/>} />
                 <Route path="/signup" element={<SignUp/>} />
-                <Route path="/error" element={<ErrorPage/>} />
+                <Route path="*" element={<ErrorPage/>} />
               </Routes>
           </BrowserRouter>
       </ThemeProvider>
