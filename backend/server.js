@@ -1,7 +1,8 @@
 const express = require('express');
 const homeRouter = require('./routes/home');
 const exerciseRouter = require('./routes/exercise');
-const adminRouter = require('./routes/admin');
+const credentialsRouter = require('./routes/credentials');
+const adminRouter = require('./routes/credentials');
 const cors = require('cors');
 
 const app = express();
@@ -13,10 +14,11 @@ app.use(express.json());
 app.use(express.static('./frontend/dist'));
 app.use('/api/home', homeRouter);
 app.use('/api/exercise', exerciseRouter);
+app.use('/api/credentials', credentialsRouter);
 app.use('/api/admin', adminRouter);
 
 // If no route is matched, return the frontend
-app.get('*', (req, res) => {
+app.all('*', (req, res) => {
   res.sendFile('index.html', { root: './frontend/dist' });
 });
 

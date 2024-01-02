@@ -2,9 +2,9 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const database = require('../database/methods');
-const adminRouter = express.Router();
+const credentialsRouter = express.Router();
 
-adminRouter.post('/signin', async (req, res) => {
+credentialsRouter.post('/signin', async (req, res) => {
   try {
     const { username, password, remember } = req.body;
 
@@ -33,7 +33,7 @@ adminRouter.post('/signin', async (req, res) => {
   }
 });
 
-adminRouter.post('/signup', async (req, res) => {
+credentialsRouter.post('/signup', async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -51,4 +51,4 @@ adminRouter.post('/signup', async (req, res) => {
   }
 });
 
-module.exports = adminRouter;
+module.exports = credentialsRouter;
