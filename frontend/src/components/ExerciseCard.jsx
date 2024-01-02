@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 
 export default function ExerciseCard({ exerciseName, exerciseCategory,
                                        exerciseLanguage, exerciseId,
-                                       signedIn, loading }) {
+                                       signedIn, loading, handleReload }) {
     const [anchorEl, setAnchorEl] = useState(null);
 
    const handleOptionsClick = (e) => {
@@ -83,7 +83,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
               </MenuItem>
 
               <MenuItem onClick={handleOptionsClose}>
-                <DeleteExercise exerciseId={exerciseId} />
+                <DeleteExercise exerciseId={exerciseId} handleReload={handleReload} />
               </MenuItem>
             </Menu>
           )}

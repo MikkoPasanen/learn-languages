@@ -10,12 +10,17 @@ export default function Home({ signedIn }) {
     const [loading, setLoading] = useState(true);
     const [categories, setCategories] = useState([]);
     const [languages, setLanguages] = useState([]);
+    const [reload, setReload] = useState(false);
 
     const skeletons = [1, 2, 3];
 
     useEffect(() => {
       fetchExercises();
-    }, []);
+    }, [reload]);
+
+    const handleReload = () => {
+      setReload(!reload);
+    };
 
     const fetchExercises = async () => {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/home`);
@@ -55,6 +60,7 @@ export default function Home({ signedIn }) {
                   exerciseLanguage={exercise.language}
                   signedIn={signedIn}
                   loading={loading}
+                  handleReload={handleReload}
                 />
               ))}
         </Box>
