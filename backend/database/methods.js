@@ -96,4 +96,25 @@ module.exports = {
       });
     });
   },
+
+  deleteExercise: (id) => {
+    return new Promise((resolve, reject) => {
+      const sqlExercise = 'DELETE FROM exercises WHERE id = ?';
+      const sqlWordPairs = 'DELETE FROM wordpairs WHERE exercise_id = ?';
+
+      pool.query(sqlWordPairs, [id], (err) => {
+        if (err) {
+          reject({ status: 500, msg: err });
+        } else {
+          pool.query(sqlExercise, [id], (err) => {
+            if (err) {
+              reject({ status: 500, msg: err });
+            } else {
+              resolve();
+            }
+          });
+        }
+      });
+    });
+  },
 };
