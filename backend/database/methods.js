@@ -68,10 +68,30 @@ module.exports = {
 
       pool.query(sql, [exerciseName, category, language], (err, results) => {
         if (err) {
-          console.log(err);
           reject({ status: 500, msg: err });
         } else {
           resolve(results.insertId);
+        }
+      });
+    });
+  },
+
+  addWordPairs: (exerciseId, wordPairs) => {
+    return new Promise((resolve, reject) => {
+      const sql =
+        'INSERT INTO wordpairs (foreign_word, finnish_word, exercise_id) VALUES ?';
+
+      const values = wordPairs.map((pair) => {
+        return [pair.english, pair.foreign, exerciseId];
+      });
+
+      pool.query(sql, [values], (err, results) => {
+        if (err) {
+          console.log('bad');
+          reject({ status: 500, msg: err });
+        } else {
+          console.log('good');
+          resolve(results);
         }
       });
     });
