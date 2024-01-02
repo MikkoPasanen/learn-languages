@@ -15,6 +15,11 @@ app.use('/api/home', homeRouter);
 app.use('/api/exercise', exerciseRouter);
 app.use('/api/admin', adminRouter);
 
+// If no route is matched, redirect to error page
+app.use('*', (req, res) => {
+  res.redirect('/error');
+});
+
 app
   .listen(port, () => {
     console.log(`SERVER: listening on port ${port}`);
