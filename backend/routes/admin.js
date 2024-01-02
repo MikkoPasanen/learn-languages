@@ -50,4 +50,16 @@ adminRouter.post('/add-wordpairs', async (req, res) => {
   }
 });
 
+adminRouter.delete('/delete-exercise/:id([0-9]+)', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await database.deleteExercise(id);
+
+    res.status(200).json({ success: true });
+  } catch (err) {
+    res.status(err.status).json(err.msg);
+  }
+});
+
 module.exports = adminRouter;
