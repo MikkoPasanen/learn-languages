@@ -60,4 +60,20 @@ module.exports = {
       });
     });
   },
+
+  addExercise: (exerciseName, category, language) => {
+    return new Promise((resolve, reject) => {
+      const sql =
+        'INSERT INTO exercises (name, category, language) VALUES (?, ?, ?)';
+
+      pool.query(sql, [exerciseName, category, language], (err, results) => {
+        if (err) {
+          console.log(err);
+          reject({ status: 500, msg: err });
+        } else {
+          resolve(results.insertId);
+        }
+      });
+    });
+  },
 };
