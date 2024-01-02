@@ -217,12 +217,12 @@ export default function SignUp() {
                   <CircularProgress
                     size={20}
                     sx={{ ml: 2 }}
-                    color="inherit" />
+                    color="inherit"
+                  />
                 </>
               ) : (
                 'Sign Up'
-              )
-              }
+              )}
             </Button>
             <Grid
               container
@@ -245,7 +245,7 @@ export default function SignUp() {
         open={openSuccess}
         autoHideDuration={8000}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center', mt: '5vh' }}
       >
         <Alert
           onClose={handleClose}
@@ -259,7 +259,7 @@ export default function SignUp() {
         open={openError}
         autoHideDuration={8000}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center', mt: '5vh' }}
       >
         <Alert
           onClose={handleClose}

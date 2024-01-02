@@ -450,11 +450,12 @@ export default function AddExercise({ categories, languages }) {
           autoHideDuration={5000}
           onClose={handleCloseAlert}
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          sx={{ mt: '5vh'}}
         >
           <Alert
             onClose={handleCloseAlert}
             severity="error"
-            sx={{ width: '100%' }}
+            sx={{ width: '100%'}}
           >
             Word pairs cannot be empty.
           </Alert>

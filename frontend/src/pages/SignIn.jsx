@@ -170,7 +170,7 @@ export default function SignIn({ setSignedIn }) {
         open={open}
         autoHideDuration={8000}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center', mt: '5vh' }}
       >
         <Alert
           onClose={handleClose}
