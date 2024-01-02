@@ -10,16 +10,18 @@ export default function Home({ signedIn }) {
     const [loading, setLoading] = useState(true);
     const [categories, setCategories] = useState([]);
     const [languages, setLanguages] = useState([]);
-    const [reload, setReload] = useState(false);
 
     const skeletons = [1, 2, 3];
 
     useEffect(() => {
       fetchExercises();
-    }, [reload]);
+    });
 
-    const handleReload = () => {
-      setReload(!reload);
+    const handleReload = async () => {
+      return new Promise(resolve => {
+        fetchExercises();
+        resolve();
+      })
     };
 
     const fetchExercises = async () => {

@@ -87,10 +87,8 @@ module.exports = {
 
       pool.query(sql, [values], (err, results) => {
         if (err) {
-          console.log('bad');
           reject({ status: 500, msg: err });
         } else {
-          console.log('good');
           resolve(results);
         }
       });

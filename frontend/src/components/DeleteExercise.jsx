@@ -1,14 +1,18 @@
 /* eslint-disable react/prop-types */
-import { IconButton, Typography, Dialog, Button, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { IconButton, Typography, Dialog, Button, DialogActions,
+        DialogContent, DialogTitle, CircularProgress } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useState } from 'react';
 
 export default function DeleteExercise({ exerciseId, exerciseName, handleReload }) {
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
     const handleDeleteExercise = async () => {
+        setLoading(true);
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/api/admin/delete-exercise/${exerciseId}`,
           {
@@ -22,7 +26,9 @@ export default function DeleteExercise({ exerciseId, exerciseName, handleReload 
         const json = await response.json();
 
         if (json.success) {
-            handleReload();
+            await handleReload();
+            setOpen(false);
+            setLoading(false);
         }
     };
 
@@ -58,12 +64,22 @@ export default function DeleteExercise({ exerciseId, exerciseName, handleReload 
             <Button onClick={() => setOpen(false)}>Cancel</Button>
             <Button
               onClick={() => {
-                setOpen(false);
                 handleDeleteExercise();
               }}
               sx={{ color: '#d7094f', fontWeight: 'bold' }}
             >
-              Delete
+              {loading ? (
+                <>
+                  Deleting...
+                  <CircularProgress
+                    size={20}
+                    sx={{ ml: 1 }}
+                    color="inherit"
+                  />
+                </>
+              ) : (
+                'Delete'
+              )}
             </Button>
           </DialogActions>
         </Dialog>
