@@ -11,6 +11,8 @@ export default function AddExercise({ categories, languages }) {
     const [open, setOpen] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
 
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
     const [exerciseName, setExerciseName] = useState('');
     const [category, setCategory] = useState('');
     const [language, setLanguage] = useState('');
@@ -38,7 +40,7 @@ export default function AddExercise({ categories, languages }) {
         setLanguageError(false);
         setWordPairs([{ english: '', foreign: '' }]);
         setWordPairsError(false);
-        //setLoading(false);
+        setLoading(false);
     }
 
     const handleNext = () => {
@@ -58,7 +60,6 @@ export default function AddExercise({ categories, languages }) {
       }
       setWordPairsError(false);
     };
-
 
     const handleBack = () => {
         if (activeStep > 0) {
@@ -124,16 +125,76 @@ export default function AddExercise({ categories, languages }) {
       }
     }
 
-    const handleSaveExercise = () => {
-      setLoading(!loading);
-      const data = {
-        name: exerciseName,
-        category: category,
-        language: language,
-        word_pairs: wordPairs,
-      }
-      console.log(data);
+    const addExercise = async () => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/add-exercise`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            exerciseName: exerciseName,
+            category: category,
+            language: language,
+          }),
+        },
+      );
+
+        const json = await response.json();
+
+        if (json.success) {
+          return json.exerciseId;
+        } else {
+          return null;
+        }
     }
+
+    const addWordPairs = async (exerciseId) => {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/add-wordpairs`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            exerciseId: exerciseId,
+            wordPairs: wordPairs,
+          }),
+        },
+      );
+
+        const json = await response.json();
+
+        if (json.success) {
+          return true;
+        } else {
+          return false;
+        }
+    }
+
+    const handleSaveExercise = async () => {
+      setLoading(true);
+
+      const exerciseId = await addExercise();
+
+      if (exerciseId === null) {
+        setLoading(false);
+        return;
+      } else {
+        const success = await addWordPairs(exerciseId);
+
+        if (success) {
+          handleCloseDialog();
+        } else {
+          setLoading(false);
+          return;
+      }
+    }
+  }
 
     return (
       <>
