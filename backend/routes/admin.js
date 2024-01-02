@@ -26,9 +26,25 @@ adminRouter.post('/add-exercise', async (req, res) => {
   try {
     const { exerciseName, category, language } = req.body;
 
-    const id = await database.addExercise(exerciseName, category, language);
+    const exerciseId = await database.addExercise(
+      exerciseName,
+      category,
+      language,
+    );
 
-    console.log(id);
+    res.status(201).json({ success: true, exerciseId });
+  } catch (err) {
+    res.status(err.status).json(err.msg);
+  }
+});
+
+adminRouter.post('/add-wordpairs', async (req, res) => {
+  try {
+    const { exerciseId, wordPairs } = req.body;
+
+    await database.addWordPairs(exerciseId, wordPairs);
+
+    res.status(201).json({ success: true });
   } catch (err) {
     res.status(err.status).json(err.msg);
   }
