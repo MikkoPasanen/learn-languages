@@ -37,7 +37,7 @@ export default function SignUp() {
     if (isValidUserName && isValidPassword && isValidPasswordCheck) {
       setLoading(true);
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/signup`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/credentials/signup`, {
         method: 'POST',
         body: JSON.stringify({
           username: data.get('username'),

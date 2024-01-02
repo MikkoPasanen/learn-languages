@@ -27,7 +27,7 @@ export default function SignIn({ setSignedIn }) {
     setLoading(true);
     const data = new FormData(event.currentTarget);
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/signin`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/credentials/signin`, {
       method: 'POST',
       body: JSON.stringify({
         username: data.get('username'),
