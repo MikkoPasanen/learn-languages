@@ -4,7 +4,8 @@ import { Card, Box, CardHeader, CardContent,
         Menu, MenuItem, Skeleton } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+
+import DeleteExercise from './DeleteExercise';
 
 import { useState} from 'react';
 import { Link } from 'react-router-dom';
@@ -82,12 +83,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
               </MenuItem>
 
               <MenuItem onClick={handleOptionsClose}>
-                <IconButton sx={{ padding: 0 }}>
-                  <DeleteIcon sx={{ fontSize: 15, color: '#d7094f' }} />
-                  <Typography sx={{ ml: 1, fontSize: 15, color: '#d7094f' }}>
-                    Delete
-                  </Typography>
-                </IconButton>
+                <DeleteExercise exerciseId={exerciseId} />
               </MenuItem>
             </Menu>
           )}
