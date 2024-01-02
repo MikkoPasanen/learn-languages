@@ -9,7 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import languages from '../data/languages';
 
-export default function AddExercise({ categories }) {
+export default function AddExercise({ categories, handleReload }) {
     const [open, setOpen] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
 
@@ -192,6 +192,7 @@ export default function AddExercise({ categories }) {
         const success = await addWordPairs(exerciseId);
 
         if (success) {
+          await handleReload();
           handleCloseDialog();
         } else {
           setLoading(false);

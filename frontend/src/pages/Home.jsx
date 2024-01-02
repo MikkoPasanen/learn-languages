@@ -42,7 +42,7 @@ export default function Home({ signedIn }) {
             flexDirection: 'column',
           }}
         >
-          {signedIn && <AddExercise categories={categories}/>}
+          {signedIn && <AddExercise categories={categories} handleReload={handleReload}/>}
           {loading
             ? skeletons.map((skeleton) => (
                 <ExerciseCard
