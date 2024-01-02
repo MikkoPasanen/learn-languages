@@ -2,7 +2,7 @@ const express = require('express');
 const homeRouter = require('./routes/home');
 const exerciseRouter = require('./routes/exercise');
 const credentialsRouter = require('./routes/credentials');
-const adminRouter = require('./routes/credentials');
+const adminRouter = require('./routes/admin');
 const cors = require('cors');
 
 const app = express();
