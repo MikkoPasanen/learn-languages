@@ -7,15 +7,19 @@ import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 
-export default function AddExercise({ categories, languages }) {
+import languages from '../data/languages';
+
+export default function AddExercise({ categories }) {
     const [open, setOpen] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
+
+    const languageOptions = languages.map((language) => language.name);
 
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
     const [exerciseName, setExerciseName] = useState('');
     const [category, setCategory] = useState('');
-    const [language, setLanguage] = useState('');
+    const [language, setLanguage] = useState(null);
 
     const [wordPairs, setWordPairs] = useState([{ english: '', foreign: '' }]);
 
@@ -36,7 +40,7 @@ export default function AddExercise({ categories, languages }) {
         setExerciseName('');
         setCategory('');
         setCategoryError(false);
-        setLanguage('');
+        setLanguage(null);
         setLanguageError(false);
         setWordPairs([{ english: '', foreign: '' }]);
         setWordPairsError(false);
@@ -88,7 +92,7 @@ export default function AddExercise({ categories, languages }) {
     }
 
     const isValidLanguage = () => {
-        if (language === '') {
+        if (language === null) {
             setLanguageError(true);
             return false
         } else {
@@ -293,18 +297,9 @@ export default function AddExercise({ categories, languages }) {
                   <Autocomplete
                     value={language}
                     onChange={(event, newValue) => {
-                      if (newValue === null) {
-                        setLanguage('');
-                      } else {
-                        setLanguage(newValue);
-                      }
+                      setLanguage(newValue);
                     }}
-                    inputValue={language}
-                    onInputChange={(event, newInputValue) => {
-                      setLanguage(newInputValue);
-                    }}
-                    freeSolo
-                    options={languages}
+                    options={languageOptions}
                     renderInput={(params) => (
                       <TextField
                         {...params}
