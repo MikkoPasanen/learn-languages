@@ -129,7 +129,8 @@ export default function AddExercise({ categories, handleReload }) {
       }
     }
 
-    const addExercise = async () => {
+    const handleSaveExercise = async () => {
+      setLoading(true);
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/admin/add-exercise`,
         {
@@ -142,64 +143,20 @@ export default function AddExercise({ categories, handleReload }) {
             exerciseName: exerciseName,
             category: category,
             language: language,
-          }),
-        },
-      );
-
-        const json = await response.json();
-
-        if (json.success) {
-          return json.exerciseId;
-        } else {
-          return null;
-        }
-    }
-
-    const addWordPairs = async (exerciseId) => {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/admin/add-wordpairs`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            exerciseId: exerciseId,
             wordPairs: wordPairs,
           }),
         },
       );
 
-        const json = await response.json();
+      const json = await response.json();
 
-        if (json.success) {
-          return true;
-        } else {
-          return false;
-        }
-    }
-
-    const handleSaveExercise = async () => {
-      setLoading(true);
-
-      const exerciseId = await addExercise();
-
-      if (exerciseId === null) {
-        setLoading(false);
-        return;
+      if(json.success) {
+        await handleReload();
+        handleCloseDialog();
       } else {
-        const success = await addWordPairs(exerciseId);
-
-        if (success) {
-          await handleReload();
-          handleCloseDialog();
-        } else {
-          setLoading(false);
-          return;
+        setLoading(false);
       }
     }
-  }
 
     return (
       <>
