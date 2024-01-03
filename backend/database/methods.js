@@ -61,37 +61,36 @@ module.exports = {
     });
   },
 
-  addExercise: (exerciseName, category, language) => {
+  addExercise: (exerciseName, category, language, wordPairs) => {
     return new Promise((resolve, reject) => {
-      const sql =
+      const sqlExercise =
         'INSERT INTO exercises (name, category, language) VALUES (?, ?, ?)';
-
-      pool.query(sql, [exerciseName, category, language], (err, results) => {
-        if (err) {
-          reject({ status: 500, msg: err });
-        } else {
-          resolve(results.insertId);
-        }
-      });
-    });
-  },
-
-  addWordPairs: (exerciseId, wordPairs) => {
-    return new Promise((resolve, reject) => {
-      const sql =
+      const sqlWordPairs =
         'INSERT INTO wordpairs (foreign_word, finnish_word, exercise_id) VALUES ?';
 
-      const values = wordPairs.map((pair) => {
-        return [pair.english, pair.foreign, exerciseId];
-      });
+      pool.query(
+        sqlExercise,
+        [exerciseName, category, language],
+        (err, results) => {
+          if (err) {
+            reject({ status: 500, msg: err });
+          } else {
+            const exerciseId = results.insertId;
 
-      pool.query(sql, [values], (err, results) => {
-        if (err) {
-          reject({ status: 500, msg: err });
-        } else {
-          resolve(results);
-        }
-      });
+            const values = wordPairs.map((pair) => {
+              return [pair.english, pair.foreign, exerciseId];
+            });
+
+            pool.query(sqlWordPairs, [values], (err) => {
+              if (err) {
+                reject({ status: 500, msg: err });
+              } else {
+                resolve(results);
+              }
+            });
+          }
+        },
+      );
     });
   },
 

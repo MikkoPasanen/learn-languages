@@ -24,26 +24,9 @@ adminRouter.use(verifyToken);
 
 adminRouter.post('/add-exercise', async (req, res) => {
   try {
-    const { exerciseName, category, language } = req.body;
+    const { exerciseName, category, language, wordPairs } = req.body;
 
-    const exerciseId = await database.addExercise(
-      exerciseName,
-      category,
-      language,
-    );
-
-    res.status(201).json({ success: true, exerciseId });
-  } catch (err) {
-    res.status(err.status).json(err.msg);
-  }
-});
-
-adminRouter.post('/add-wordpairs', async (req, res) => {
-  try {
-    const { exerciseId, wordPairs } = req.body;
-
-    await database.addWordPairs(exerciseId, wordPairs);
-
+    await database.addExercise(exerciseName, category, language, wordPairs);
     res.status(201).json({ success: true });
   } catch (err) {
     res.status(err.status).json(err.msg);
