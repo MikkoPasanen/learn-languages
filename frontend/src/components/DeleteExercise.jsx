@@ -42,7 +42,7 @@ export default function DeleteExercise({ exerciseId, exerciseName, handleReload 
           }}
         >
           <DeleteIcon sx={{ fontSize: 15, color: '#d7094f' }} />
-          <Typography sx={{ ml: 1, fontSize: 15, color: '#d7094f' }}>
+          <Typography sx={{ ml: 1, fontSize: 15, color: '#d7094f', fontWeight: 'bold' }}>
             Delete
           </Typography>
         </IconButton>
