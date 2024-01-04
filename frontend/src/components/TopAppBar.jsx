@@ -173,16 +173,17 @@ export default function TopAppBar({darkMode, handleThemeChange,
               </Link>
             </ListItemButton>
             <Divider />
-            <ListItemButton
-              onClick={() => {
-                setOpenAddExercise(true),
-                setDrawerOpen(false);
-              }}
-            >
-              <AddIcon sx={{ pr: 1, fontSize: '2rem' }} />
-              <ListItemText primary="Add exercise" />
-            </ListItemButton>
-            <Divider />
+            {signedIn && (
+              <ListItemButton
+                onClick={() => {
+                  setOpenAddExercise(true),
+                  setDrawerOpen(false);
+                }}
+              >
+                <AddIcon sx={{ pr: 1, fontSize: '2rem' }} />
+                <ListItemText primary="Add exercise" />
+              </ListItemButton>
+            )}
           </Box>
 
           <Box sx={{ mb: 2 }}>
