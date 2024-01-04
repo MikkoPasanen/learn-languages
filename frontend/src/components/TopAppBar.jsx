@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import { Drawer, List, ListItemButton, ListItemText } from '@mui/material';
+import { Drawer, List, ListItemButton, ListItemText, Divider } from '@mui/material';
 
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -143,7 +143,7 @@ export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSig
           keepMounted: true,
         }}
         sx={{
-          '& .MuiDrawer-paper': { width: '70vw' },
+          '& .MuiDrawer-paper': { width: '50vw' },
         }}
       >
         <List sx={{display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between'}}>
@@ -170,6 +170,7 @@ export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSig
               )}
               <ListItemText primary="Toggle Theme" />
             </ListItemButton>
+            <Divider/>
             {!signedIn && (
               <ListItemButton>
                 <Link
