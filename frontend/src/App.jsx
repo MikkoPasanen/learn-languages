@@ -14,6 +14,9 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [signedIn, setSignedIn] = useState(false);
   const [openAddExercise, setOpenAddExercise] = useState(false);
+   const [exercises, setExercises] = useState([]);
+   const [loading, setLoading] = useState(true);
+   const [categories, setCategories] = useState([]);
 
   const theme = createTheme({
     palette: {
@@ -26,7 +29,21 @@ export default function App() {
     if (token) {
       setSignedIn(true);
     }
+    fetchExercises();
   }, [])
+
+  const handleReload = async () => {
+    fetchExercises();
+  };
+
+  const fetchExercises = async () => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/home`);
+    const data = await response.json();
+    setExercises(data);
+    const categories = data.map((exercise) => exercise.category);
+    setCategories([...new Set(categories)]);
+    setLoading(false);
+  };
 
 
   return (
@@ -40,6 +57,8 @@ export default function App() {
             signedIn={signedIn}
             setSignedIn={setSignedIn}
             setOpenAddExercise={setOpenAddExercise}
+            categories={categories}
+            exercises={exercises}
           />
           <Routes>
             <Route
@@ -49,6 +68,10 @@ export default function App() {
                   signedIn={signedIn}
                   openAddExercise={openAddExercise}
                   setOpenAddExercise={setOpenAddExercise}
+                  categories={categories}
+                  exercises={exercises}
+                  loading={loading}
+                  handleReload={handleReload}
                 />
               }
             />

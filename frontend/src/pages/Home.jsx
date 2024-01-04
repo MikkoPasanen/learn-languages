@@ -1,38 +1,16 @@
 /* eslint-disable react/prop-types */
 import { Box } from '@mui/material';
-import { useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import ExerciseCard from '../components/ExerciseCard';
 import AddExercise from '../components/AddExercise';
 
-export default function Home({ signedIn, openAddExercise, setOpenAddExercise }) {
+export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
+                                loading, exercises, handleReload, categories }) {
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
-    const [exercises, setExercises] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [categories, setCategories] = useState([]);
 
     const skeletons = [1, 2, 3];
 
-    useEffect(() => {
-      fetchExercises();
-    });
-
-    const handleReload = async () => {
-      return new Promise(resolve => {
-        fetchExercises();
-        resolve();
-      })
-    };
-
-    const fetchExercises = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/home`);
-      const data = await response.json();
-      setExercises(data);
-      const categories = data.map((exercise) => exercise.category);
-      setCategories([...new Set(categories)]);
-      setLoading(false);
-    };
 
     return (
       <>

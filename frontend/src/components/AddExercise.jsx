@@ -131,6 +131,7 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
 
     const handleSaveExercise = async () => {
       setLoading(true);
+      console.log("yes");
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/admin/add-exercise`,
         {
@@ -151,9 +152,11 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
       const json = await response.json();
 
       if(json.success) {
-        await handleReload();
+        console.log('success');
+        handleReload();
         handleCloseDialog();
       } else {
+        console.log('error');
         setLoading(false);
       }
     }
