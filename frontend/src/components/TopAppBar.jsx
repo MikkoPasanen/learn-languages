@@ -9,6 +9,7 @@ import { Drawer, List, ListItemButton, ListItemText, Divider } from '@mui/materi
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
+import AddIcon from '@mui/icons-material/Add';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginIcon from '@mui/icons-material/Login';
@@ -16,7 +17,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 
-export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSignedIn}) {
+export default function TopAppBar({darkMode, handleThemeChange,
+                                  signedIn, setSignedIn,
+                                  setOpenAddExercise}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -28,7 +31,7 @@ export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSig
             display: { xs: 'none', md: 'block' },
           }}
         >
-          <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <IconButton
               size="large"
               edge="start"
@@ -136,7 +139,7 @@ export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSig
       </AppBar>
       <Drawer
         anchor="left"
-        variant='temporary'
+        variant="temporary"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         ModalProps={{
@@ -146,22 +149,43 @@ export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSig
           '& .MuiDrawer-paper': { width: '50vw' },
         }}
       >
-        <List sx={{display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between'}}>
-          <ListItemButton sx={{flexGrow: 0}}>
-            <Link
-              to="/"
-              style={{
-                textDecoration: 'none',
-                color: 'inherit',
-                display: 'flex',
-                alignItems: 'center',
+        <List
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
+            <ListItemButton onClick={() => setDrawerOpen(false)}>
+              <Link
+                to="/"
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <HomeIcon sx={{ pr: 1, fontSize: '2rem' }} />
+                <ListItemText primary="Home" />
+              </Link>
+            </ListItemButton>
+            <Divider />
+            <ListItemButton
+              onClick={() => {
+                setOpenAddExercise(true),
+                setDrawerOpen(false);
               }}
             >
-              <HomeIcon sx={{ pr: 1, fontSize: '2rem' }} />
-              <ListItemText primary="Home" />
-            </Link>
-          </ListItemButton>
-          <Box sx={{mb: 2}}>
+              <AddIcon sx={{ pr: 1, fontSize: '2rem' }} />
+              <ListItemText primary="Add exercise" />
+            </ListItemButton>
+            <Divider />
+          </Box>
+
+          <Box sx={{ mb: 2 }}>
             <ListItemButton onClick={handleThemeChange}>
               {darkMode ? (
                 <LightModeIcon sx={{ pr: 1, fontSize: '2rem' }} />
@@ -170,9 +194,9 @@ export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSig
               )}
               <ListItemText primary="Toggle Theme" />
             </ListItemButton>
-            <Divider/>
+            <Divider />
             {!signedIn && (
-              <ListItemButton>
+              <ListItemButton onClick={() => setDrawerOpen(false)}>
                 <Link
                   to="/signin"
                   style={{
@@ -188,11 +212,14 @@ export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSig
               </ListItemButton>
             )}
             {signedIn && (
-              <ListItemButton onClick={() => {
-                localStorage.removeItem('token');
-                sessionStorage.removeItem('token');
-                setSignedIn(false);
-              }}>
+              <ListItemButton
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  sessionStorage.removeItem('token');
+                  setDrawerOpen(false);
+                  setSignedIn(false);
+                }}
+              >
                 <LogoutIcon sx={{ pr: 1, fontSize: '2rem' }} />
                 <ListItemText primary="Sign Out" />
               </ListItemButton>

@@ -9,8 +9,8 @@ import AddIcon from '@mui/icons-material/Add';
 
 import languages from '../data/languages';
 
-export default function AddExercise({ categories, handleReload }) {
-    const [open, setOpen] = useState(false);
+export default function AddExercise({ categories, handleReload, openAddExercise,
+                                      setOpenAddExercise, isMobile }) {
     const [activeStep, setActiveStep] = useState(0);
 
     const languageOptions = languages.map((language) => language.name);
@@ -34,7 +34,7 @@ export default function AddExercise({ categories, handleReload }) {
 
 
     const handleCloseDialog = () => {
-        setOpen(false);
+        setOpenAddExercise(false);
         setActiveStep(0);
         setNameError(false);
         setExerciseName('');
@@ -160,9 +160,10 @@ export default function AddExercise({ categories, handleReload }) {
 
     return (
       <>
+        {!isMobile && (
         <Button
           variant="contained"
-          onClick={() => setOpen(true)}
+          onClick={() => setOpenAddExercise(true)}
           sx={{ mt: 3, p: 0.5, borderRadius: 2 }}
         >
           <AddIcon sx={{ pr: 0.5, fontSize: '2rem' }} />
@@ -170,9 +171,9 @@ export default function AddExercise({ categories, handleReload }) {
             Add Exercise
           </Typography>
         </Button>
-
+        )}
         <Dialog
-          open={open}
+          open={openAddExercise}
           maxWidth={'sm'}
           fullWidth={true}
           sx={{ mt: '-10vh' }}

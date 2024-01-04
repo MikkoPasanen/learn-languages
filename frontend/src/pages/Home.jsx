@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
 import { Box } from '@mui/material';
 import { useState, useEffect } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import ExerciseCard from '../components/ExerciseCard';
 import AddExercise from '../components/AddExercise';
 
-export default function Home({ signedIn }) {
+export default function Home({ signedIn, openAddExercise, setOpenAddExercise }) {
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
     const [exercises, setExercises] = useState([]);
     const [loading, setLoading] = useState(true);
     const [categories, setCategories] = useState([]);
@@ -42,7 +44,15 @@ export default function Home({ signedIn }) {
             flexDirection: 'column',
           }}
         >
-          {signedIn && <AddExercise categories={categories} handleReload={handleReload}/>}
+          {signedIn &&
+          <AddExercise
+            categories={categories}
+            handleReload={handleReload}
+            openAddExercise={openAddExercise}
+            setOpenAddExercise={setOpenAddExercise}
+            isMobile={isMobile}
+            />
+          }
           {loading
             ? skeletons.map((skeleton) => (
                 <ExerciseCard
