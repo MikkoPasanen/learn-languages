@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { Drawer, List, ListItemButton, ListItemText, ListItem,
          Divider, Accordion, AccordionSummary, AccordionDetails,
-        Checkbox, Chip } from '@mui/material';
+        Checkbox, Chip, Badge } from '@mui/material';
 
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -25,6 +25,7 @@ export default function TopAppBar({darkMode, handleThemeChange,
                                   signedIn, setSignedIn,
                                   setOpenAddExercise, categories, exercises}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
 
   // Store the number of exercises in each category
   const categoryCounts = categories.map((category) => {
@@ -195,7 +196,9 @@ export default function TopAppBar({darkMode, handleThemeChange,
             )}
             <Divider />
             <ListItem sx={{ mt: 2 }}>
-              <TuneIcon />
+              <Badge badgeContent={filterCount} color='primary'>
+                <TuneIcon sx={{fontSize: '2rem' }} />
+              </Badge>
               <ListItemText
                 primary="Filters"
                 sx={{ pl: 1 }}
@@ -221,7 +224,11 @@ export default function TopAppBar({darkMode, handleThemeChange,
                         }}
                       >
                         <Box>
-                          <Checkbox />
+                          <Checkbox
+                            onChange={(e) => {
+                              setFilterCount(e.target.checked ? filterCount + 1 : filterCount - 1);
+                            }}
+                          />
                           {category}
                         </Box>
                         <Chip
