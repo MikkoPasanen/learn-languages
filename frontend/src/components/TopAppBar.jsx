@@ -143,7 +143,7 @@ export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSig
           keepMounted: true,
         }}
         sx={{
-          '& .MuiDrawer-paper': { width: '30vw' },
+          '& .MuiDrawer-paper': { width: '70vw' },
         }}
       >
         <List sx={{display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between'}}>
@@ -161,7 +161,7 @@ export default function TopAppBar({darkMode, handleThemeChange, signedIn, setSig
               <ListItemText primary="Home" />
             </Link>
           </ListItemButton>
-          <Box sx={{}}>
+          <Box sx={{mb: 2}}>
             <ListItemButton onClick={handleThemeChange}>
               {darkMode ? (
                 <LightModeIcon sx={{ pr: 1, fontSize: '2rem' }} />
