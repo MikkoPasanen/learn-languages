@@ -5,7 +5,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { Drawer, List, ListItemButton, ListItemText, ListItem,
-         Divider, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+         Divider, Accordion, AccordionSummary, AccordionDetails,
+        Checkbox, Chip } from '@mui/material';
 
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -22,8 +23,14 @@ import TuneIcon from '@mui/icons-material/Tune';
 
 export default function TopAppBar({darkMode, handleThemeChange,
                                   signedIn, setSignedIn,
-                                  setOpenAddExercise}) {
+                                  setOpenAddExercise, categories, exercises}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Store the number of exercises in each category
+  const categoryCounts = categories.map((category) => {
+    const count = exercises.filter((exercise) => exercise.category === category).length;
+    return { category, count };
+  });
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -187,9 +194,7 @@ export default function TopAppBar({darkMode, handleThemeChange,
               </ListItemButton>
             )}
             <Divider />
-            <ListItem
-              sx={{ mt: 2 }}
-            >
+            <ListItem sx={{ mt: 2 }}>
               <TuneIcon />
               <ListItemText
                 primary="Filters"
@@ -200,15 +205,33 @@ export default function TopAppBar({darkMode, handleThemeChange,
               disablePadding
               sx={{ mt: 1 }}
             >
-              <Accordion sx={{ backgroundColor: 'inherit' }}>
+              <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography>Category</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
+                    {categories.map((category) => (
+                      <Box
+                        key={category}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Box>
+                          <Checkbox />
+                          {category}
+                        </Box>
+                        <Chip
+                          label={
+                            categoryCounts.find((c) => c.category === category)
+                              .count
+                          }
+                        />
+                      </Box>
+                    ))}
                   </Typography>
                 </AccordionDetails>
               </Accordion>
