@@ -158,6 +158,7 @@ export default function TopAppBar({darkMode, handleThemeChange,
         }}
         sx={{
           '& .MuiDrawer-paper': { width: '50vw' },
+          display: { xs: 'block', md: 'none' },
         }}
       >
         <List
@@ -196,8 +197,11 @@ export default function TopAppBar({darkMode, handleThemeChange,
             )}
             <Divider />
             <ListItem sx={{ mt: 2 }}>
-              <Badge badgeContent={filterCount} color='primary'>
-                <TuneIcon sx={{fontSize: '2rem' }} />
+              <Badge
+                badgeContent={filterCount}
+                color="primary"
+              >
+                <TuneIcon sx={{ fontSize: '2rem' }} />
               </Badge>
               <ListItemText
                 primary="Filters"
@@ -226,7 +230,11 @@ export default function TopAppBar({darkMode, handleThemeChange,
                         <Box>
                           <Checkbox
                             onChange={(e) => {
-                              setFilterCount(e.target.checked ? filterCount + 1 : filterCount - 1);
+                              setFilterCount(
+                                e.target.checked
+                                  ? filterCount + 1
+                                  : filterCount - 1,
+                              );
                             }}
                           />
                           {category}
