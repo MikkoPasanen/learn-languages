@@ -4,7 +4,8 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import { Drawer, List, ListItemButton, ListItemText, Divider } from '@mui/material';
+import { Drawer, List, ListItemButton, ListItemText, ListItem,
+         Divider, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -16,6 +17,8 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TuneIcon from '@mui/icons-material/Tune';
 
 export default function TopAppBar({darkMode, handleThemeChange,
                                   signedIn, setSignedIn,
@@ -176,14 +179,54 @@ export default function TopAppBar({darkMode, handleThemeChange,
             {signedIn && (
               <ListItemButton
                 onClick={() => {
-                  setOpenAddExercise(true),
-                  setDrawerOpen(false);
+                  setOpenAddExercise(true), setDrawerOpen(false);
                 }}
               >
                 <AddIcon sx={{ pr: 1, fontSize: '2rem' }} />
                 <ListItemText primary="Add exercise" />
               </ListItemButton>
             )}
+            <Divider />
+            <ListItem
+              sx={{ mt: 2 }}
+            >
+              <TuneIcon />
+              <ListItemText
+                primary="Filters"
+                sx={{ pl: 1 }}
+              />
+            </ListItem>
+            <ListItem
+              disablePadding
+              sx={{ mt: 1 }}
+            >
+              <Accordion sx={{ backgroundColor: 'inherit' }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>Category</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Suspendisse malesuada lacus ex, sit amet blandit leo
+                    lobortis eget.
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            </ListItem>
+            <ListItem disablePadding>
+              <Accordion sx={{ backgroundColor: 'inherit' }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>Language</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Suspendisse malesuada lacus ex, sit amet blandit leo
+                    lobortis eget.
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            </ListItem>
           </Box>
 
           <Box sx={{ mb: 2 }}>
