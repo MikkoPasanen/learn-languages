@@ -17,6 +17,7 @@ export default function App() {
    const [exercises, setExercises] = useState([]);
    const [loading, setLoading] = useState(true);
    const [categories, setCategories] = useState([]);
+   const [languages, setLanguages] = useState([]);
 
   const theme = createTheme({
     palette: {
@@ -41,7 +42,9 @@ export default function App() {
     const data = await response.json();
     setExercises(data);
     const categories = data.map((exercise) => exercise.category);
+    const languages = data.map((exercise) => exercise.language);
     setCategories([...new Set(categories)]);
+    setLanguages([...new Set(languages)]);
     setLoading(false);
   };
 
@@ -58,6 +61,7 @@ export default function App() {
             setSignedIn={setSignedIn}
             setOpenAddExercise={setOpenAddExercise}
             categories={categories}
+            languages={languages}
             exercises={exercises}
           />
           <Routes>
