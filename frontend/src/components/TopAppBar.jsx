@@ -28,6 +28,8 @@ export default function TopAppBar({darkMode, handleThemeChange,
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [filterCount, setFilterCount] = useState(0);
 
+  //TODO: Apply filters to exercises
+
   // Store the number of exercises in each category
   const categoryCounts = categories.map((category) => {
     const count = exercises.filter((exercise) => exercise.category === category).length;

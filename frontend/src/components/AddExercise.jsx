@@ -10,7 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import languages from '../data/languages';
 
 export default function AddExercise({ categories, handleReload, openAddExercise,
-                                      setOpenAddExercise, isMobile }) {
+                                      setOpenAddExercise }) {
     const [activeStep, setActiveStep] = useState(0);
 
     const languageOptions = languages.map((language) => language.name);
@@ -152,29 +152,15 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
       const json = await response.json();
 
       if(json.success) {
-        console.log('success');
         handleReload();
         handleCloseDialog();
       } else {
-        console.log('error');
         setLoading(false);
       }
     }
 
     return (
       <>
-        {!isMobile && (
-        <Button
-          variant="contained"
-          onClick={() => setOpenAddExercise(true)}
-          sx={{ mt: 3, p: 0.5, borderRadius: 2 }}
-        >
-          <AddIcon sx={{ pr: 0.5, fontSize: '2rem' }} />
-          <Typography sx={{ fontWeight: 'bold', pr: 0.5 }}>
-            Add Exercise
-          </Typography>
-        </Button>
-        )}
         <Dialog
           open={openAddExercise}
           maxWidth={'sm'}
