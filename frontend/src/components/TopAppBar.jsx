@@ -23,7 +23,8 @@ import TuneIcon from '@mui/icons-material/Tune';
 
 export default function TopAppBar({darkMode, handleThemeChange,
                                   signedIn, setSignedIn,
-                                  setOpenAddExercise, categories, exercises}) {
+                                  setOpenAddExercise, categories, languages,
+                                  exercises}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [filterCount, setFilterCount] = useState(0);
 
@@ -31,6 +32,12 @@ export default function TopAppBar({darkMode, handleThemeChange,
   const categoryCounts = categories.map((category) => {
     const count = exercises.filter((exercise) => exercise.category === category).length;
     return { category, count };
+  });
+
+  // Store the number of exercises in each language
+  const languageCounts = languages.map((language) => {
+    const count = exercises.filter((exercise) => exercise.language === language).length;
+    return { language, count };
   });
 
   return (
@@ -214,7 +221,7 @@ export default function TopAppBar({darkMode, handleThemeChange,
             >
               <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>Category</Typography>
+                  <Typography>Categories</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography>
@@ -252,15 +259,41 @@ export default function TopAppBar({darkMode, handleThemeChange,
               </Accordion>
             </ListItem>
             <ListItem disablePadding>
-              <Accordion sx={{ backgroundColor: 'inherit' }}>
+              <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>Language</Typography>
+                  <Typography>Languages</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
+                    {languages.map((language) => (
+                      <Box
+                        key={language}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Box>
+                          <Checkbox
+                            onChange={(e) => {
+                              setFilterCount(
+                                e.target.checked
+                                  ? filterCount + 1
+                                  : filterCount - 1,
+                              );
+                            }}
+                          />
+                          {language}
+                        </Box>
+                        <Chip
+                          label={
+                            languageCounts.find((l) => l.language === language)
+                              .count
+                          }
+                        />
+                      </Box>
+                    ))}
                   </Typography>
                 </AccordionDetails>
               </Accordion>
