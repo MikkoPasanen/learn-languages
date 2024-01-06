@@ -105,7 +105,7 @@ export default function SignUp() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 3,
+            marginTop: '90px',
             marginBottom: 5,
             display: 'flex',
             flexDirection: 'column',
@@ -258,7 +258,7 @@ export default function SignUp() {
           sx={{ width: '100%', fontSize: '1.2rem', mt: '10vh' }}
         >
           Successfully signed up!
-          <br/>
+          <br />
           Redirecting to sign in page...
         </Alert>
       </Snackbar>

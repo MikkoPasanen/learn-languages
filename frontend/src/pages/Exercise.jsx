@@ -36,7 +36,13 @@ export default function Exercise() {
 
     if (currentQuestionIndex === null) {
         return (
-            <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", mt: 7}}>
+            <Box sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                mt: '100px'
+            }}>
                 <Typography variant="h4" sx={{mb: 3}}>{exerciseName}</Typography>
                 <Typography variant="h5" sx={{mb: 3}}>Add toggle here for switching question type...</Typography>
                 <Button onClick={handlePlay} variant="contained">Start</Button>
@@ -48,29 +54,67 @@ export default function Exercise() {
         localStorage.setItem(`${id}-totalScore`, wordPairs.length);
         localStorage.setItem(`${id}-userScore`, score);
         return (
-            <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", mt: 5}}>
-                <Typography variant="h5" sx={{mb: 3}}>You scored: {score}/{wordPairs.length}</Typography>
-                <Link to="/">
-                    <Button variant="contained">
-                        <Typography sx={{fontWeight: "bold"}}>Go back home</Typography>
-                    </Button>
-                </Link>
-            </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              mt: '100px',
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{ mb: 3 }}
+            >
+              You scored: {score}/{wordPairs.length}
+            </Typography>
+            <Link to="/">
+              <Button variant="contained">
+                <Typography sx={{ fontWeight: 'bold' }}>
+                  Go back home
+                </Typography>
+              </Button>
+            </Link>
+          </Box>
         );
     }
 
     return (
-     <Box sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", mt: 5}}>
-            <Typography variant="h4" sx={{mb: 3}}>Translate the word:</Typography>
-            <Typography variant="h5" sx={{mb: 2}}>{wordPairs[currentQuestionIndex].foreign_word}</Typography>
-            <TextField
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-                sx={{mb: 3}}
-                size="small"
-                placeholder="Your answer"
-            />
-            <Button onClick={handleNextQuestion} variant="contained">Next</Button>
-     </Box>
-    )
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          mt: '100px',
+        }}
+      >
+        <Typography
+          variant="h4"
+          sx={{ mb: 3 }}
+        >
+          Translate the word:
+        </Typography>
+        <Typography
+          variant="h5"
+          sx={{ mb: 2 }}
+        >
+          {wordPairs[currentQuestionIndex].foreign_word}
+        </Typography>
+        <TextField
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          sx={{ mb: 3 }}
+          size="small"
+          placeholder="Your answer"
+        />
+        <Button
+          onClick={handleNextQuestion}
+          variant="contained"
+        >
+          Next
+        </Button>
+      </Box>
+    );
 }

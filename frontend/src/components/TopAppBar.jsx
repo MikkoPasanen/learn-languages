@@ -74,8 +74,8 @@ export default function TopAppBar({darkMode, handleThemeChange,
     }, [exercises, setMobileFilteredExercises, filterCategories, filterLanguages]);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box>
+      <AppBar position="fixed">
         <Toolbar
           sx={{
             zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -276,7 +276,7 @@ export default function TopAppBar({darkMode, handleThemeChange,
                                   ? filterCount + 1
                                   : filterCount - 1,
                               ),
-                              categoryChange(e);
+                                categoryChange(e);
                             }}
                           />
                           {category}
@@ -318,7 +318,7 @@ export default function TopAppBar({darkMode, handleThemeChange,
                                   ? filterCount + 1
                                   : filterCount - 1,
                               ),
-                              languageChange(e);
+                                languageChange(e);
                             }}
                           />
                           {language}

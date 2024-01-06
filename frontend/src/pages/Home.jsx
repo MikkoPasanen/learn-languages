@@ -187,6 +187,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
         <Box
           sx={{
             display: { xs: 'block', md: 'none' },
+            mt: '64px',
           }}
         >
           <Box
@@ -230,7 +231,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
               alignItems: 'center',
               justifyContent: 'center',
               ml: '400px',
-              mt: '32px',
+              mt: '64px',
             }}
           >
             <Grid
