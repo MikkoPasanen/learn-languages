@@ -47,7 +47,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
           <List>
             {signedIn && (
               <ListItemButton onClick={() => setOpenAddExercise(true)}>
-                <AddIcon sx={{ pr: 1, fontSize: '2rem' }} />
+                <AddIcon sx={{ pr: 1, fontSize: '2.5rem' }} />
                 <ListItemText primary="Add exercise" />
               </ListItemButton>
             )}
@@ -57,7 +57,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                 badgeContent={filterCount}
                 color="primary"
               >
-                <TuneIcon sx={{ fontSize: '2rem' }} />
+                <TuneIcon sx={{ fontSize: '2.2rem' }} />
               </Badge>
               <ListItemText
                 primary="Filters"
