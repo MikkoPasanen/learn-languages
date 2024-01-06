@@ -73,6 +73,7 @@ export default function App() {
                   openAddExercise={openAddExercise}
                   setOpenAddExercise={setOpenAddExercise}
                   categories={categories}
+                  languages={languages}
                   exercises={exercises}
                   loading={loading}
                   handleReload={handleReload}
