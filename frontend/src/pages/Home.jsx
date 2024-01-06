@@ -46,12 +46,14 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
         >
           <List>
             {signedIn && (
-              <ListItemButton onClick={() => setOpenAddExercise(true)}>
-                <AddIcon sx={{ pr: 1, fontSize: '2.5rem' }} />
-                <ListItemText primary="Add exercise" />
-              </ListItemButton>
+              <>
+                <ListItemButton onClick={() => setOpenAddExercise(true)}>
+                  <AddIcon sx={{ pr: 1, fontSize: '2.5rem' }} />
+                  <ListItemText primary="Add exercise" />
+                </ListItemButton>
+                <Divider />
+              </>
             )}
-            <Divider />
             <ListItem sx={{ mt: 2 }}>
               <Badge
                 badgeContent={filterCount}
