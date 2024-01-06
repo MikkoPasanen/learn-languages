@@ -19,7 +19,6 @@ export default function Exercise() {
         const hr = await fetch(`${import.meta.env.VITE_API_URL}/api/exercise/${id}`);
         const data = await hr.json();
         setWordPairs(data);
-        console.log(data);
     };
 
     const handlePlay = () => {
@@ -46,6 +45,8 @@ export default function Exercise() {
     }
 
     if (currentQuestionIndex === wordPairs.length) {
+        localStorage.setItem(`${id}-totalScore`, wordPairs.length);
+        localStorage.setItem(`${id}-userScore`, score);
         return (
             <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", mt: 5}}>
                 <Typography variant="h5" sx={{mb: 3}}>You scored: {score}/{wordPairs.length}</Typography>

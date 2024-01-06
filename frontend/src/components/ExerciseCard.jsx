@@ -13,27 +13,29 @@ import { Link } from 'react-router-dom';
 export default function ExerciseCard({ exerciseName, exerciseCategory,
                                        exerciseLanguage, exerciseId,
                                        signedIn, loading, handleReload }) {
-    const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-   const handleOptionsClick = (e) => {
-     setAnchorEl(e.currentTarget);
-   };
+  const userScore = localStorage.getItem(`${exerciseId}-userScore`);
+  const totalScore = localStorage.getItem(`${exerciseId}-totalScore`);
 
-   const handleOptionsClose = () => {
-     setAnchorEl(null);
-   };
+  const handleOptionsClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleOptionsClose = () => {
+    setAnchorEl(null);
+  };
 
-   const action = signedIn ? (
-     <IconButton
-       aria-label="settings"
-       onClick={handleOptionsClick}
-       sx={{ ml: 2}}
-     >
-       <MoreVertIcon />
-     </IconButton>
-    ) : null;
+  const action = signedIn ? (
+    <IconButton
+      aria-label="settings"
+      onClick={handleOptionsClick}
+      sx={{ ml: 2}}
+    >
+      <MoreVertIcon />
+    </IconButton>
+   ) : null;
 
-    return (
+   return (
       <>
         <Card
           key={exerciseId}
@@ -99,18 +101,50 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
                 width={90}
               />
             ) : (
-              <Button
-                variant="contained"
-                sx={{ borderRadius: 2 }}
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
               >
-                <Link
-                  to={`/exercise/${exerciseId}`}
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                  state={{ exerciseName: exerciseName }}
+                <Button
+                  variant="contained"
+                  sx={{ borderRadius: 2 }}
                 >
-                  Study🎓
-                </Link>
-              </Button>
+                  <Link
+                    to={`/exercise/${exerciseId}`}
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                    state={{ exerciseName: exerciseName }}
+                  >
+                    Study🎓
+                  </Link>
+                </Button>
+                <Typography sx={{mr: 3}}>
+                  Status:
+                  {(() => {
+                   if (userScore === null) {
+                    return (
+                      <Typography sx={{ fontWeight: 'bold', color: 'red' }}>
+                        Not started
+                      </Typography>
+                    )
+                   } else if (userScore === totalScore) {
+                    return (
+                      <Typography sx={{ fontWeight: 'bold', color: 'green' }}>
+                        Completed
+                      </Typography>
+                    )
+                   } else {
+                    return (
+                      <Typography sx={{ fontWeight: 'bold', color: 'orange' }}>
+                        In progress
+                      </Typography>
+                    )
+                   }
+                  })()}
+                </Typography>
+              </Box>
             )}
           </CardContent>
         </Card>
