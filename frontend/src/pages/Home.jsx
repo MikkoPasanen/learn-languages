@@ -78,7 +78,10 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
               <>
                 <ListItemButton onClick={() => setOpenAddExercise(true)}>
                   <AddIcon sx={{ pr: 1, fontSize: '2.5rem' }} />
-                  <ListItemText primary="Add exercise" />
+                  <ListItemText
+                    primary="Add exercise"
+                    primaryTypographyProps={{ style: { fontSize: '1.2rem' } }}
+                  />
                 </ListItemButton>
                 <Divider />
               </>
@@ -93,6 +96,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
               <ListItemText
                 primary="Filters"
                 sx={{ pl: 1 }}
+                primaryTypographyProps={{ style: { fontSize: '1.2rem' } }}
               />
             </ListItem>
             <ListItem
