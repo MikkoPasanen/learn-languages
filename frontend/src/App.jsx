@@ -14,10 +14,12 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [signedIn, setSignedIn] = useState(false);
   const [openAddExercise, setOpenAddExercise] = useState(false);
-   const [exercises, setExercises] = useState([]);
-   const [loading, setLoading] = useState(true);
-   const [categories, setCategories] = useState([]);
-   const [languages, setLanguages] = useState([]);
+  const [exercises, setExercises] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [languages, setLanguages] = useState([]);
+  const [mobileFilteredExercises, setMobileFilteredExercises] = useState([]);
+
 
   const theme = createTheme({
     palette: {
@@ -63,6 +65,8 @@ export default function App() {
             categories={categories}
             languages={languages}
             exercises={exercises}
+            setMobileFilteredExercises={setMobileFilteredExercises}
+
           />
           <Routes>
             <Route
@@ -77,6 +81,7 @@ export default function App() {
                   exercises={exercises}
                   loading={loading}
                   handleReload={handleReload}
+                  mobileFilteredExercises={mobileFilteredExercises}
                 />
               }
             />

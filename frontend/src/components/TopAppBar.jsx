@@ -9,7 +9,7 @@ import { Drawer, List, ListItemButton, ListItemText, ListItem,
         Checkbox, Chip, Badge } from '@mui/material';
 
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
 import HomeIcon from '@mui/icons-material/Home';
@@ -24,11 +24,11 @@ import TuneIcon from '@mui/icons-material/Tune';
 export default function TopAppBar({darkMode, handleThemeChange,
                                   signedIn, setSignedIn,
                                   setOpenAddExercise, categories, languages,
-                                  exercises}) {
+                                  exercises, setMobileFilteredExercises,}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [filterCount, setFilterCount] = useState(0);
-
-  //TODO: Apply filters to exercises
+  const [filterCategories, setFilterCategories] = useState([]);
+  const [filterLanguages, setFilterLanguages] = useState([]);
 
   // Store the number of exercises in each category
   const categoryCounts = categories.map((category) => {
@@ -41,6 +41,37 @@ export default function TopAppBar({darkMode, handleThemeChange,
     const count = exercises.filter((exercise) => exercise.language === language).length;
     return { language, count };
   });
+
+  // Filter the exercises based on the selected categories
+    const categoryChange = (e) => {
+      if (e.target.checked) {
+        setFilterCategories([...filterCategories, e.target.name]);
+      } else {
+        setFilterCategories(filterCategories.filter((category) => category !== e.target.name));
+      }
+    };
+
+    // Filter the exercises based on the selected languages
+    const languageChange = (e) => {
+      if (e.target.checked) {
+        setFilterLanguages([...filterLanguages, e.target.name]);
+      } else {
+        setFilterLanguages(filterLanguages.filter((language) => language !== e.target.name));
+      }
+    };
+
+    useEffect(() => {
+      // Filter the exercises based on the selected categories and languages
+      const filteredExercises = exercises.filter(
+        (exercise) =>
+          (filterCategories.length === 0 ||
+            filterCategories.includes(exercise.category)) &&
+          (filterLanguages.length === 0 ||
+            filterLanguages.includes(exercise.language)),
+      );
+
+      setMobileFilteredExercises(filteredExercises);
+    }, [exercises, setMobileFilteredExercises, filterCategories, filterLanguages]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -238,12 +269,14 @@ export default function TopAppBar({darkMode, handleThemeChange,
                       >
                         <Box>
                           <Checkbox
+                            name={category}
                             onChange={(e) => {
                               setFilterCount(
                                 e.target.checked
                                   ? filterCount + 1
                                   : filterCount - 1,
-                              );
+                              ),
+                              categoryChange(e);
                             }}
                           />
                           {category}
@@ -278,12 +311,14 @@ export default function TopAppBar({darkMode, handleThemeChange,
                       >
                         <Box>
                           <Checkbox
+                            name={language}
                             onChange={(e) => {
                               setFilterCount(
                                 e.target.checked
                                   ? filterCount + 1
                                   : filterCount - 1,
-                              );
+                              ),
+                              languageChange(e);
                             }}
                           />
                           {language}
