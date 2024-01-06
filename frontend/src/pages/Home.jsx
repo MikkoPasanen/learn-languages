@@ -15,8 +15,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                                 loading, exercises, handleReload, categories,
-                                languages }) {
+                                languages, mobileFilteredExercises }) {
     const [filterCount, setFilterCount] = useState(0);
+    const [filterCategories, setFilterCategories] = useState([]);
+    const [filterLanguages, setFilterLanguages] = useState([]);
     const skeletons = [1, 2, 3];
 
     // Store the number of exercises in each category
@@ -30,6 +32,33 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
       const count = exercises.filter((exercise) => exercise.language === language).length;
       return { language, count };
     });
+
+    // Filter the exercises based on the selected categories
+    const categoryChange = (e) => {
+      if (e.target.checked) {
+        setFilterCategories([...filterCategories, e.target.name]);
+      } else {
+        setFilterCategories(filterCategories.filter((category) => category !== e.target.name));
+      }
+    };
+
+    // Filter the exercises based on the selected languages
+    const languageChange = (e) => {
+      if (e.target.checked) {
+        setFilterLanguages([...filterLanguages, e.target.name]);
+      } else {
+        setFilterLanguages(filterLanguages.filter((language) => language !== e.target.name));
+      }
+    };
+
+    // Filter the exercises based on the selected categories and languages
+    const filteredExercises = exercises.filter(
+      (exercise) =>
+        (filterCategories.length === 0 ||
+          filterCategories.includes(exercise.category)) &&
+        (filterLanguages.length === 0 ||
+          filterLanguages.includes(exercise.language)),
+    );
 
     return (
       <>
@@ -87,12 +116,14 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                       >
                         <Box>
                           <Checkbox
+                            name={category}
                             onChange={(e) => {
                               setFilterCount(
                                 e.target.checked
                                   ? filterCount + 1
                                   : filterCount - 1,
-                              );
+                              ),
+                                categoryChange(e);
                             }}
                           />
                           {category}
@@ -127,12 +158,14 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                       >
                         <Box>
                           <Checkbox
+                            name={language}
                             onChange={(e) => {
                               setFilterCount(
                                 e.target.checked
                                   ? filterCount + 1
                                   : filterCount - 1,
-                              );
+                              ),
+                                languageChange(e);
                             }}
                           />
                           {language}
@@ -171,7 +204,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                     loading={loading}
                   />
                 ))
-              : exercises.map((exercise) => (
+              : mobileFilteredExercises.map((exercise) => (
                   <ExerciseCard
                     key={exercise.id}
                     exerciseId={exercise.id}
@@ -207,7 +240,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                     loading={loading}
                   />
                 ))
-              : exercises.map((exercise) => (
+              : filteredExercises.map((exercise) => (
                   <ExerciseCard
                     key={exercise.id}
                     exerciseId={exercise.id}
