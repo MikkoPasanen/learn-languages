@@ -37,7 +37,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
       <>
         <Card
           key={exerciseId}
-          sx={{ mt: 3, borderRadius: 4, width: 350}}
+          sx={{ mt: 3, borderRadius: 4, width: 380}}
         >
           <CardHeader
             action={action}

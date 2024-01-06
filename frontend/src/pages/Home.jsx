@@ -2,7 +2,7 @@
 import { Box, Drawer, List, ListItemButton,
         ListItemText, ListItem, Divider,
         Accordion, AccordionSummary, AccordionDetails,
-        Checkbox, Chip, Badge, Typography} from '@mui/material';
+        Checkbox, Chip, Badge, Typography, Grid} from '@mui/material';
 
 import ExerciseCard from '../components/ExerciseCard';
 import AddExercise from '../components/AddExercise';
@@ -229,29 +229,41 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              ml: '300px',
+              ml: '400px',
               mt: '32px',
             }}
           >
-            {loading
-              ? skeletons.map((skeleton) => (
-                  <ExerciseCard
-                    key={skeleton}
-                    loading={loading}
-                  />
-                ))
-              : filteredExercises.map((exercise) => (
-                  <ExerciseCard
-                    key={exercise.id}
-                    exerciseId={exercise.id}
-                    exerciseName={exercise.name}
-                    exerciseCategory={exercise.category}
-                    exerciseLanguage={exercise.language}
-                    signedIn={signedIn}
-                    loading={loading}
-                    handleReload={handleReload}
-                  />
-                ))}
+            <Grid
+              container
+              spacing={2}
+            >
+              {loading
+                ? skeletons.map((skeleton) => (
+                    <ExerciseCard
+                      key={skeleton}
+                      loading={loading}
+                    />
+                  ))
+                : filteredExercises.map((exercise) => (
+                    <Grid
+                      item
+                      md={12}
+                      lg={6}
+                      xl={4}
+                      key={exercise.id}
+                    >
+                      <ExerciseCard
+                        exerciseId={exercise.id}
+                        exerciseName={exercise.name}
+                        exerciseCategory={exercise.category}
+                        exerciseLanguage={exercise.language}
+                        signedIn={signedIn}
+                        loading={loading}
+                        handleReload={handleReload}
+                      />
+                    </Grid>
+                  ))}
+            </Grid>
           </Box>
         </Box>
         <AddExercise
