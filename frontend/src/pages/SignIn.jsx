@@ -45,10 +45,10 @@ export default function SignIn({ setSignedIn }) {
     if(json.success) {
       if(data.get('remember')) {
         localStorage.setItem('token', json.token);
-        console.log("local: " + localStorage.getItem('token'));
+        localStorage.setItem('username', data.get('username'));
       } else {
+        sessionStorage.setItem('username', data.get('username'));
         sessionStorage.setItem('token', json.token);
-        console.log("session: " + sessionStorage.getItem('token'));
       }
       setSignedIn(true);
       setLoading(false);

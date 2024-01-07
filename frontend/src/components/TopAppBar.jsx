@@ -180,7 +180,13 @@ export default function TopAppBar({darkMode, handleThemeChange,
                     handleProfileClick(e);
                   }}
                 >
-                  <Avatar>M</Avatar>
+                  <Avatar>
+                    {
+                      localStorage.getItem('username')[0].toUpperCase()
+                      ||
+                      sessionStorage.getItem('username')[0].toUpperCase()
+                    }
+                  </Avatar>
                 </IconButton>
               </>
             )}
@@ -191,7 +197,14 @@ export default function TopAppBar({darkMode, handleThemeChange,
             >
               <MenuItem>
                 <Typography variant="body2">
-                  Signed in as <strong>user</strong>
+                  Signed in as {' '}
+                  <strong>
+                    {
+                      localStorage.getItem('username')
+                      ||
+                      sessionStorage.getItem('username')
+                    }
+                  </strong>
                 </Typography>
               </MenuItem>
               <Divider />
