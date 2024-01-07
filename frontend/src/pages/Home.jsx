@@ -108,39 +108,37 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                   <Typography>Categories</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Typography>
-                    {categories.map((category) => (
-                      <Box
-                        key={category}
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Box>
-                          <Checkbox
-                            name={category}
-                            onChange={(e) => {
-                              setFilterCount(
-                                e.target.checked
-                                  ? filterCount + 1
-                                  : filterCount - 1,
-                              ),
-                                categoryChange(e);
-                            }}
-                          />
-                          {category}
-                        </Box>
-                        <Chip
-                          label={
-                            categoryCounts.find((c) => c.category === category)
-                              .count
-                          }
+                  {categories.map((category) => (
+                    <Box
+                      key={category}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Box>
+                        <Checkbox
+                          name={category}
+                          onChange={(e) => {
+                            setFilterCount(
+                              e.target.checked
+                                ? filterCount + 1
+                                : filterCount - 1,
+                            ),
+                              categoryChange(e);
+                          }}
                         />
+                        {category}
                       </Box>
-                    ))}
-                  </Typography>
+                      <Chip
+                        label={
+                          categoryCounts.find((c) => c.category === category)
+                            .count
+                        }
+                      />
+                    </Box>
+                  ))}
                 </AccordionDetails>
               </Accordion>
             </ListItem>
@@ -150,39 +148,37 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                   <Typography>Languages</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Typography>
-                    {languages.map((language) => (
-                      <Box
-                        key={language}
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Box>
-                          <Checkbox
-                            name={language}
-                            onChange={(e) => {
-                              setFilterCount(
-                                e.target.checked
-                                  ? filterCount + 1
-                                  : filterCount - 1,
-                              ),
-                                languageChange(e);
-                            }}
-                          />
-                          {language}
-                        </Box>
-                        <Chip
-                          label={
-                            languageCounts.find((l) => l.language === language)
-                              .count
-                          }
+                  {languages.map((language) => (
+                    <Box
+                      key={language}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Box>
+                        <Checkbox
+                          name={language}
+                          onChange={(e) => {
+                            setFilterCount(
+                              e.target.checked
+                                ? filterCount + 1
+                                : filterCount - 1,
+                            ),
+                              languageChange(e);
+                          }}
                         />
+                        {language}
                       </Box>
-                    ))}
-                  </Typography>
+                      <Chip
+                        label={
+                          languageCounts.find((l) => l.language === language)
+                            .count
+                        }
+                      />
+                    </Box>
+                  ))}
                 </AccordionDetails>
               </Accordion>
             </ListItem>
@@ -192,8 +188,8 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                   <Typography>Status</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Typography>
-                    {['Completed', 'In progress', 'Not started'].map((status) => (
+                  {['Completed', 'In progress', 'Not started'].map(
+                    (status) => (
                       <Box
                         key={status}
                         sx={{
@@ -210,13 +206,25 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                                 e.target.checked
                                   ? filterCount + 1
                                   : filterCount - 1,
-                              )
+                              );
                             }}
                           />
                           {status}
                         </Box>
                       </Box>
-                    ))}
+                    ),
+                  )}
+                </AccordionDetails>
+              </Accordion>
+            </ListItem>
+            <ListItem disablePadding>
+              <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>Created by</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Some users here
                   </Typography>
                 </AccordionDetails>
               </Accordion>
