@@ -1,12 +1,8 @@
 /* eslint-disable react/prop-types */
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import { Drawer, List, ListItemButton, ListItemText, ListItem,
          Divider, Accordion, AccordionSummary, AccordionDetails,
-        Checkbox, Chip, Badge } from '@mui/material';
+         Checkbox, Chip, Badge, Avatar, IconButton, Typography, Box,
+         Toolbar, AppBar, Menu, MenuItem} from '@mui/material';
 
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -156,25 +152,30 @@ export default function TopAppBar({darkMode, handleThemeChange,
                 </Link>
               )}
               {signedIn && (
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  aria-label="menu"
-                  onClick={() => {
-                    localStorage.removeItem('token');
-                    sessionStorage.removeItem('token');
-                    setSignedIn(false);
-                  }}
-                >
-                  <LogoutIcon sx={{ pr: 1, fontSize: '2rem' }} />
-                  <Typography
-                    variant="h6"
-                    component="div"
+                <>
+                  <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    onClick={() => {
+                      localStorage.removeItem('token');
+                      sessionStorage.removeItem('token');
+                      setSignedIn(false);
+                    }}
                   >
-                    Sign Out
-                  </Typography>
-                </IconButton>
+                    <LogoutIcon sx={{ pr: 1, fontSize: '2rem' }} />
+                    <Typography
+                      variant="h6"
+                      component="div"
+                    >
+                      Sign Out
+                    </Typography>
+                  </IconButton>
+                  <Avatar>
+                    H
+                  </Avatar>
+                </>
               )}
           </Box>
         </Toolbar>
