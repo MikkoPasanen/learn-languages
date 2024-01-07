@@ -310,18 +310,24 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                     loading={loading}
                   />
                 ))
-              : mobileFilteredExercises.map((exercise) => (
-                  <ExerciseCard
-                    key={exercise.id}
-                    exerciseId={exercise.id}
-                    exerciseName={exercise.name}
-                    exerciseCategory={exercise.category}
-                    exerciseLanguage={exercise.language}
-                    signedIn={signedIn}
-                    loading={loading}
-                    handleReload={handleReload}
-                  />
-                ))}
+              :
+                mobileFilteredExercises.length === 0 ?
+                  <Typography variant='h6' sx={{mt: '100px'}}>
+                    Oops! No exercises found.
+                  </Typography>
+                :
+                mobileFilteredExercises.map((exercise) => (
+                    <ExerciseCard
+                      key={exercise.id}
+                      exerciseId={exercise.id}
+                      exerciseName={exercise.name}
+                      exerciseCategory={exercise.category}
+                      exerciseLanguage={exercise.language}
+                      signedIn={signedIn}
+                      loading={loading}
+                      handleReload={handleReload}
+                    />
+                  ))}
           </Box>
         </Box>
         <Box
@@ -358,7 +364,13 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                     />
                   </Grid>
                   ))
-                : filteredExercises.map((exercise) => (
+                :
+                  filteredExercises.length === 0 ?
+                    <Typography variant='h6' sx={{mt: '100px'}}>
+                      Oops! No exercises found.
+                    </Typography>
+                  :
+                  filteredExercises.map((exercise) => (
                     <Grid
                       item
                       md={12}
