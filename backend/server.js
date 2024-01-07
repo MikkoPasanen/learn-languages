@@ -9,7 +9,7 @@ const app = express();
 const port = 8080;
 
 // Enable CORS so backend and frontend can communicate
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 app.use(express.static('./frontend/dist'));
 app.use('/api/home', homeRouter);
