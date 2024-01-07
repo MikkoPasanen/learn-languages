@@ -52,6 +52,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
       }
     };
 
+    // Filter the exercises based on the selected statuses
     const statusChange = (e) => {
       const { name, checked } = e.target;
       if (checked) {
