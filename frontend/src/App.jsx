@@ -82,6 +82,8 @@ export default function App() {
                   loading={loading}
                   handleReload={handleReload}
                   mobileFilteredExercises={mobileFilteredExercises}
+                  handleThemeChange={() => setDarkMode(!darkMode)}
+                  darkMode={darkMode}
                 />
               }
             />

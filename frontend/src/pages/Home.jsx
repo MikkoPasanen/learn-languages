@@ -12,10 +12,13 @@ import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import TuneIcon from '@mui/icons-material/Tune';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 
 export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                                 loading, exercises, handleReload, categories,
-                                languages, mobileFilteredExercises }) {
+                                languages, mobileFilteredExercises, handleThemeChange,
+                                darkMode  }) {
     const [filterCount, setFilterCount] = useState(0);
     const [filterCategories, setFilterCategories] = useState([]);
     const [filterLanguages, setFilterLanguages] = useState([]);
@@ -93,137 +96,52 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
             display: { xs: 'none', md: 'block' },
           }}
         >
-          <List>
-            {signedIn && (
-              <>
-                <ListItemButton onClick={() => setOpenAddExercise(true)}>
-                  <AddIcon sx={{ pr: 1, fontSize: '2.5rem' }} />
-                  <ListItemText
-                    primary="Add exercise"
-                    primaryTypographyProps={{ style: { fontSize: '1.2rem' } }}
-                  />
-                </ListItemButton>
-                <Divider />
-              </>
-            )}
-            <ListItem sx={{ mt: 2 }}>
-              <Badge
-                badgeContent={filterCount}
-                color="primary"
+          <List
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '91%',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Box>
+              {signedIn && (
+                <>
+                  <ListItemButton onClick={() => setOpenAddExercise(true)}>
+                    <AddIcon sx={{ pr: 1, fontSize: '2.5rem' }} />
+                    <ListItemText
+                      primary="Add exercise"
+                      primaryTypographyProps={{ style: { fontSize: '1.2rem' } }}
+                    />
+                  </ListItemButton>
+                  <Divider />
+                </>
+              )}
+              <ListItem sx={{ mt: 2 }}>
+                <Badge
+                  badgeContent={filterCount}
+                  color="primary"
+                >
+                  <TuneIcon sx={{ fontSize: '2.2rem' }} />
+                </Badge>
+                <ListItemText
+                  primary="Filters"
+                  sx={{ pl: 1 }}
+                  primaryTypographyProps={{ style: { fontSize: '1.2rem' } }}
+                />
+              </ListItem>
+              <ListItem
+                disablePadding
+                sx={{ mt: 1 }}
               >
-                <TuneIcon sx={{ fontSize: '2.2rem' }} />
-              </Badge>
-              <ListItemText
-                primary="Filters"
-                sx={{ pl: 1 }}
-                primaryTypographyProps={{ style: { fontSize: '1.2rem' } }}
-              />
-            </ListItem>
-            <ListItem
-              disablePadding
-              sx={{ mt: 1 }}
-            >
-              <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>Categories</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {categories.map((category) => (
-                    <Box
-                      key={category}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Box>
-                        <Checkbox
-                          name={category}
-                          onChange={(e) => {
-                            setFilterCount(
-                              e.target.checked
-                                ? filterCount + 1
-                                : filterCount - 1,
-                            ),
-                              categoryChange(e);
-                          }}
-                        />
-                        {category}
-                      </Box>
-                      <Chip
-                        label={
-                          categoryCounts.find((c) => c.category === category)
-                            .count
-                        }
-                      />
-                    </Box>
-                  ))}
-                </AccordionDetails>
-              </Accordion>
-            </ListItem>
-            <ListItem disablePadding>
-              <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>Languages</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {languages.map((language) => (
-                    <Box
-                      key={language}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Box>
-                        <Checkbox
-                          name={language}
-                          onChange={(e) => {
-                            setFilterCount(
-                              e.target.checked
-                                ? filterCount + 1
-                                : filterCount - 1,
-                            ),
-                              languageChange(e);
-                          }}
-                        />
-                        {language}
-                      </Box>
-                      <Chip
-                        label={
-                          languageCounts.find((l) => l.language === language)
-                            .count
-                        }
-                      />
-                    </Box>
-                  ))}
-                </AccordionDetails>
-              </Accordion>
-            </ListItem>
-            <ListItem disablePadding>
-              <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>Status</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {['Completed', 'In progress', 'Not started'].map((status) => {
-                    const count = exercises.filter((exercise) => {
-                      const score = localStorage.getItem(`${exercise.id}-userScore`);
-                      const totalScore = localStorage.getItem(`${exercise.id}-totalScore`);
-                      const exerciseStatus =
-                        score === null
-                          ? 'Not started'
-                          : score === totalScore
-                            ? 'Completed'
-                            : 'In progress';
-                      return exerciseStatus === status;
-                    }).length;
-
-                    return (
+                <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography>Categories</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {categories.map((category) => (
                       <Box
-                        key={status}
+                        key={category}
                         sx={{
                           display: 'flex',
                           justifyContent: 'space-between',
@@ -232,30 +150,143 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                       >
                         <Box>
                           <Checkbox
-                            name={status}
+                            name={category}
                             onChange={(e) => {
-                              statusChange(e);
+                              setFilterCount(
+                                e.target.checked
+                                  ? filterCount + 1
+                                  : filterCount - 1,
+                              ),
+                                categoryChange(e);
                             }}
                           />
-                          {status}
+                          {category}
                         </Box>
-                        <Chip label={count} />
+                        <Chip
+                          label={
+                            categoryCounts.find((c) => c.category === category)
+                              .count
+                          }
+                        />
                       </Box>
-                    );
-                  })}
-                </AccordionDetails>
-              </Accordion>
-            </ListItem>
-            <ListItem disablePadding>
-              <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>Created by</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>Some users here</Typography>
-                </AccordionDetails>
-              </Accordion>
-            </ListItem>
+                    ))}
+                  </AccordionDetails>
+                </Accordion>
+              </ListItem>
+              <ListItem disablePadding>
+                <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography>Languages</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {languages.map((language) => (
+                      <Box
+                        key={language}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Box>
+                          <Checkbox
+                            name={language}
+                            onChange={(e) => {
+                              setFilterCount(
+                                e.target.checked
+                                  ? filterCount + 1
+                                  : filterCount - 1,
+                              ),
+                                languageChange(e);
+                            }}
+                          />
+                          {language}
+                        </Box>
+                        <Chip
+                          label={
+                            languageCounts.find((l) => l.language === language)
+                              .count
+                          }
+                        />
+                      </Box>
+                    ))}
+                  </AccordionDetails>
+                </Accordion>
+              </ListItem>
+              <ListItem disablePadding>
+                <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography>Status</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {['Completed', 'In progress', 'Not started'].map(
+                      (status) => {
+                        const count = exercises.filter((exercise) => {
+                          const score = localStorage.getItem(
+                            `${exercise.id}-userScore`,
+                          );
+                          const totalScore = localStorage.getItem(
+                            `${exercise.id}-totalScore`,
+                          );
+                          const exerciseStatus =
+                            score === null
+                              ? 'Not started'
+                              : score === totalScore
+                                ? 'Completed'
+                                : 'In progress';
+                          return exerciseStatus === status;
+                        }).length;
+
+                        return (
+                          <Box
+                            key={status}
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Box>
+                              <Checkbox
+                                name={status}
+                                onChange={(e) => {
+                                  statusChange(e);
+                                }}
+                              />
+                              {status}
+                            </Box>
+                            <Chip label={count} />
+                          </Box>
+                        );
+                      },
+                    )}
+                  </AccordionDetails>
+                </Accordion>
+              </ListItem>
+              <ListItem disablePadding>
+                <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography>Created by</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>Some users here</Typography>
+                  </AccordionDetails>
+                </Accordion>
+              </ListItem>
+            </Box>
+
+            <Box>
+              <ListItemButton
+                onClick={handleThemeChange}
+              >
+                {darkMode ? (
+                  <LightModeIcon sx={{ pr: 1, fontSize: '2rem' }} />
+                ) : (
+                  <DarkModeIcon sx={{ pr: 1, fontSize: '2rem' }} />
+                )}
+                <ListItemText primary="Toggle Theme" />
+              </ListItemButton>
+            </Box>
           </List>
         </Drawer>
         <Box

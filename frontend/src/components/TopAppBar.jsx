@@ -129,7 +129,6 @@ export default function TopAppBar({darkMode, handleThemeChange,
                 </Typography>
               </Link>
             </IconButton>
-            <Box sx={{ display: 'flex' }}>
               {!signedIn && (
                 <Link
                   to="/signin"
@@ -177,20 +176,6 @@ export default function TopAppBar({darkMode, handleThemeChange,
                   </Typography>
                 </IconButton>
               )}
-              <IconButton
-                size="large"
-                edge="end"
-                color="inherit"
-                aria-label="menu"
-                onClick={handleThemeChange}
-              >
-                {darkMode ? (
-                  <LightModeIcon sx={{ fontSize: '2rem' }} />
-                ) : (
-                  <DarkModeIcon sx={{ fontSize: '2rem' }} />
-                )}
-              </IconButton>
-            </Box>
           </Box>
         </Toolbar>
         <Toolbar
