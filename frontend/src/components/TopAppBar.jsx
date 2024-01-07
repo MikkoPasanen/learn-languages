@@ -335,6 +335,49 @@ export default function TopAppBar({darkMode, handleThemeChange,
                 </AccordionDetails>
               </Accordion>
             </ListItem>
+            <ListItem disablePadding>
+              <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>Status</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {['Completed', 'In progress', 'Not started'].map((status) => (
+                    <Box
+                      key={status}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Box>
+                        <Checkbox
+                          name={status}
+                          onChange={(e) => {
+                            setFilterCount(
+                              e.target.checked
+                                ? filterCount + 1
+                                : filterCount - 1,
+                            );
+                          }}
+                        />
+                        {status}
+                      </Box>
+                    </Box>
+                  ))}
+                </AccordionDetails>
+              </Accordion>
+            </ListItem>
+            <ListItem disablePadding>
+              <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>Created by</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>Some users here</Typography>
+                </AccordionDetails>
+              </Accordion>
+            </ListItem>
           </Box>
 
           <Box sx={{ mb: 2 }}>
