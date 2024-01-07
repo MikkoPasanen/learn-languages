@@ -19,6 +19,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
     const [filterCount, setFilterCount] = useState(0);
     const [filterCategories, setFilterCategories] = useState([]);
     const [filterLanguages, setFilterLanguages] = useState([]);
+    const [filterStatuses, setFilterStatuses] = useState([]);
     const skeletons = [1, 2, 3];
 
     // Store the number of exercises in each category
@@ -51,14 +52,32 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
       }
     };
 
-    // Filter the exercises based on the selected categories and languages
-    const filteredExercises = exercises.filter(
-      (exercise) =>
-        (filterCategories.length === 0 ||
-          filterCategories.includes(exercise.category)) &&
-        (filterLanguages.length === 0 ||
-          filterLanguages.includes(exercise.language)),
-    );
+    const statusChange = (e) => {
+      const { name, checked } = e.target;
+      if (checked) {
+        setFilterStatuses((prev) => [...prev, name]);
+      } else {
+        setFilterStatuses((prev) => prev.filter((status) => status !== name));
+      }
+    };
+
+    // Filter the exercises based on the selected filters
+   const filteredExercises = exercises.filter((exercise) => {
+     const score = localStorage.getItem(`${exercise.id}-userScore`);
+     const totalScore = localStorage.getItem(`${exercise.id}-totalScore`);
+     const status =
+          score === null
+         ? 'Not started'
+         : score === totalScore
+           ? 'Completed'
+           : 'In progress';
+
+     return (
+       (filterCategories.length === 0 || filterCategories.includes(exercise.category)) &&
+       (filterLanguages.length === 0 || filterLanguages.includes(exercise.language)) &&
+       (filterStatuses.length === 0 || filterStatuses.includes(status))
+     );
+   });
 
     return (
       <>
@@ -188,8 +207,20 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                   <Typography>Status</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  {['Completed', 'In progress', 'Not started'].map(
-                    (status) => (
+                  {['Completed', 'In progress', 'Not started'].map((status) => {
+                    const count = exercises.filter((exercise) => {
+                      const score = localStorage.getItem(`${exercise.id}-userScore`);
+                      const totalScore = localStorage.getItem(`${exercise.id}-totalScore`);
+                      const exerciseStatus =
+                        score === null
+                          ? 'Not started'
+                          : score === totalScore
+                            ? 'Completed'
+                            : 'In progress';
+                      return exerciseStatus === status;
+                    }).length;
+
+                    return (
                       <Box
                         key={status}
                         sx={{
@@ -202,18 +233,15 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                           <Checkbox
                             name={status}
                             onChange={(e) => {
-                              setFilterCount(
-                                e.target.checked
-                                  ? filterCount + 1
-                                  : filterCount - 1,
-                              );
+                              statusChange(e);
                             }}
                           />
                           {status}
                         </Box>
+                        <Chip label={count} />
                       </Box>
-                    ),
-                  )}
+                    );
+                  })}
                 </AccordionDetails>
               </Accordion>
             </ListItem>
@@ -223,9 +251,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                   <Typography>Created by</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Typography>
-                    Some users here
-                  </Typography>
+                  <Typography>Some users here</Typography>
                 </AccordionDetails>
               </Accordion>
             </ListItem>
