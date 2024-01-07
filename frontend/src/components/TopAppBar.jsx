@@ -26,6 +26,25 @@ export default function TopAppBar({darkMode, handleThemeChange,
   const [filterCategories, setFilterCategories] = useState([]);
   const [filterLanguages, setFilterLanguages] = useState([]);
   const [filterStatuses, setFilterStatuses] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  // Handle the profile menu
+  const handleProfileClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  // Handle the profile menu
+  const handleProfileClose = () => {
+    setAnchorEl(null);
+  };
+
+  // Handle sign out
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    setSignedIn(false);
+    setAnchorEl(null);
+  };
 
   // Store the number of exercises in each category
   const categoryCounts = categories.map((category) => {
@@ -125,58 +144,66 @@ export default function TopAppBar({darkMode, handleThemeChange,
                 </Typography>
               </Link>
             </IconButton>
-              {!signedIn && (
-                <Link
-                  to="/signin"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    display: 'flex',
-                    alignItems: 'center',
+            {!signedIn && (
+              <Link
+                to="/signin"
+                style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                >
+                  <LoginIcon sx={{ pr: 1, fontSize: '2rem' }} />
+                  <Typography
+                    variant="h6"
+                    component="div"
+                  >
+                    Sign In
+                  </Typography>
+                </IconButton>
+              </Link>
+            )}
+            {signedIn && (
+              <>
+                <IconButton
+                  size="small"
+                  edge="start"
+                  color="inherit"
+                  onClick={(e) => {
+                    handleProfileClick(e);
                   }}
                 >
-                  <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                  >
-                    <LoginIcon sx={{ pr: 1, fontSize: '2rem' }} />
-                    <Typography
-                      variant="h6"
-                      component="div"
-                    >
-                      Sign In
-                    </Typography>
-                  </IconButton>
-                </Link>
-              )}
-              {signedIn && (
-                <>
-                  <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                    onClick={() => {
-                      localStorage.removeItem('token');
-                      sessionStorage.removeItem('token');
-                      setSignedIn(false);
-                    }}
-                  >
-                    <LogoutIcon sx={{ pr: 1, fontSize: '2rem' }} />
-                    <Typography
-                      variant="h6"
-                      component="div"
-                    >
-                      Sign Out
-                    </Typography>
-                  </IconButton>
-                  <Avatar>
-                    H
-                  </Avatar>
-                </>
-              )}
+                  <Avatar>M</Avatar>
+                </IconButton>
+              </>
+            )}
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleProfileClose}
+            >
+              <MenuItem>
+                <Typography variant="body2">
+                  Signed in as <strong>user</strong>
+                </Typography>
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleSignOut}>
+                <IconButton sx={{p: 0}}>
+                  <LogoutIcon
+                    sx={{ pr: 1, fontSize: '1.9rem', color: '#d7094f' }}
+                  />
+                  <Typography sx={{ color: '#d7094f', fontWeight: 'bold' }}>Sign Out</Typography>
+                </IconButton>
+              </MenuItem>
+            </Menu>
           </Box>
         </Toolbar>
         <Toolbar
