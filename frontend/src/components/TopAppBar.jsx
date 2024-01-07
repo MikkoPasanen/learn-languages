@@ -109,8 +109,6 @@ export default function TopAppBar({darkMode, handleThemeChange,
         );
       });
 
-      handleSignOut();
-
       setMobileFilteredExercises(filteredExercises);
     }, [exercises, setMobileFilteredExercises, filterCategories, filterLanguages, filterStatuses]);
 
