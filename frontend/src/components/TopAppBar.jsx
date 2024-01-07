@@ -38,8 +38,6 @@ export default function TopAppBar({darkMode, handleThemeChange,
     setAnchorEl(null);
   };
 
-  handleSignOut();
-
   // Handle sign out
   const handleSignOut = () => {
     localStorage.removeItem('token');
@@ -111,8 +109,11 @@ export default function TopAppBar({darkMode, handleThemeChange,
         );
       });
 
+      handleSignOut();
+
       setMobileFilteredExercises(filteredExercises);
     }, [exercises, setMobileFilteredExercises, filterCategories, filterLanguages, filterStatuses]);
+
 
   return (
     <Box>
