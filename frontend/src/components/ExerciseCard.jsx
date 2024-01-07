@@ -62,7 +62,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
                   width="40%"
                 />
               ) : (
-              <Box sx={{ mt: 1 }}>
+              <Box sx={{ mt: 1.5 }}>
                 <Chip
                   sx={{ mr: 1 }}
                   label={exerciseCategory}
@@ -120,27 +120,27 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
                     Study🎓
                   </Link>
                 </Button>
-                <Typography sx={{mr: 3}}>
+                <Typography sx={{mr: 1}}>
                   Status:
                   {(() => {
                    if (userScore === null) {
                     return (
                       <Typography sx={{ fontWeight: 'bold', color: 'red' }}>
-                        Not started
+                        Not started❌
                       </Typography>
-                    )
+                    );
                    } else if (userScore === totalScore) {
                     return (
                       <Typography sx={{ fontWeight: 'bold', color: 'green' }}>
-                        Completed
+                        Completed🎉
                       </Typography>
-                    )
+                    );
                    } else {
                     return (
                       <Typography sx={{ fontWeight: 'bold', color: 'orange' }}>
-                        In progress
+                        In progress⌛
                       </Typography>
-                    )
+                    );
                    }
                   })()}
                 </Typography>
