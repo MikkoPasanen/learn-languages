@@ -122,7 +122,7 @@ export default function TopAppBar({darkMode, handleThemeChange,
             display: { xs: 'none', md: 'block' },
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <IconButton
               size="large"
               edge="start"
@@ -198,7 +198,7 @@ export default function TopAppBar({darkMode, handleThemeChange,
             display: { xs: 'block', md: 'none' },
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <IconButton
               size="large"
               edge="start"
