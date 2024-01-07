@@ -27,6 +27,8 @@ export default function DeleteExercise({ exerciseId, exerciseName, handleReload 
 
         if (json.success) {
             await handleReload();
+            localStorage.removeItem(`${exerciseId}-totalScore`);
+            localStorage.removeItem(`${exerciseId}-userScore`);
             setOpen(false);
             setLoading(false);
         }
