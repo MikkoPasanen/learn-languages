@@ -42,6 +42,8 @@ export default function TopAppBar({darkMode, handleThemeChange,
   const handleSignOut = () => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
+    localStorage.removeItem('username');
+    sessionStorage.removeItem('username');
     setSignedIn(false);
     setAnchorEl(null);
   };

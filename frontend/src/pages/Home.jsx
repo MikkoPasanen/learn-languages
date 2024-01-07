@@ -345,10 +345,18 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
             >
               {loading
                 ? skeletons.map((skeleton) => (
+                  <Grid
+                      item
+                      md={12}
+                      lg={6}
+                      xl={4}
+                      key={skeleton}
+                    >
                     <ExerciseCard
                       key={skeleton}
                       loading={loading}
                     />
+                  </Grid>
                   ))
                 : filteredExercises.map((exercise) => (
                     <Grid
