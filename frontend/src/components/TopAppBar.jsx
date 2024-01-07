@@ -183,42 +183,12 @@ export default function TopAppBar({darkMode, handleThemeChange,
                   }}
                 >
                   <Avatar>
-                    {
-                      localStorage.getItem('username')[0].toUpperCase()
-                      ||
-                      sessionStorage.getItem('username')[0].toUpperCase()
-                    }
+                    {localStorage.getItem('username')[0].toUpperCase() ||
+                      sessionStorage.getItem('username')[0].toUpperCase()}
                   </Avatar>
                 </IconButton>
               </>
             )}
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleProfileClose}
-            >
-              <MenuItem>
-                <Typography variant="body2">
-                  Signed in as {' '}
-                  <strong>
-                    {
-                      localStorage.getItem('username')
-                      ||
-                      sessionStorage.getItem('username')
-                    }
-                  </strong>
-                </Typography>
-              </MenuItem>
-              <Divider />
-              <MenuItem onClick={handleSignOut}>
-                <IconButton sx={{p: 0}}>
-                  <LogoutIcon
-                    sx={{ pr: 1, fontSize: '1.9rem', color: '#d7094f' }}
-                  />
-                  <Typography sx={{ color: '#d7094f', fontWeight: 'bold' }}>Sign Out</Typography>
-                </IconButton>
-              </MenuItem>
-            </Menu>
           </Box>
         </Toolbar>
         <Toolbar
@@ -227,15 +197,34 @@ export default function TopAppBar({darkMode, handleThemeChange,
             display: { xs: 'block', md: 'none' },
           }}
         >
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={() => setDrawerOpen(true)}
-          >
-            <MenuIcon sx={{ fontSize: '2.5rem' }} />
-          </IconButton>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={() => setDrawerOpen(true)}
+            >
+              <MenuIcon sx={{ fontSize: '2.5rem' }} />
+            </IconButton>
+            {signedIn && (
+              <>
+                <IconButton
+                  size="small"
+                  edge="start"
+                  color="inherit"
+                  onClick={(e) => {
+                    handleProfileClick(e);
+                  }}
+                >
+                  <Avatar>
+                    {localStorage.getItem('username')[0].toUpperCase() ||
+                      sessionStorage.getItem('username')[0].toUpperCase()}
+                  </Avatar>
+                </IconButton>
+              </>
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -487,6 +476,30 @@ export default function TopAppBar({darkMode, handleThemeChange,
           </Box>
         </List>
       </Drawer>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleProfileClose}
+      >
+        <MenuItem>
+          <Typography variant="body2">
+            Signed in as{' '}
+            <strong>
+              {localStorage.getItem('username') ||
+                sessionStorage.getItem('username')}
+            </strong>
+          </Typography>
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={handleSignOut}>
+          <IconButton sx={{ p: 0 }}>
+            <LogoutIcon sx={{ pr: 1, fontSize: '1.9rem', color: '#d7094f' }} />
+            <Typography sx={{ color: '#d7094f', fontWeight: 'bold' }}>
+              Sign Out
+            </Typography>
+          </IconButton>
+        </MenuItem>
+      </Menu>
     </Box>
   );
 }
