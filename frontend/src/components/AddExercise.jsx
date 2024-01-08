@@ -145,6 +145,8 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
             category: category,
             language: language,
             wordPairs: wordPairs,
+            madeBy: localStorage.getItem('username') || sessionStorage.getItem('username'),
+            modified: null
           }),
         },
       );

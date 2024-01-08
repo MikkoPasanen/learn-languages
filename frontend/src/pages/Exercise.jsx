@@ -26,7 +26,7 @@ export default function Exercise() {
     };
 
     const handleNextQuestion = () => {
-        if (answer === wordPairs[currentQuestionIndex].finnish_word) {
+        if (answer === wordPairs[currentQuestionIndex].foreign_word) {
             setScore(score + 1);
         }
 
@@ -106,7 +106,7 @@ export default function Exercise() {
           variant="h5"
           sx={{ mb: 2 }}
         >
-          {wordPairs[currentQuestionIndex].foreign_word}
+          {wordPairs[currentQuestionIndex].english_word}
         </Typography>
         <TextField
           value={answer}

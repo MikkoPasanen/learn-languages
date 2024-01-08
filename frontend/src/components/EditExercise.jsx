@@ -178,8 +178,8 @@ export default function AddExercise({
         const wordPairs = data.map((pair) => {
             return {
             id: pair.id,
-            english: pair.foreign_word,
-            foreign: pair.finnish_word,
+            english: pair.english_word,
+            foreign: pair.foreign_word,
             };
         });
         setWordPairs(wordPairs);

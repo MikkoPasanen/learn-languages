@@ -108,7 +108,6 @@ export default function TopAppBar({darkMode, handleThemeChange,
           (filterStatuses.length === 0 || filterStatuses.includes(status))
         );
       });
-      handleSignOut();
 
       setMobileFilteredExercises(filteredExercises);
     }, [exercises, setMobileFilteredExercises, filterCategories, filterLanguages, filterStatuses]);
