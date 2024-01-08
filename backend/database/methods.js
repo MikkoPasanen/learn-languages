@@ -114,4 +114,37 @@ module.exports = {
       });
     });
   },
+
+  editExercise: (id, exerciseName, category, language, wordPairs) => {
+    return new Promise((resolve, reject) => {
+      const sqlExercise =
+        'UPDATE exercises SET name = ?, category = ?, language = ? WHERE id = ?';
+      const sqlWordPairs =
+        'UPDATE wordpairs SET foreign_word = ?, finnish_word = ? WHERE id = ?';
+
+      pool.query(
+        sqlExercise,
+        [exerciseName, category, language, id],
+        (err, results) => {
+          if (err) {
+            console.log(err);
+            reject({ status: 500, msg: err });
+          } else {
+            for (const pair of wordPairs) {
+              pool.query(
+                sqlWordPairs,
+                [pair.english, pair.foreign, pair.id],
+                (err) => {
+                  if (err) {
+                    reject({ status: 500, msg: err });
+                  }
+                },
+              );
+            }
+            resolve(results);
+          }
+        },
+      );
+    });
+  },
 };
