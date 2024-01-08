@@ -45,4 +45,23 @@ adminRouter.delete('/delete-exercise/:id([0-9]+)', async (req, res) => {
   }
 });
 
+adminRouter.put('/edit-exercise/:id([0-9]+)', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { exerciseName, category, language, wordPairs } = req.body;
+
+    await database.editExercise(
+      id,
+      exerciseName,
+      category,
+      language,
+      wordPairs,
+    );
+
+    res.status(200).json({ success: true });
+  } catch (err) {
+    res.status(err.status).json(err.msg);
+  }
+});
+
 module.exports = adminRouter;
