@@ -147,4 +147,40 @@ module.exports = {
       );
     });
   },
+
+  addWordPairs: (exerciseId, wordPairs) => {
+    return new Promise((resolve, reject) => {
+      const sql =
+        'INSERT INTO wordpairs (foreign_word, finnish_word, exercise_id) VALUES ?';
+
+      const values = wordPairs.map((pair) => {
+        return [pair.english, pair.foreign, exerciseId];
+      });
+
+      console.log(values);
+
+      pool.query(sql, [values], (err) => {
+        if (err) {
+          reject({ status: 500, msg: err });
+        } else {
+          resolve();
+        }
+      });
+    });
+  },
+
+  deleteWordPairs: (wordPairIds) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM wordpairs WHERE id = ?';
+
+      for (const id of wordPairIds) {
+        pool.query(sql, [id], (err) => {
+          if (err) {
+            reject({ status: 500, msg: err });
+          }
+        });
+      }
+      resolve();
+    });
+  },
 };

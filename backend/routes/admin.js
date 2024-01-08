@@ -48,15 +48,30 @@ adminRouter.delete('/delete-exercise/:id([0-9]+)', async (req, res) => {
 adminRouter.put('/edit-exercise/:id([0-9]+)', async (req, res) => {
   try {
     const { id } = req.params;
-    const { exerciseName, category, language, wordPairs } = req.body;
+    const {
+      name,
+      category,
+      language,
+      wordPairsToUpdate,
+      wordPairsToAdd,
+      wordPairsToDelete,
+    } = req.body;
 
     await database.editExercise(
       id,
-      exerciseName,
+      name,
       category,
       language,
-      wordPairs,
+      wordPairsToUpdate,
     );
+
+    if (wordPairsToAdd.length > 0) {
+      await database.addWordPairs(id, wordPairsToAdd);
+    }
+
+    if (wordPairsToDelete.length > 0) {
+      await database.deleteWordPairs(wordPairsToDelete);
+    }
 
     res.status(200).json({ success: true });
   } catch (err) {
