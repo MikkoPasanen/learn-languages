@@ -45,7 +45,6 @@ export default function AddExercise({
     const [language, setLanguage] = useState(exerciseLanguage);
 
     const [wordPairs, setWordPairs] = useState(null);
-    const [originalWordPairs, setOriginalWordPairs] = useState(null);
 
     const [nameError, setNameError] = useState(false);
     const [categoryError, setCategoryError] = useState(false);
@@ -72,7 +71,7 @@ export default function AddExercise({
         setLanguageError(false);
         setWordPairsError(false);
         setLoading(false);
-        setWordPairs(JSON.parse(JSON.stringify(originalWordPairs)));
+        setWordPairs(wordPairs);
         setName(exerciseName);
         setCategory(exerciseCategory);
         setLanguage(exerciseLanguage);
@@ -182,7 +181,6 @@ export default function AddExercise({
             };
         });
         setWordPairs(wordPairs);
-        setOriginalWordPairs(JSON.parse(JSON.stringify(wordPairs)));
     };
 
     const handleSaveExercise = async () => {
