@@ -21,6 +21,7 @@ credentialsRouter.post('/signin', async (req, res) => {
         const token = jwt.sign({ username }, process.env.TOKEN_SECRET, {
           expiresIn,
         });
+
         res.json({ success: true, token });
       } else {
         res.status(401).json({ success: false });

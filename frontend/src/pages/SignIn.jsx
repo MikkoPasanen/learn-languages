@@ -42,6 +42,7 @@ export default function SignIn({ setSignedIn }) {
 
     const json = await response.json();
 
+
     if(json.success) {
       if(data.get('remember')) {
         localStorage.setItem('token', json.token);
