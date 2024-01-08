@@ -276,9 +276,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
             </Box>
 
             <Box>
-              <ListItemButton
-                onClick={handleThemeChange}
-              >
+              <ListItemButton onClick={handleThemeChange}>
                 {darkMode ? (
                   <LightModeIcon sx={{ pr: 1, fontSize: '2rem' }} />
                 ) : (
@@ -303,32 +301,37 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
               justifyContent: 'center',
             }}
           >
-            {loading
-              ? skeletons.map((skeleton) => (
-                  <ExerciseCard
-                    key={skeleton}
-                    loading={loading}
-                  />
-                ))
-              :
-                mobileFilteredExercises.length === 0 ?
-                  <Typography variant='h6' sx={{mt: '100px'}}>
-                    Oops! No exercises found.
-                  </Typography>
-                :
-                mobileFilteredExercises.map((exercise) => (
-                    <ExerciseCard
-                      key={exercise.id}
-                      exerciseId={exercise.id}
-                      exerciseName={exercise.name}
-                      exerciseCategory={exercise.category}
-                      exerciseLanguage={exercise.language}
-                      signedIn={signedIn}
-                      loading={loading}
-                      handleReload={handleReload}
-                      categories={categories}
-                    />
-                  ))}
+            {loading ? (
+              skeletons.map((skeleton) => (
+                <ExerciseCard
+                  key={skeleton}
+                  loading={loading}
+                />
+              ))
+            ) : mobileFilteredExercises.length === 0 ? (
+              <Typography
+                variant="h6"
+                sx={{ mt: '100px' }}
+              >
+                Oops! No exercises found.
+              </Typography>
+            ) : (
+              mobileFilteredExercises.map((exercise) => (
+                <ExerciseCard
+                  key={exercise.id}
+                  exerciseId={exercise.id}
+                  exerciseName={exercise.name}
+                  exerciseCategory={exercise.category}
+                  exerciseLanguage={exercise.language}
+                  signedIn={signedIn}
+                  loading={loading}
+                  handleReload={handleReload}
+                  categories={categories}
+                  madeBy={exercise.made_by}
+                  modified={exercise.modified}
+                />
+              ))
+            )}
           </Box>
         </Box>
         <Box
@@ -350,47 +353,52 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
               container
               spacing={2}
             >
-              {loading
-                ? skeletons.map((skeleton) => (
+              {loading ? (
+                skeletons.map((skeleton) => (
                   <Grid
-                      item
-                      md={12}
-                      lg={6}
-                      xl={4}
-                      key={skeleton}
-                    >
+                    item
+                    md={12}
+                    lg={6}
+                    xl={4}
+                    key={skeleton}
+                  >
                     <ExerciseCard
                       key={skeleton}
                       loading={loading}
                     />
                   </Grid>
-                  ))
-                :
-                  filteredExercises.length === 0 ?
-                    <Typography variant='h6' sx={{mt: '100px'}}>
-                      Oops! No exercises found.
-                    </Typography>
-                  :
-                  filteredExercises.map((exercise) => (
-                    <Grid
-                      item
-                      md={12}
-                      lg={6}
-                      xl={4}
-                      key={exercise.id}
-                    >
-                      <ExerciseCard
-                        exerciseId={exercise.id}
-                        exerciseName={exercise.name}
-                        exerciseCategory={exercise.category}
-                        exerciseLanguage={exercise.language}
-                        signedIn={signedIn}
-                        loading={loading}
-                        handleReload={handleReload}
-                        categories={categories}
-                      />
-                    </Grid>
-                  ))}
+                ))
+              ) : filteredExercises.length === 0 ? (
+                <Typography
+                  variant="h6"
+                  sx={{ mt: '100px' }}
+                >
+                  Oops! No exercises found.
+                </Typography>
+              ) : (
+                filteredExercises.map((exercise) => (
+                  <Grid
+                    item
+                    md={12}
+                    lg={6}
+                    xl={4}
+                    key={exercise.id}
+                  >
+                    <ExerciseCard
+                      exerciseId={exercise.id}
+                      exerciseName={exercise.name}
+                      exerciseCategory={exercise.category}
+                      exerciseLanguage={exercise.language}
+                      signedIn={signedIn}
+                      loading={loading}
+                      handleReload={handleReload}
+                      categories={categories}
+                      madeBy={exercise.made_by}
+                      modified={exercise.modified}
+                    />
+                  </Grid>
+                ))
+              )}
             </Grid>
           </Box>
         </Box>

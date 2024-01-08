@@ -148,11 +148,11 @@ export default function AddExercise({
         }
     };
 
-    const handleWordChange = (e, index, language) => {
-        const newWordPairs = [...wordPairs];
-        newWordPairs[index][language] = e.target.value;
-        setWordPairs(newWordPairs);
-    };
+   const handleWordChange = (e, index, language) => {
+     const newWordPairs = [...wordPairs];
+     newWordPairs[index][language] = e.target.value;
+     setWordPairs(newWordPairs);
+   };
 
     const handleAddPair = () => {
         setWordPairs([...wordPairs, { english: '', foreign: '' }]);
@@ -200,6 +200,14 @@ export default function AddExercise({
             }
         });
 
+        const currentDate = new Date();
+        const formattedDate = `${currentDate
+          .getDate()
+          .toString()
+          .padStart(2, '0')}/${(currentDate.getMonth() + 1)
+          .toString()
+          .padStart(2, '0')}/${currentDate.getFullYear().toString()}`;
+
         const hr = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/edit-exercise/${exerciseId}`, {
             method: 'PUT',
             headers: {
@@ -213,6 +221,7 @@ export default function AddExercise({
                 wordPairsToUpdate,
                 wordPairsToAdd,
                 wordPairsToDelete,
+                modified: formattedDate,
             }),
         });
 

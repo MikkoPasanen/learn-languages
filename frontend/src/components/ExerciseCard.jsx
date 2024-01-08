@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 export default function ExerciseCard({ exerciseName, exerciseCategory,
                                        exerciseLanguage, exerciseId,
                                        signedIn, loading, handleReload,
-                                       categories }) {
+                                       categories, madeBy, modified }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const userScore = localStorage.getItem(`${exerciseId}-userScore`);
@@ -39,10 +39,6 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
       <MoreVertIcon />
     </IconButton>
    ) : null;
-
-  const currentDate = new Date();
-  const formattedDate =
-  `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear().toString()}`;
 
    return (
      <>
@@ -81,11 +77,15 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
              ) : (
                <>
                  <Typography>
-                   Made by: <strong>{localStorage.getItem('username')}</strong>
+                   Made by: <strong>{madeBy}</strong>
                  </Typography>
-                  <Typography>
-                    <small>Last modified: {formattedDate}</small>
-                  </Typography>
+                 <Typography>
+                   {modified ? (
+                     <small>Last modified: {modified}</small>
+                   ) : (
+                     ''
+                   )}
+                 </Typography>
                  <Box sx={{ mt: 1.5 }}>
                    <Chip
                      sx={{ mr: 1 }}
@@ -144,13 +144,13 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
                  style={{ textDecoration: 'none', color: 'inherit' }}
                  state={{ exerciseName: exerciseName }}
                >
-                <Button
-                  variant="contained"
-                  sx={{ borderRadius: 2, width: 170 }}
-                >
-                    Study🎓
-                </Button>
-                </Link>
+                 <Button
+                   variant="contained"
+                   sx={{ borderRadius: 2, width: 170 }}
+                 >
+                   Study🎓
+                 </Button>
+               </Link>
                <Typography sx={{ mr: 1 }}>
                  Status:
                  {(() => {

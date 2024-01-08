@@ -122,16 +122,16 @@ module.exports = {
     });
   },
 
-  editExercise: (id, exerciseName, category, language, wordPairs) => {
+  editExercise: (id, exerciseName, category, language, wordPairs, modified) => {
     return new Promise((resolve, reject) => {
       const sqlExercise =
-        'UPDATE exercises SET name = ?, category = ?, language = ? WHERE id = ?';
+        'UPDATE exercises SET name = ?, category = ?, language = ?, modified = ? WHERE id = ?';
       const sqlWordPairs =
         'UPDATE wordpairs SET english_word = ?, foreign_word = ? WHERE id = ?';
 
       pool.query(
         sqlExercise,
-        [exerciseName, category, language, id],
+        [exerciseName, category, language, modified, id],
         (err, results) => {
           if (err) {
             console.log(err);

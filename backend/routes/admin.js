@@ -63,6 +63,7 @@ adminRouter.put('/edit-exercise/:id([0-9]+)', async (req, res) => {
       wordPairsToUpdate,
       wordPairsToAdd,
       wordPairsToDelete,
+      modified,
     } = req.body;
 
     await database.editExercise(
@@ -71,6 +72,7 @@ adminRouter.put('/edit-exercise/:id([0-9]+)', async (req, res) => {
       category,
       language,
       wordPairsToUpdate,
+      modified,
     );
 
     if (wordPairsToAdd.length > 0) {
