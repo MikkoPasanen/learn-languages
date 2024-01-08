@@ -51,8 +51,14 @@ export default function Exercise() {
     }
 
     if (currentQuestionIndex === wordPairs.length) {
+        if (
+          localStorage.getItem(`${id}-userScore`) === null ||
+          localStorage.getItem(`${id}-userScore`) < score
+          ) {
+            localStorage.setItem(`${id}-userScore`, score);
+          }
+
         localStorage.setItem(`${id}-totalScore`, wordPairs.length);
-        localStorage.setItem(`${id}-userScore`, score);
         return (
           <Box
             sx={{
