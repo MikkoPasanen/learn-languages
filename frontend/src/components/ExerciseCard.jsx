@@ -139,18 +139,18 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
                  alignItems: 'center',
                }}
              >
-               <Button
-                 variant="contained"
-                 sx={{ borderRadius: 2 }}
+               <Link
+                 to={`/exercise/${exerciseId}`}
+                 style={{ textDecoration: 'none', color: 'inherit' }}
+                 state={{ exerciseName: exerciseName }}
                >
-                 <Link
-                   to={`/exercise/${exerciseId}`}
-                   style={{ textDecoration: 'none', color: 'inherit' }}
-                   state={{ exerciseName: exerciseName }}
-                 >
-                   Study🎓
-                 </Link>
-               </Button>
+                <Button
+                  variant="contained"
+                  sx={{ borderRadius: 2, width: 170 }}
+                >
+                    Study🎓
+                </Button>
+                </Link>
                <Typography sx={{ mr: 1 }}>
                  Status:
                  {(() => {
