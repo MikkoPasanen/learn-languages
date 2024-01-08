@@ -122,7 +122,13 @@ export default function TopAppBar({darkMode, handleThemeChange,
             display: { xs: 'none', md: 'block' },
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <IconButton
               size="large"
               edge="start"
@@ -184,8 +190,9 @@ export default function TopAppBar({darkMode, handleThemeChange,
                   }}
                 >
                   <Avatar>
-                    {localStorage.getItem('username')[0].toUpperCase() ||
-                      sessionStorage.getItem('username')[0].toUpperCase()}
+                    {(localStorage.getItem('username') ||
+                      sessionStorage.getItem('username') ||
+                      '')[0].toUpperCase()}
                   </Avatar>
                 </IconButton>
               </>
@@ -198,7 +205,13 @@ export default function TopAppBar({darkMode, handleThemeChange,
             display: { xs: 'block', md: 'none' },
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <IconButton
               size="large"
               edge="start"
@@ -219,8 +232,9 @@ export default function TopAppBar({darkMode, handleThemeChange,
                   }}
                 >
                   <Avatar>
-                    {localStorage.getItem('username')[0].toUpperCase() ||
-                      sessionStorage.getItem('username')[0].toUpperCase()}
+                    {(localStorage.getItem('username') ||
+                      sessionStorage.getItem('username') ||
+                      '')[0].toUpperCase()}
                   </Avatar>
                 </IconButton>
               </>
