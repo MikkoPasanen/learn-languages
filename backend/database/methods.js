@@ -61,16 +61,23 @@ module.exports = {
     });
   },
 
-  addExercise: (exerciseName, category, language, wordPairs) => {
+  addExercise: (
+    exerciseName,
+    category,
+    language,
+    wordPairs,
+    madeBy,
+    modified,
+  ) => {
     return new Promise((resolve, reject) => {
       const sqlExercise =
-        'INSERT INTO exercises (name, category, language) VALUES (?, ?, ?)';
+        'INSERT INTO exercises (name, category, language, made_by, modified) VALUES (?, ?, ?, ?, ?)';
       const sqlWordPairs =
-        'INSERT INTO wordpairs (foreign_word, finnish_word, exercise_id) VALUES ?';
+        'INSERT INTO wordpairs (english_word, foreign_word, exercise_id) VALUES ?';
 
       pool.query(
         sqlExercise,
-        [exerciseName, category, language],
+        [exerciseName, category, language, madeBy, modified],
         (err, results) => {
           if (err) {
             reject({ status: 500, msg: err });
@@ -120,7 +127,7 @@ module.exports = {
       const sqlExercise =
         'UPDATE exercises SET name = ?, category = ?, language = ? WHERE id = ?';
       const sqlWordPairs =
-        'UPDATE wordpairs SET foreign_word = ?, finnish_word = ? WHERE id = ?';
+        'UPDATE wordpairs SET english_word = ?, foreign_word = ? WHERE id = ?';
 
       pool.query(
         sqlExercise,
@@ -151,7 +158,7 @@ module.exports = {
   addWordPairs: (exerciseId, wordPairs) => {
     return new Promise((resolve, reject) => {
       const sql =
-        'INSERT INTO wordpairs (foreign_word, finnish_word, exercise_id) VALUES ?';
+        'INSERT INTO wordpairs (english_word, foreign_word, exercise_id) VALUES ?';
 
       const values = wordPairs.map((pair) => {
         return [pair.english, pair.foreign, exerciseId];

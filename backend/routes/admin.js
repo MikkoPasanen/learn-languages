@@ -24,9 +24,17 @@ adminRouter.use(verifyToken);
 
 adminRouter.post('/add-exercise', async (req, res) => {
   try {
-    const { exerciseName, category, language, wordPairs } = req.body;
+    const { exerciseName, category, language, wordPairs, madeBy, modified } =
+      req.body;
 
-    await database.addExercise(exerciseName, category, language, wordPairs);
+    await database.addExercise(
+      exerciseName,
+      category,
+      language,
+      wordPairs,
+      madeBy,
+      modified,
+    );
     res.status(201).json({ success: true });
   } catch (err) {
     res.status(err.status).json(err.msg);
