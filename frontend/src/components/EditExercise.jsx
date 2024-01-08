@@ -45,6 +45,8 @@ export default function AddExercise({
     const [language, setLanguage] = useState(exerciseLanguage);
 
     const [wordPairs, setWordPairs] = useState(null);
+    const [originalWordPairs, setOriginalWordPairs] = useState(null);
+    const [wordPairsToDelete, setWordPairsToDelete] = useState([]);
 
     const [nameError, setNameError] = useState(false);
     const [categoryError, setCategoryError] = useState(false);
@@ -54,7 +56,6 @@ export default function AddExercise({
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
 
-    const [wordPairsToDelete, setWordPairsToDelete] = useState([]);
 
     const steps = ['Exercise info', 'Word pairs', 'Check and save'];
 
@@ -76,6 +77,7 @@ export default function AddExercise({
         setCategory(exerciseCategory);
         setLanguage(exerciseLanguage);
         setWordPairsToDelete([]);
+        setOriginalWordPairs(null);
     };
 
     const handleNext = () => {
@@ -181,6 +183,7 @@ export default function AddExercise({
             };
         });
         setWordPairs(wordPairs);
+        setOriginalWordPairs(JSON.parse(JSON.stringify(wordPairs)));
     };
 
     const handleSaveExercise = async () => {
@@ -216,6 +219,10 @@ export default function AddExercise({
         const json = await hr.json();
 
         if (json.success) {
+            if (JSON.stringify(wordPairs) !== JSON.stringify(originalWordPairs)) {
+                localStorage.removeItem(`${exerciseId}-totalScore`);
+                localStorage.removeItem(`${exerciseId}-userScore`);
+            }
             handleReload();
             handleCloseDialog();
         } else {
