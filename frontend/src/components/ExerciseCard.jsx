@@ -3,16 +3,17 @@ import { Card, Box, CardHeader, CardContent,
         Typography, IconButton, Button, Chip,
         Menu, MenuItem, Skeleton } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import EditIcon from '@mui/icons-material/Edit';
 
 import DeleteExercise from './DeleteExercise';
+import EditExercise from './EditExercise';
 
 import { useState} from 'react';
 import { Link } from 'react-router-dom';
 
 export default function ExerciseCard({ exerciseName, exerciseCategory,
                                        exerciseLanguage, exerciseId,
-                                       signedIn, loading, handleReload }) {
+                                       signedIn, loading, handleReload,
+                                       categories }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const userScore = localStorage.getItem(`${exerciseId}-userScore`);
@@ -23,6 +24,10 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
   };
   const handleOptionsClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleEditExercise = () => {
+
   };
 
   const action = signedIn ? (
@@ -77,11 +82,15 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
               open={Boolean(anchorEl)}
               onClose={handleOptionsClose}
             >
-              <MenuItem onClick={handleOptionsClose}>
-                <IconButton sx={{ padding: 0 }}>
-                  <EditIcon sx={{ fontSize: 15 }} />
-                  <Typography sx={{ ml: 1, fontSize: 15 }}>Edit</Typography>
-                </IconButton>
+              <MenuItem onClick={handleEditExercise}>
+               <EditExercise
+                  exerciseId={exerciseId}
+                  exerciseName={exerciseName}
+                  exerciseCategory={exerciseCategory}
+                  exerciseLanguage={exerciseLanguage}
+                  categories={categories}
+                  handleReload={handleReload}
+               />
               </MenuItem>
 
               <MenuItem onClick={handleOptionsClose}>

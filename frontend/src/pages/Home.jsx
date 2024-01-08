@@ -326,6 +326,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                       signedIn={signedIn}
                       loading={loading}
                       handleReload={handleReload}
+                      categories={categories}
                     />
                   ))}
           </Box>
@@ -386,6 +387,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                         signedIn={signedIn}
                         loading={loading}
                         handleReload={handleReload}
+                        categories={categories}
                       />
                     </Grid>
                   ))}
