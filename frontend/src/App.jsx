@@ -18,6 +18,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [languages, setLanguages] = useState([]);
+  const [madeBy, setMadeBy] = useState([]);
   const [mobileFilteredExercises, setMobileFilteredExercises] = useState([]);
 
 
@@ -45,8 +46,10 @@ export default function App() {
     setExercises(data);
     const categories = data.map((exercise) => exercise.category);
     const languages = data.map((exercise) => exercise.language);
+    const madeBy = data.map((exercise) => exercise.made_by);
     setCategories([...new Set(categories)]);
     setLanguages([...new Set(languages)]);
+    setMadeBy([...new Set(madeBy)]);
     setLoading(false);
   };
 
@@ -64,6 +67,7 @@ export default function App() {
             setOpenAddExercise={setOpenAddExercise}
             categories={categories}
             languages={languages}
+            madeBy={madeBy}
             exercises={exercises}
             setMobileFilteredExercises={setMobileFilteredExercises}
 
@@ -78,6 +82,7 @@ export default function App() {
                   setOpenAddExercise={setOpenAddExercise}
                   categories={categories}
                   languages={languages}
+                  madeBy={madeBy}
                   exercises={exercises}
                   loading={loading}
                   handleReload={handleReload}

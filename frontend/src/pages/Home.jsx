@@ -17,12 +17,13 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 
 export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                                 loading, exercises, handleReload, categories,
-                                languages, mobileFilteredExercises, handleThemeChange,
-                                darkMode  }) {
+                                languages, madeBy, mobileFilteredExercises,
+                                handleThemeChange, darkMode  }) {
     const [filterCount, setFilterCount] = useState(0);
     const [filterCategories, setFilterCategories] = useState([]);
     const [filterLanguages, setFilterLanguages] = useState([]);
     const [filterStatuses, setFilterStatuses] = useState([]);
+    const [filterMadeBy, setFilterMadeBy] = useState([]);
     const skeletons = [1, 2, 3];
 
     // Store the number of exercises in each category
@@ -36,6 +37,15 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
       const count = exercises.filter((exercise) => exercise.language === language).length;
       return { language, count };
     });
+
+    // Store the number of exercises made by each user
+    const madeByCounts = madeBy.map((user) => {
+      const count = exercises.filter((exercise) => exercise.made_by === user).length;
+      return { user, count };
+    });
+
+    console.log("all users: ", madeBy);
+    console.log("madeByCounts: ", madeByCounts);
 
     // Filter the exercises based on the selected categories
     const categoryChange = (e) => {
@@ -65,6 +75,15 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
       }
     };
 
+    // Filter the exercises based on the selected creators
+    const madeByChange = (e) => {
+      if (e.target.checked) {
+        setFilterMadeBy([...filterMadeBy, e.target.name]);
+      } else {
+        setFilterMadeBy(filterMadeBy.filter((user) => user !== e.target.name));
+      }
+    };
+
     // Filter the exercises based on the selected filters
    const filteredExercises = exercises.filter((exercise) => {
      const score = localStorage.getItem(`${exercise.id}-userScore`);
@@ -79,7 +98,8 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
      return (
        (filterCategories.length === 0 || filterCategories.includes(exercise.category)) &&
        (filterLanguages.length === 0 || filterLanguages.includes(exercise.language)) &&
-       (filterStatuses.length === 0 || filterStatuses.includes(status))
+       (filterStatuses.length === 0 || filterStatuses.includes(status)) &&
+       (filterMadeBy.length === 0 || filterMadeBy.includes(exercise.made_by))
      );
    });
 
@@ -266,10 +286,39 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
               <ListItem disablePadding>
                 <Accordion sx={{ backgroundColor: 'inherit', width: '100%' }}>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography>Created by</Typography>
+                    <Typography>Made by</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>Some users here</Typography>
+                    {madeBy.map((madeBy) => (
+                      <Box
+                        key={madeBy}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Box>
+                          <Checkbox
+                            name={madeBy}
+                            onChange={(e) => {
+                              setFilterCount(
+                                e.target.checked
+                                  ? filterCount + 1
+                                  : filterCount - 1,
+                              ),
+                                madeByChange(e);
+                            }}
+                          />
+                          {madeBy}
+                        </Box>
+                        <Chip
+                          label={
+                            madeByCounts.find((m) => m.user === madeBy).count
+                          }
+                        />
+                      </Box>
+                    ))}
                   </AccordionDetails>
                 </Accordion>
               </ListItem>
