@@ -71,9 +71,19 @@ export default function Exercise() {
           >
             <Typography
               variant="h5"
-              sx={{ mb: 3 }}
+              sx={{ mb: 1 }}
             >
               You scored: {score}/{wordPairs.length}
+            </Typography>
+            <Typography
+              sx={{ mb: 3 }}
+            >
+              {score === 0 ?
+               'Better luck next time!' :
+               score === wordPairs.length ?
+               'Perfect!' :
+                'You can do better!'
+               }
             </Typography>
             <Link to="/">
               <Button variant="contained">
