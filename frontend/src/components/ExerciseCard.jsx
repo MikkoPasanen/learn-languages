@@ -155,7 +155,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
                <Link
                  to={`/exercise/${exerciseId}`}
                  style={{ textDecoration: 'none', color: 'inherit' }}
-                 state={{ exerciseName: exerciseName }}
+                 state={{ exerciseName: exerciseName, language: exerciseLanguage }}
                >
                  <Button
                    variant="contained"

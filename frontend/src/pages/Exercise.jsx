@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, Button } from "@mui/material"
+import { Box, Typography, TextField, Button, ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { useState, useEffect } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 
@@ -6,10 +6,16 @@ export default function Exercise() {
     const { id } = useParams();
     const location = useLocation();
     const exerciseName = location.state?.exerciseName || "Exercise";
+    const exerciseLanguage = location.state?.language || "Foreign";
     const [wordPairs, setWordPairs] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(null);
     const [score, setScore] = useState(0);
     const [answer, setAnswer] = useState("");
+    const [answerLanguage, setAnswerLanguage] = useState('english');
+
+    const handleLanguageChange = (event, newLanguage) => {
+      setAnswerLanguage(newLanguage);
+    };
 
     useEffect(() => {
         fetchWordPairs(id);
@@ -36,17 +42,53 @@ export default function Exercise() {
 
     if (currentQuestionIndex === null) {
         return (
-            <Box sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column",
-                mt: '100px'
-            }}>
-                <Typography variant="h4" sx={{mb: 3}}>{exerciseName}</Typography>
-                <Typography variant="h5" sx={{mb: 3}}>Add toggle here for switching question type...</Typography>
-                <Button onClick={handlePlay} variant="contained">Start</Button>
-            </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              mt: '120px',
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{ mb: 3 }}
+            >
+              {exerciseName}
+            </Typography>
+            <Typography
+              variant="h5"
+              sx={{ mb: 3 }}
+            >
+              Choose how you want to answer
+            </Typography>
+            <ToggleButtonGroup
+              value={answerLanguage}
+              exclusive
+              onChange={handleLanguageChange}
+              sx={{ mb: 3 }}
+            >
+              <ToggleButton
+                value="english"
+                aria-label="english"
+              >
+                <strong>English</strong>
+              </ToggleButton>
+              <ToggleButton
+                value="foreign"
+                aria-label="foreign"
+              >
+                <strong>{exerciseLanguage}</strong>
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <Button
+              onClick={handlePlay}
+              variant="contained"
+            >
+              Start exericse
+            </Button>
+          </Box>
         );
     }
 
