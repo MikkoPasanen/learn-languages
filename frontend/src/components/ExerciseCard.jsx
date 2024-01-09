@@ -29,16 +29,29 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
   const handleEditExercise = () => {
 
   };
-
+  const user = localStorage.getItem('username') || sessionStorage.getItem('username');
   const action = signedIn ? (
-    <IconButton
-      aria-label="settings"
-      onClick={handleOptionsClick}
-      sx={{ ml: 2}}
-    >
-      <MoreVertIcon />
-    </IconButton>
-   ) : null;
+    user === 'admin' ? (
+      <IconButton
+        aria-label="settings"
+        onClick={handleOptionsClick}
+        sx={{ ml: 2}}
+      >
+        <MoreVertIcon />
+      </IconButton>
+    ) : user === madeBy ? (
+      <IconButton
+        aria-label="settings"
+        onClick={handleOptionsClick}
+        sx={{ ml: 2}}
+      >
+        <MoreVertIcon />
+      </IconButton>
+    ) : (
+      null
+    )
+    ) : null;
+
 
    return (
      <>
