@@ -1,5 +1,7 @@
 import { Box, Typography, TextField, Button, ToggleButton, ToggleButtonGroup,
-          Card, CardHeader, CardContent, CardActions} from "@mui/material"
+          Card, CardHeader, CardContent, CardActions,
+          Table, TableBody, TableHead, TableRow, TableCell,
+          TableContainer} from "@mui/material"
 import { useState, useEffect } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 
@@ -13,6 +15,7 @@ export default function Exercise() {
     const [score, setScore] = useState(0);
     const [answer, setAnswer] = useState("");
     const [answerLanguage, setAnswerLanguage] = useState('english');
+    const [answeredQuestions , setAnsweredQuestions] = useState([]);
 
     const handleLanguageChange = (event, newLanguage) => {
       setAnswerLanguage(newLanguage);
@@ -33,21 +36,32 @@ export default function Exercise() {
     };
 
     const handleNextQuestion = () => {
+        let correct;
         if (answerLanguage === "english") {
-          if (answer.toLowerCase() === wordPairs[currentQuestionIndex].english_word.toLowerCase()) {
-            setScore(score + 1);
-          }
+            correct = answer.toLowerCase() === wordPairs[currentQuestionIndex].english_word.toLowerCase();
         } else {
-          if (answer.toLowerCase() === wordPairs[currentQuestionIndex].foreign_word.toLowerCase()) {
-            setScore(score + 1);
-          }
+            correct = answer.toLowerCase() === wordPairs[currentQuestionIndex].foreign_word.toLowerCase();
         }
+
+        if (correct) {
+          setScore(score + 1);
+        }
+
+        const wordToSave =
+          answerLanguage === "english"
+          ? wordPairs[currentQuestionIndex].foreign_word
+          : wordPairs[currentQuestionIndex].english_word;
+
+        setAnsweredQuestions([...answeredQuestions, {
+          word : wordToSave,
+          correct: correct,
+        }]);
+
         setAnswer("");
         setCurrentQuestionIndex(currentQuestionIndex + 1);
     };
 
     const handleBack = () => {
-        setAnswer("");
         setCurrentQuestionIndex(currentQuestionIndex - 1);
     };
 
@@ -129,21 +143,36 @@ export default function Exercise() {
           >
             You scored: {score}/{wordPairs.length}
           </Typography>
-          <Typography
-            sx={{ mb: 3 }}
-          >
-            {score === 0 ?
-             'Better luck next time!' :
-             score === wordPairs.length ?
-             'Perfect!' :
-              'You can do better!'
-             }
+          <Typography sx={{ mb: 3 }}>
+            {score === 0
+              ? 'Better luck next time!'
+              : score === wordPairs.length
+                ? 'Perfect!'
+                : 'You can do better!'}
           </Typography>
+          <TableContainer sx={{ width: 300, mb: 5 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">Word</TableCell>
+                  <TableCell align="center">Correct</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {answeredQuestions.map((question, index) => (
+                  <TableRow key={index}>
+                    <TableCell align="center">{question.word}</TableCell>
+                    <TableCell align="center">
+                      {question.correct ? '✅' : '❌'}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
           <Link to="/">
             <Button variant="contained">
-              <Typography sx={{ fontWeight: 'bold' }}>
-                Go back home
-              </Typography>
+              <Typography sx={{ fontWeight: 'bold' }}>Go back home</Typography>
             </Button>
           </Link>
         </Box>
