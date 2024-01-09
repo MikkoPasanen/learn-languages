@@ -1,4 +1,5 @@
-import { Box, Typography, TextField, Button, ToggleButton, ToggleButtonGroup } from "@mui/material"
+import { Box, Typography, TextField, Button, ToggleButton, ToggleButtonGroup,
+          Card, CardHeader, CardContent, CardActions} from "@mui/material"
 import { useState, useEffect } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 
@@ -32,12 +33,22 @@ export default function Exercise() {
     };
 
     const handleNextQuestion = () => {
-        if (answer === wordPairs[currentQuestionIndex].foreign_word) {
+        if (answerLanguage === "english") {
+          if (answer.toLowerCase() === wordPairs[currentQuestionIndex].english_word.toLowerCase()) {
             setScore(score + 1);
+          }
+        } else {
+          if (answer.toLowerCase() === wordPairs[currentQuestionIndex].foreign_word.toLowerCase()) {
+            setScore(score + 1);
+          }
         }
-
         setAnswer("");
         setCurrentQuestionIndex(currentQuestionIndex + 1);
+    };
+
+    const handleBack = () => {
+        setAnswer("");
+        setCurrentQuestionIndex(currentQuestionIndex - 1);
     };
 
     if (currentQuestionIndex === null) {
@@ -93,49 +104,50 @@ export default function Exercise() {
     }
 
     if (currentQuestionIndex === wordPairs.length) {
-        if (
-          localStorage.getItem(`${id}-userScore`) === null ||
-          localStorage.getItem(`${id}-userScore`) < score
-          ) {
-            localStorage.setItem(`${id}-userScore`, score);
-          }
+      if (
+        localStorage.getItem(`${id}-userScore`) === null ||
+        localStorage.getItem(`${id}-userScore`) < score
+        ) {
+          localStorage.setItem(`${id}-userScore`, score);
+        }
 
-        localStorage.setItem(`${id}-totalScore`, wordPairs.length);
-        return (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'column',
-              mt: '100px',
-            }}
+      localStorage.setItem(`${id}-totalScore`, wordPairs.length);
+
+      return (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            mt: '100px',
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{ mb: 1 }}
           >
-            <Typography
-              variant="h5"
-              sx={{ mb: 1 }}
-            >
-              You scored: {score}/{wordPairs.length}
-            </Typography>
-            <Typography
-              sx={{ mb: 3 }}
-            >
-              {score === 0 ?
-               'Better luck next time!' :
-               score === wordPairs.length ?
-               'Perfect!' :
-                'You can do better!'
-               }
-            </Typography>
-            <Link to="/">
-              <Button variant="contained">
-                <Typography sx={{ fontWeight: 'bold' }}>
-                  Go back home
-                </Typography>
-              </Button>
-            </Link>
-          </Box>
-        );
+            You scored: {score}/{wordPairs.length}
+          </Typography>
+          <Typography
+            sx={{ mb: 3 }}
+          >
+            {score === 0 ?
+             'Better luck next time!' :
+             score === wordPairs.length ?
+             'Perfect!' :
+              'You can do better!'
+             }
+          </Typography>
+          <Link to="/">
+            <Button variant="contained">
+              <Typography sx={{ fontWeight: 'bold' }}>
+                Go back home
+              </Typography>
+            </Button>
+          </Link>
+        </Box>
+      );
     }
 
     return (
@@ -148,31 +160,57 @@ export default function Exercise() {
           mt: '100px',
         }}
       >
-        <Typography
-          variant="h4"
-          sx={{ mb: 3 }}
-        >
-          Translate the word:
-        </Typography>
-        <Typography
-          variant="h5"
-          sx={{ mb: 2 }}
-        >
-          {wordPairs[currentQuestionIndex].english_word}
-        </Typography>
-        <TextField
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          sx={{ mb: 3 }}
-          size="small"
-          placeholder="Your answer"
-        />
-        <Button
-          onClick={handleNextQuestion}
-          variant="contained"
-        >
-          Next
-        </Button>
+        <Card>
+          <CardHeader
+            sx={{ borderRadius: 4, width: 400 }}
+            title={'Translate the word'}
+            action={`Question: ${currentQuestionIndex + 1}/${wordPairs.length}`}
+          ></CardHeader>
+          <CardContent
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{ mb: 3 }}
+            >
+              {answerLanguage === 'english'
+                ? wordPairs[currentQuestionIndex].foreign_word
+                : wordPairs[currentQuestionIndex].english_word}
+            </Typography>
+            <TextField
+              sx={{ mb: 3 }}
+              label="Answer"
+              variant="outlined"
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+            />
+          </CardContent>
+          <CardActions
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Button
+              disabled={currentQuestionIndex === 0}
+              onClick={handleBack}
+            >
+              Back
+            </Button>
+            <Button
+              onClick={handleNextQuestion}
+              sx={{ borderRadius: 2}}
+            >
+              Next
+            </Button>
+          </CardActions>
+        </Card>
       </Box>
     );
 }
