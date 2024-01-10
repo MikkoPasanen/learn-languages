@@ -40,15 +40,26 @@ Learn languages is deployed to [Render](https://learn-languages.onrender.com/) <
 
 ## Pictures
 
-<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic1.PNG">
-<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic2.PNG">
-<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic3.PNG">
-<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic4.PNG">
-<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic5.PNG">
-<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic6.PNG">
-<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic7.PNG">
-<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic8.PNG">
-<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic9.PNG">
+### Overview
+<img align="left" alt="Pictures of the app" src="./pics/Pic1.PNG">
+---
+
+### Adding new exercise
+<img height="450px" width="450px" alt="Pictures of the app" src="./pics/Pic2.PNG">
+<img height="450px" width="450px" alt="Pictures of the app" src="./pics/Pic3.PNG">
+<img height="500px" width="500px" alt="Pictures of the app" src="./pics/Pic4.PNG">
+---
+
+### Sign up / sign in page
+<img height="500px" width="500px" alt="Pictures of the app" src="./pics/Pic5.PNG">
+<img height="450px" width="450px" alt="Pictures of the app" src="./pics/Pic6.PNG">
+---
+
+### Quiz exercise
+<img height="500px" width="600px" alt="Pictures of the app" src="./pics/Pic7.PNG">
+<img height="500px" width="500px" alt="Pictures of the app" src="./pics/Pic8.PNG">
+<img height="500px" width="500px" alt="Pictures of the app" src="./pics/Pic9.PNG">
+
 
 ## Author
 Mikko Pasanen <mikko.pasanen@tuni.fi>
