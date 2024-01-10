@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Sign up page component
+ * @component
+ * @description Renders the sign up page and handles the sign up process
+ * @requires react
+ * @requires react-router-dom
+ * @requires @mui/material
+ * @requires @mui/material/styles
+ * @requires @mui/icons-material/LockOutlined
+ */
+
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useState } from 'react';
@@ -7,18 +18,36 @@ import { IconButton, InputAdornment, TextField,
         Alert, CircularProgress} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
+/**
+ * Sign up page component - renders the sign up form
+ * @returns {JSX.Element} - Rendered component
+ */
 export default function SignUp() {
+  // State for the username error
   const [nameError, setNameError] = useState(false);
+  // State for the password error
   const [passwordError, setPasswordError] = useState(false);
+  // State for the password repeat error
   const [passwordRepeatError, setPasswordRepeatError] = useState(false);
+  // State for the password visibility
   const [showPassword, setShowPassword] = useState(false);
+  // State for the password repeat visibility
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  // State for the success snackbar
   const [openSuccess, setOpenSuccess] = useState(false);
+  // State for the error snackbar
   const [openError, setOpenError] = useState(false);
+  // State for the loading spinner
   const [loading, setLoading] = useState(false);
 
+  // Hook for navigation
   const navigate = useNavigate();
 
+  /**
+   * Handles the closing of the snackbar
+   * @param {Event} event - The event that triggered the function
+   * @param {string} reason - The reason for the function call
+   */
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -28,36 +57,54 @@ export default function SignUp() {
     setOpenError(false);
   };
 
+  /**
+   * Handles the sign up form submit
+   * @param {Event} event - The event that triggered the function
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // Create a new FormData object from the form
     const data = new FormData(event.currentTarget);
 
+    // Validate the username, password and password repeat
     const isValidUserName = validateUsername(data.get('username'));
     const isValidPassword = validatePassword(data.get('password'));
-    const isValidPasswordCheck = validatePasswordRepeat(data.get('password'), data.get('repeat-password'));
+    const isValidPasswordCheck = validatePasswordRepeat(
+      data.get('password'),
+      data.get('repeat-password'),
+    );
 
+    // If all the fields are valid, send the sign up request
     if (isValidUserName && isValidPassword && isValidPasswordCheck) {
       setLoading(true);
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/credentials/signup`, {
-        method: 'POST',
-        body: JSON.stringify({
-          username: data.get('username'),
-          password: data.get('password'),
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
+      // Send POST request to backend
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/credentials/signup`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            username: data.get('username'),
+            password: data.get('password'),
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
         },
-      });
+      );
 
+      // Get the response as JSON
       const responseData = await response.json();
 
+      // If the response is success, redirect to sign in page
       if (responseData.affectedRows === 1) {
         setOpenSuccess(true);
+        // Redirect to sign in page after 5 seconds
         setTimeout(() => {
           navigate('/signin');
         }, 5000);
       }
+      // If the response is not success, show the error snackbar
       if (responseData.userExists) {
         setOpenError(true);
       }
@@ -65,6 +112,11 @@ export default function SignUp() {
     }
   };
 
+  /**
+   * Validates the username
+   * @param {string} username - The username to validate
+   * @returns {boolean} - True if the username is valid, false otherwise
+   */
   const validateUsername = (username) => {
     if (username.length < 3) {
       setNameError(true);
@@ -75,6 +127,11 @@ export default function SignUp() {
     return true;
   };
 
+  /**
+   * Validates the password
+   * @param {string} password - The password to validate
+   * @returns {boolean} - True if the password is valid, false otherwise
+   */
   const validatePassword = (password) => {
     if (password.length < 8) {
       setPasswordError(true);
@@ -85,6 +142,12 @@ export default function SignUp() {
     return true;
   };
 
+  /**
+   * Validates the password repeat
+   * @param {string} password - The password to validate
+   * @param {string} passwordRepeat - The password repeat to validate
+   * @returns {boolean} - True if the password repeat is valid, false otherwise
+  */
   const validatePasswordRepeat = (password, passwordRepeat) => {
     if (password !== passwordRepeat) {
       setPasswordRepeatError(true);
