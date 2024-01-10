@@ -2,11 +2,12 @@
 /**
  * @fileoverview SignIn page component
  * @description This component renders the sign in form and handles the sign in process
- *
+ * @component
  * @requires npm:@mui/material
  * @requires npm:@mui/icons-material
  * @requires npm:@react-router-dom
  * @requires npm:react
+ * @returns {JSX.Element} - Rendered component
  */
 
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
