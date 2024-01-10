@@ -1,18 +1,43 @@
 /* eslint-disable react/prop-types */
+
+/**
+ * @fileoverview DeleteExercise component, a button that deletes an exercise
+ * @requires React
+ * @requires @mui/material
+ */
 import { IconButton, Typography, Dialog, Button, DialogActions,
         DialogContent, DialogTitle, CircularProgress } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useState } from 'react';
 
+/**
+ * DeleteExercise button component
+ * @component
+ * @param {Object} props
+ * @param {string} props.exerciseId - exercise id
+ * @param {string} props.exerciseName - exercise name
+ * @param {function} props.handleReload - reload function
+ * @returns {JSX.Element} DeleteExercise component
+ */
 export default function DeleteExercise({ exerciseId, exerciseName, handleReload }) {
+
+    // State for the dialog open state
     const [open, setOpen] = useState(false);
+    // State for the loading spinner
     const [loading, setLoading] = useState(false);
 
+    // Get token from local storage or session storage
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
+    /**
+     * Handles the deletion of the exercise
+     * @async
+     * @returns {Promise<void>} - Promise representing the success/failure of the deletion
+     */
     const handleDeleteExercise = async () => {
         setLoading(true);
+        // Send a DELETE request to the server
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/api/admin/delete-exercise/${exerciseId}`,
           {
@@ -25,6 +50,7 @@ export default function DeleteExercise({ exerciseId, exerciseName, handleReload 
         );
         const json = await response.json();
 
+        // If the request was successful, reload the exercises and close the dialog
         if (json.success) {
             await handleReload();
             localStorage.removeItem(`${exerciseId}-totalScore`);
@@ -34,6 +60,10 @@ export default function DeleteExercise({ exerciseId, exerciseName, handleReload 
         }
     };
 
+    /**
+     * DeleteExercise component
+     * @returns {JSX.Element}
+     */
     return (
       <>
         <IconButton
