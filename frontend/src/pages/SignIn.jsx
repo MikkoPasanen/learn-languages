@@ -1,19 +1,60 @@
 /* eslint-disable react/prop-types */
+/**
+ * @fileoverview SignIn page component
+ * @description This component renders the sign in form and handles the sign in process
+ *
+ * @requires npm:@mui/material
+ * @requires npm:@mui/icons-material
+ * @requires npm:@react-router-dom
+ * @requires npm:react
+ */
+
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { IconButton, InputAdornment, TextField,
-        Link, Grid, Box, Typography, Container,
-        Checkbox, FormControlLabel, CssBaseline,
-        Avatar, Button, Snackbar, Alert, CircularProgress } from '@mui/material';
+import {
+  IconButton,
+  InputAdornment,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Checkbox,
+  FormControlLabel,
+  CssBaseline,
+  Avatar,
+  Button,
+  Snackbar,
+  Alert,
+  CircularProgress,
+} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
+/**
+ * SignIn component - renders the sign in form
+ * @param {Function} props.setSignedIn - Function to set the signed in state
+ * @returns {React.Component} - Returns the component
+ */
 export default function SignIn({ setSignedIn }) {
+  // State for the password visibility
   const [showPassword, setShowPassword] = useState(false);
+
+  // State for the snackbar
   const [open, setOpen] = useState(false);
+
+  // State for the loading spinner
   const [loading, setLoading] = useState(false);
+
+  // Hook for navigation
   const navigate = useNavigate();
 
+  /**
+   * Handles the closing of the snackbar
+   * @param {Event} event - The event that triggered the function
+   * @param {string} reason - The reason for the function call
+   */
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -22,45 +63,60 @@ export default function SignIn({ setSignedIn }) {
     setOpen(false);
   };
 
+  /**
+   * Handles the submission of the sign in form
+   * @param {Event} event - The event that triggered the function
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
+    // Create a new FormData object from the form
     const data = new FormData(event.currentTarget);
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/credentials/signin`, {
-      method: 'POST',
-      body: JSON.stringify({
-        username: data.get('username'),
-        password: data.get('password'),
-        remember: data.get('remember'),
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
+    // Send POST request to backend
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/credentials/signin`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          username: data.get('username'),
+          password: data.get('password'),
+          remember: data.get('remember'),
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
       },
+    );
 
-    });
-
+    // Get the response as JSON
     const json = await response.json();
 
-
-    if(json.success) {
-      if(data.get('remember')) {
+    // If the response is success
+    if (json.success) {
+      // Store the token and username in local or session storage depending on the remember me checkbox
+      if (data.get('remember')) {
         localStorage.setItem('token', json.token);
         localStorage.setItem('username', data.get('username'));
       } else {
         sessionStorage.setItem('username', data.get('username'));
         sessionStorage.setItem('token', json.token);
       }
+      // Set the signed in state to true and navigate to the home page
       setSignedIn(true);
       setLoading(false);
-      navigate("/");
+      navigate('/');
     } else {
+      // If the response is not success, show the error snackbar
       setOpen(true);
       setLoading(false);
     }
-
   };
 
+  /**
+   * Renders the SignIn component.
+   * @returns {JSX.Element} The rendered SignIn component.
+   */
   return (
     <>
       <Container
