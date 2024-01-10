@@ -270,7 +270,12 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                               <Checkbox
                                 name={status}
                                 onChange={(e) => {
-                                  statusChange(e);
+                                    setFilterCount(
+                                      e.target.checked
+                                        ? filterCount + 1
+                                        : filterCount - 1,
+                                    ),
+                                      statusChange(e);
                                 }}
                               />
                               {status}

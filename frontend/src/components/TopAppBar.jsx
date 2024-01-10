@@ -442,7 +442,12 @@ export default function TopAppBar({darkMode, handleThemeChange,
                           <Checkbox
                             name={status}
                             onChange={(e) => {
-                              statusChange(e);
+                                setFilterCount(
+                                  e.target.checked
+                                    ? filterCount + 1
+                                    : filterCount - 1,
+                                ),
+                                  statusChange(e);
                             }}
                           />
                           {status}
