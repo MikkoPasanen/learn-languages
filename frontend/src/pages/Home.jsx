@@ -1,4 +1,13 @@
 /* eslint-disable react/prop-types */
+/**
+ * @fileoverview Home page component - renders the home page
+ * @component
+ * @description This component renders the home page which contains the exercises and the filters
+ * @requires npm:@mui/material
+ * @requires npm:@mui/icons-material
+ * @requires npm:@react-router-dom
+ * @requires npm:react
+ */
 import { Box, Drawer, List, ListItemButton,
         ListItemText, ListItem, Divider,
         Accordion, AccordionSummary, AccordionDetails,
@@ -15,15 +24,39 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 
+/**
+ * Home component - renders the home page
+ * @param {Object} props - Props object
+ * @param {boolean} props.signedIn - Signed in status
+ * @param {Function} props.openAddExercise - Function to open the add exercise dialog
+ * @param {Function} props.setOpenAddExercise - Function to set the add exercise dialog state
+ * @param {boolean} props.loading - Loading exercises status
+ * @param {Array} props.exercises - Array of exercises
+ * @param {Function} props.handleReload - Function to reload the exercises
+ * @param {Array} props.categories - Array of unique categories
+ * @param {Array} props.languages - Array of unique languages
+ * @param {Array} props.madeBy - Array of unique creators
+ * @param {Array} props.mobileFilteredExercises - Array of exercises filtered by mobile
+ * @param {Function} props.handleThemeChange - Function to change the theme
+ * @param {boolean} props.darkMode - Dark mode status
+ * @returns {JSX.Element} Home component
+ */
 export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
                                 loading, exercises, handleReload, categories,
                                 languages, madeBy, mobileFilteredExercises,
                                 handleThemeChange, darkMode  }) {
+
+    // State for the number of filters
     const [filterCount, setFilterCount] = useState(0);
+    // State for the selected filter categories
     const [filterCategories, setFilterCategories] = useState([]);
+    // State for the selected filter languages
     const [filterLanguages, setFilterLanguages] = useState([]);
+    // State for the selected filter statuses
     const [filterStatuses, setFilterStatuses] = useState([]);
+    // State for the selected filter creators
     const [filterMadeBy, setFilterMadeBy] = useState([]);
+    // Array of numbers for the exercise skeletons
     const skeletons = [1, 2, 3];
 
     // Store the number of exercises in each category
@@ -44,10 +77,10 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
       return { user, count };
     });
 
-    console.log("all users: ", madeBy);
-    console.log("madeByCounts: ", madeByCounts);
-
-    // Filter the exercises based on the selected categories
+    /**
+     * Filter the exercises based on the selected categories
+     * @param {Event} e - The event that triggered the function
+     */
     const categoryChange = (e) => {
       if (e.target.checked) {
         setFilterCategories([...filterCategories, e.target.name]);
@@ -56,7 +89,10 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
       }
     };
 
-    // Filter the exercises based on the selected languages
+    /**
+     * Filter the exercises based on the selected languages
+     * @param {Event} e - The event that triggered the function
+    */
     const languageChange = (e) => {
       if (e.target.checked) {
         setFilterLanguages([...filterLanguages, e.target.name]);
@@ -65,7 +101,10 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
       }
     };
 
-    // Filter the exercises based on the selected statuses
+    /**
+     * Filter the exercises based on the selected statuses
+     * @param {Event} e - The event that triggered the function
+     */
     const statusChange = (e) => {
       const { name, checked } = e.target;
       if (checked) {
@@ -75,7 +114,10 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
       }
     };
 
-    // Filter the exercises based on the selected creators
+    /**
+     * Filter the exercises based on the selected creators
+     * @param {Event} e - The event that triggered the function
+     */
     const madeByChange = (e) => {
       if (e.target.checked) {
         setFilterMadeBy([...filterMadeBy, e.target.name]);
@@ -84,7 +126,11 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
       }
     };
 
-    // Filter the exercises based on the selected filters
+    /**
+     * Filter the exercises based on the selected filters
+     * @param {Array} exercises - Array of exercises
+     * @returns {Array} - Array of filtered exercises
+     */
    const filteredExercises = exercises.filter((exercise) => {
      const score = localStorage.getItem(`${exercise.id}-userScore`);
      const totalScore = localStorage.getItem(`${exercise.id}-totalScore`);
@@ -95,6 +141,7 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
            ? 'Completed'
            : 'In progress';
 
+      //Check if there are any filters selected and filter the exercises accordingly
      return (
        (filterCategories.length === 0 || filterCategories.includes(exercise.category)) &&
        (filterLanguages.length === 0 || filterLanguages.includes(exercise.language)) &&
@@ -103,6 +150,11 @@ export default function Home({ signedIn, openAddExercise, setOpenAddExercise,
      );
    });
 
+   /**
+    * Renders the Home component.
+    * This component renders the home page which contains the exercises and the filters, renders differently on mobile and desktop
+    * @returns {JSX.Element} The rendered Home component.
+    */
     return (
       <>
         <Drawer
