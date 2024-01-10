@@ -1,3 +1,8 @@
+/**
+ * @description This file contains an array of languages.
+ * @module data/languages
+ */
+
 const languages = [
     {
         name: 'Afrikaans',
@@ -511,4 +516,5 @@ const languages = [
     },
 ];
 
+// Export the array of languages
 export default languages;
