@@ -61,10 +61,6 @@ export default function Exercise() {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
     };
 
-    const handleBack = () => {
-        setCurrentQuestionIndex(currentQuestionIndex - 1);
-    };
-
     if (currentQuestionIndex === null) {
         return (
           <Box
@@ -212,7 +208,6 @@ export default function Exercise() {
                 : wordPairs[currentQuestionIndex].english_word}
             </Typography>
             <TextField
-              sx={{ mb: 3 }}
               label="Answer"
               variant="outlined"
               value={answer}
@@ -222,19 +217,13 @@ export default function Exercise() {
           <CardActions
             sx={{
               display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              justifyContent: 'center',
+              mb: 1,
             }}
           >
             <Button
-              disabled={currentQuestionIndex === 0}
-              onClick={handleBack}
-            >
-              Back
-            </Button>
-            <Button
               onClick={handleNextQuestion}
-              sx={{ borderRadius: 2}}
+              sx={{ borderRadius: 2, fontWeight: 'bold', fontSize: 16}}
             >
               Next
             </Button>
