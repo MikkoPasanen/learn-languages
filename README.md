@@ -1,11 +1,13 @@
 # Language learning app!
 
-<b>IN PROGRESS! ALL FEATURES MAY NOT HAVE BEEN ADDED YET</b>
 <img align="right" height="250px" width="250px" alt="languages" src="./pics/language-gif.gif">
 
 ## About
 
 This app provides quiz styled learning experience for learning basics of different languages.
+
+The app is aimed for younger users to learn languages in a more interesting way. <br>
+Parents / teachers can sign up and create language exercises.
 
 App was made as part of TAMK's Backend Development courses end project.
 
@@ -16,11 +18,13 @@ App was made as part of TAMK's Backend Development courses end project.
 ## Features
 
 - Sign in / sign up authorization
-- Admin / teacher can create new exercises or modify existing exercises when signed in
+- Users can create new exercises
+- Users can modify / delete only the exercises they have created
 - UI made by using material.ui
 - Dark / light theme
-- End user can filter exercises based on categories
-- Exercises are quiz styled and users score will be displayed after the exercise
+- Responsive UI
+- End user can filter exercises based on multiple choices such as category, language, exercise status or the creator of the exercise
+- Exercises are quiz styled and users score and right / wrong answers will be displayed after the exercise
 
 ## Usage
 
@@ -35,6 +39,16 @@ Learn languages is deployed to [Render](https://learn-languages.onrender.com/) <
 4. Head to [localhost](http:localhost:5173)
 
 ## Pictures
+
+<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic1.PNG">
+<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic2.PNG">
+<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic3.PNG">
+<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic4.PNG">
+<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic5.PNG">
+<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic6.PNG">
+<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic7.PNG">
+<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic8.PNG">
+<img height="250px" width="250px" alt="Pictures of the app" src="./pics/Pic9.PNG">
 
 ## Author
 Mikko Pasanen <mikko.pasanen@tuni.fi>
