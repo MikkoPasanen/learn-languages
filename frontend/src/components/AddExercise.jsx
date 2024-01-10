@@ -1,4 +1,12 @@
 /* eslint-disable react/prop-types */
+
+/**
+ * @fileoverview AddExercise component, a button that adds an exercise
+ * @requires React
+ * @requires @mui/material
+ * @requires @mui/icons-material
+ * @requires ../data/languages
+ */
 import { useState } from "react";
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
         Typography, Stepper, Step, StepLabel, Divider, TextField, Autocomplete,
@@ -9,30 +17,51 @@ import AddIcon from '@mui/icons-material/Add';
 
 import languages from '../data/languages';
 
+/**
+ * AddExercise button component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.categories - categories array
+ * @param {function} props.handleReload - reload function
+ * @param {boolean} props.openAddExercise - open state
+ * @param {function} props.setOpenAddExercise - open state setter
+ * @returns {JSX.Element} AddExercise component
+*/
 export default function AddExercise({ categories, handleReload, openAddExercise,
                                       setOpenAddExercise }) {
-    const [activeStep, setActiveStep] = useState(0);
 
+    // Get the language names from the languages array for language options
     const languageOptions = languages.map((language) => language.name);
 
+    // Get token from local storage or session storage
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
+    // States for the exercise info
     const [exerciseName, setExerciseName] = useState('');
     const [category, setCategory] = useState('');
     const [language, setLanguage] = useState(null);
 
+    // State for the word pairs
     const [wordPairs, setWordPairs] = useState([{ english: '', foreign: '' }]);
 
+    // States for the errors
     const [nameError, setNameError] = useState(false);
     const [categoryError, setCategoryError] = useState(false);
     const [languageError, setLanguageError] = useState(false);
     const [wordPairsError, setWordPairsError] = useState(false);
 
+    // State for the loading spinner
     const [loading, setLoading] = useState(false);
 
+    // State for the active step of the stepper
+    const [activeStep, setActiveStep] = useState(0);
+    // Stepper steps
     const steps = ['Exercise info', 'Word pairs', 'Check and save'];
 
 
+    /**
+     * Handles the closing of the dialog and resets the states
+     */
     const handleCloseDialog = () => {
         setOpenAddExercise(false);
         setActiveStep(0);
@@ -47,7 +76,13 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
         setLoading(false);
     }
 
+    /**
+     * Handles the next step of the stepper
+     */
     const handleNext = () => {
+      // If the active step is 0, check if the name, category and language are valid
+      // If the active step is 1, check if the word pairs are valid
+      // If the active step is 2, save the exercise
         if (activeStep < 2) {
             if (activeStep === 0 && isValidName() && isValidCategory() && isValidLanguage()) {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -58,6 +93,11 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
         }
     }
 
+    /**
+     * Handles the closing of the word pairs error alert
+     * @param {Event} event - The event that triggered the function
+     * @param {string} reason - The reason for the function call
+     */
     const handleCloseAlert = (event, reason) => {
       if (reason === 'clickaway') {
         return;
@@ -65,12 +105,20 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
       setWordPairsError(false);
     };
 
+    /**
+     * Handles the back step of the stepper
+     * If the active step is greater than 0, decrease the active step by 1
+     */
     const handleBack = () => {
         if (activeStep > 0) {
             setActiveStep((prevActiveStep) => prevActiveStep - 1);
         }
     }
 
+    /**
+     * Checks if the exercise name is valid
+     * @returns {boolean} - true if the exercise name is valid, false otherwise
+     */
     const isValidName = () => {
         if (exerciseName === '') {
             setNameError(true);
@@ -81,6 +129,10 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
         }
     }
 
+    /**
+     * Checks if the category is valid
+     * @returns {boolean} - true if the category is valid, false otherwise
+     */
     const isValidCategory = () => {
         if (category === '') {
             setCategoryError(true);
@@ -91,6 +143,10 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
         }
     }
 
+    /**
+     * Checks if the language is valid
+     * @returns {boolean} - true if the language is valid, false otherwise
+     */
     const isValidLanguage = () => {
         if (language === null) {
             setLanguageError(true);
@@ -101,6 +157,10 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
         }
     }
 
+    /**
+     * Checks if the word pairs are valid
+     * @returns {boolean} - true if the word pairs are valid, false otherwise
+     */
     const isValidWordPairs = () => {
         if (wordPairs.some((pair) => pair.english === '' || pair.foreign === '')) {
             setWordPairsError(true);
@@ -111,17 +171,32 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
         }
     }
 
+    /**
+     * Handles the change of the word pairs
+     * @param {Event} e - The event that triggered the function
+     * @param {number} index - The index of the word pair
+     * @param {string} language - The language of the word pair
+     */
     const handleWordChange = (e, index, language) => {
+      // Create a copy of the word pairs array and change the value of the word pair at the given index
       const newWordPairs = [...wordPairs];
       newWordPairs[index][language] = e.target.value;
       setWordPairs(newWordPairs);
     }
 
+    /**
+     * Handles the addition of a word pair
+     */
     const handleAddPair = () => {
       setWordPairs([...wordPairs, { english: '', foreign: '' }]);
     }
 
+    /**
+     * Handles the removal of a word pair
+     * @param {number} index - The index of the word pair
+     */
     const handleRemovePair = (index) => {
+      // If there are more than one word pairs, create a copy of the word pairs array and remove the word pair at the given index
       if (wordPairs.length > 1) {
         const newWordPairs = [...wordPairs];
         newWordPairs.splice(index, 1);
@@ -129,9 +204,14 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
       }
     }
 
+    /**
+     * Handles the saving of the exercise
+     * @async
+     * @returns {Promise} - Promise object that represents the result of the HTTP request
+     */
     const handleSaveExercise = async () => {
       setLoading(true);
-      console.log("yes");
+      // Send a POST request to the server to save the exercise
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/admin/add-exercise`,
         {
@@ -153,6 +233,7 @@ export default function AddExercise({ categories, handleReload, openAddExercise,
 
       const json = await response.json();
 
+      // If the response is successful, reload the exercises and close the dialog
       if(json.success) {
         handleReload();
         handleCloseDialog();
