@@ -35,6 +35,13 @@ export default function Exercise() {
         setCurrentQuestionIndex(0);
     };
 
+    const handlePlayAgain = () => {
+        setCurrentQuestionIndex(null);
+        setScore(0);
+        setAnsweredQuestions([]);
+        setAnswer("");
+    };
+
     const handleNextQuestion = () => {
         let correct;
         if (answerLanguage === "english") {
@@ -166,11 +173,20 @@ export default function Exercise() {
               </TableBody>
             </Table>
           </TableContainer>
-          <Link to="/">
-            <Button variant="contained">
-              <Typography sx={{ fontWeight: 'bold' }}>Go back home</Typography>
+          <Box>
+            <Link to="/">
+              <Button variant="contained">
+                <Typography sx={{ fontWeight: 'bold' }}>Go back home</Typography>
+              </Button>
+            </Link>
+            <Button
+              onClick={handlePlayAgain}
+              variant="contained"
+              sx={{ ml: 2 }}
+            >
+              <Typography sx={{ fontWeight: 'bold' }}>Play again</Typography>
             </Button>
-          </Link>
+          </Box>
         </Box>
       );
     }
@@ -223,7 +239,12 @@ export default function Exercise() {
           >
             <Button
               onClick={handleNextQuestion}
-              sx={{ borderRadius: 2, fontWeight: 'bold', fontSize: 16}}
+              sx={{
+                borderRadius: 2,
+                fontWeight: 'bold',
+                fontSize: 16,
+                mt: 2
+              }}
             >
               Next
             </Button>
