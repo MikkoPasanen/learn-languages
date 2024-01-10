@@ -1,6 +1,17 @@
+/**
+ * @fileoverview Error page component. This component is displayed when the user tries to access a page that doesn't exist.
+ * @component
+ * @requires NPM:react-router-dom
+ * @requires NPM:@mui/material
+ */
+
 import { Box, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
+/**
+ * Error page component
+ * @returns {JSX.Element} Error page component
+ */
 export default function ErrorPage() {
     return (
       <>
