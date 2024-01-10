@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Exercise page component
+ * @component
+ * @description This component renders the exercise page and handles the logic
+ * for the exercise.
+ * @requires NPM:react
+ * @requires NPM:@mui/material
+ * @requires NPM:react-router-dom
+ */
+
 import { Box, Typography, TextField, Button, ToggleButton, ToggleButtonGroup,
           Card, CardHeader, CardContent, CardActions,
           Table, TableBody, TableHead, TableRow, TableCell,
@@ -5,36 +15,67 @@ import { Box, Typography, TextField, Button, ToggleButton, ToggleButtonGroup,
 import { useState, useEffect } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 
+/**
+ * Exercise page component - renders the exercise page and handles the logic
+ * @returns {JSX.Element} Exercise page component
+ */
 export default function Exercise() {
+    // Get the exercise id from the url
     const { id } = useParams();
+    // Get the exercise name and language from the location state
     const location = useLocation();
     const exerciseName = location.state?.exerciseName || "Exercise";
     const exerciseLanguage = location.state?.language || "Foreign";
+
+    // Word pairs contain the words to be translated
     const [wordPairs, setWordPairs] = useState([]);
+    // Current question index is the index of the current word pair
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(null);
+    // Score is the number of correct answers
     const [score, setScore] = useState(0);
+    // Answer is the user's answer
     const [answer, setAnswer] = useState("");
+    // Answer language is the language the user is answering in
     const [answerLanguage, setAnswerLanguage] = useState('english');
+    // Answered questions is an array of objects containing the word and whether the answer was correct
     const [answeredQuestions , setAnsweredQuestions] = useState([]);
 
+    /**
+     * Handles the change of the answer language
+     * @param {Event} event - The event that triggered the change
+     * @param {string} newLanguage - The new language
+    */
     const handleLanguageChange = (event, newLanguage) => {
       setAnswerLanguage(newLanguage);
     };
 
+    /**
+     * Fetches the word pairs from the backend when the component is mounted
+     */
     useEffect(() => {
         fetchWordPairs(id);
     }, [id]);
 
+    /**
+     * Fetches the word pairs from the backend and sets the word pairs state
+     * @param {string} id - The id of the exercise
+     */
     const fetchWordPairs = async (id) => {
         const hr = await fetch(`${import.meta.env.VITE_API_URL}/api/exercise/${id}`);
         const data = await hr.json();
         setWordPairs(data);
     };
 
+    /**
+     * Handles the start of the exercise by setting the current question index from null to 0
+    */
     const handlePlay = () => {
         setCurrentQuestionIndex(0);
     };
 
+    /**
+     * Handles the play again button by resetting the states
+    */
     const handlePlayAgain = () => {
         setCurrentQuestionIndex(null);
         setScore(0);
@@ -42,18 +83,25 @@ export default function Exercise() {
         setAnswer("");
     };
 
+    /**
+     * Handles the next question button by checking if the answer is correct and
+     * updating the score and answered questions states accordingly
+     */
     const handleNextQuestion = () => {
         let correct;
+        // Check if the answer is correct depending on the answer language
         if (answerLanguage === "english") {
             correct = answer.toLowerCase() === wordPairs[currentQuestionIndex].english_word.toLowerCase();
         } else {
             correct = answer.toLowerCase() === wordPairs[currentQuestionIndex].foreign_word.toLowerCase();
         }
 
+        // Add 1 to the score if the answer is correct
         if (correct) {
           setScore(score + 1);
         }
 
+        // Save the word and whether the answer was correct to the answered questions state
         const wordToSave =
           answerLanguage === "english"
           ? wordPairs[currentQuestionIndex].foreign_word
@@ -68,6 +116,10 @@ export default function Exercise() {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
     };
 
+    /**
+     * If the current question index is null, render the start exercise page.
+     * @returns {JSX.Element} Start exercise page
+     */
     if (currentQuestionIndex === null) {
         return (
           <Box
@@ -120,7 +172,13 @@ export default function Exercise() {
         );
     }
 
+    /**
+     * If the current question index is equal to the length of the word pairs,
+     * render the end exercise page.
+     * @returns {JSX.Element} End exercise page
+    */
     if (currentQuestionIndex === wordPairs.length) {
+      // Save the score to local storage if it is higher than the previous score
       if (
         localStorage.getItem(`${id}-userScore`) === null ||
         localStorage.getItem(`${id}-userScore`) < score
@@ -191,6 +249,12 @@ export default function Exercise() {
       );
     }
 
+    /**
+     * Render the exercise page.
+     * The exercise page contains the current word pair and a text field for
+     * the user to type in their answer.
+     * @returns {JSX.Element} Exercise page
+     */
     return (
       <Box
         sx={{
