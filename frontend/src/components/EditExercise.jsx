@@ -92,8 +92,8 @@ export default function EditExercise({
      *
     */
     const handleOpenDialog = async () => {
-        setOpen(true);
-        await fetchWordPairs(exerciseId);
+      setOpen(true);
+      await fetchWordPairs(exerciseId);
     };
 
     /**
@@ -358,10 +358,8 @@ export default function EditExercise({
           handleOpenDialog();
         }}
       >
-        <EditIcon sx={{ fontSize: 15}} />
-        <Typography
-          sx={{ ml: 1, fontSize: 15, fontWeight: 'bold' }}
-        >
+        <EditIcon sx={{ fontSize: 15 }} />
+        <Typography sx={{ ml: 1, fontSize: 15, fontWeight: 'bold' }}>
           Edit
         </Typography>
       </IconButton>
@@ -370,6 +368,7 @@ export default function EditExercise({
         maxWidth={'sm'}
         fullWidth={true}
         sx={{ mt: '-10vh' }}
+        onClick={(e) => e.stopPropagation()}
         scroll="paper"
       >
         <DialogTitle>
@@ -394,7 +393,9 @@ export default function EditExercise({
             ))}
           </Stepper>
         </DialogTitle>
-        <DialogContent sx={{ maxHeight: '47vh' }}>
+        <DialogContent
+          sx={{ maxHeight: '47vh' }}
+        >
           <Divider />
           <Box sx={{ mt: 3 }}>
             {activeStep === 0 && (

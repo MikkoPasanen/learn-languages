@@ -51,6 +51,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
    * @param {Object} e Event object that triggered the function
    */
   const handleOptionsClick = (e) => {
+    e.stopPropagation();
     setAnchorEl(e.currentTarget);
   };
 
@@ -58,7 +59,8 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
    * Handle the options menu close
    * @param {Object} e Event object that triggered the function
   */
-  const handleOptionsClose = () => {
+  const handleOptionsClose = (e) => {
+    e.stopPropagation();
     setAnchorEl(null);
   };
 
@@ -158,9 +160,9 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
            <Menu
              anchorEl={anchorEl}
              open={Boolean(anchorEl)}
-             onClose={handleOptionsClose}
+             onClose={(e) => handleOptionsClose(e)}
            >
-             <MenuItem onClick={handleOptionsClose}>
+             <MenuItem onClick={(e) => handleOptionsClose(e)}>
                <EditExercise
                  exerciseId={exerciseId}
                  exerciseName={exerciseName}
@@ -171,7 +173,7 @@ export default function ExerciseCard({ exerciseName, exerciseCategory,
                />
              </MenuItem>
 
-             <MenuItem onClick={handleOptionsClose}>
+             <MenuItem onClick={(e) => handleOptionsClose(e)}>
                <DeleteExercise
                  exerciseId={exerciseId}
                  exerciseName={exerciseName}
