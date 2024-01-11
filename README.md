@@ -38,6 +38,12 @@ Learn languages is deployed to [Render](https://learn-languages.onrender.com/) <
 3. Start the app while in root directory: `npm run start`
 4. Head to [localhost](http:localhost:5173)
 
+## Screencast
+
+Link to youtube screencast video of the project: <br>
+https://youtu.be/V8y07bfViWg
+
+
 ## Pictures
 
 ### Overview
