@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>backend/database/methods.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-backend_database_dbConfig.html">backend/database/dbConfig</a></li><li><a href="module-data_languages.html">data/languages</a></li><li><a href="module-database_methods.html">database/methods</a><ul class='methods'><li data-type='method'><a href="module-database_methods.html#.addExercise">addExercise</a></li><li data-type='method'><a href="module-database_methods.html#.addUser">addUser</a></li><li data-type='method'><a href="module-database_methods.html#.addWordPairs">addWordPairs</a></li><li data-type='method'><a href="module-database_methods.html#.deleteExercise">deleteExercise</a></li><li data-type='method'><a href="module-database_methods.html#.deleteWordPairs">deleteWordPairs</a></li><li data-type='method'><a href="module-database_methods.html#.editExercise">editExercise</a></li><li data-type='method'><a href="module-database_methods.html#.fetchAllExercises">fetchAllExercises</a></li><li data-type='method'><a href="module-database_methods.html#.fetchExercise">fetchExercise</a></li><li data-type='method'><a href="module-database_methods.html#.findUser">findUser</a></li></ul></li><li><a href="module-frontend_src_main.html">frontend/src/main</a></li><li><a href="module-routes_admin.html">routes/admin</a><ul class='methods'><li data-type='method'><a href="module-routes_admin.html#~verifyToken">verifyToken</a></li></ul></li><li><a href="module-routes_credentials.html">routes/credentials</a></li><li><a href="module-routes_exercise.html">routes/exercise</a></li><li><a href="module-routes_home.html">routes/home</a></li></ul><h3>Global</h3><ul><li><a href="global.html#app">app</a></li><li><a href="global.html#express">express</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">backend/database/methods.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Methods for fetching data from database.
+ * @module database/methods
+ */
+
+// Load database configuration
+const pool = require('./dbConfig');
+
+module.exports = {
+  /**
+   * @description Fetches all exercises from database.
+   * @returns {Promise} A promise that resolves with the exercises data if found, or rejects with an error.
+   */
+  fetchAllExercises: () => {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT * FROM exercises';
+
+      pool.query(sql, (err, results) => {
+        if (err) {
+          reject({ status: 500, msg: err });
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  },
+
+  /**
+   * Finds all results from a selected exercise.
+   * @param {number} id - The ID of the exercise to fetch.
+   * @returns {Promise} A promise that resolves with the exercise data if found, or rejects with an error.
+   */
+  fetchExercise: (id) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT * FROM wordpairs WHERE exercise_id = ?';
+
+      pool.query(sql, [id], (err, results) => {
+        if (err) {
+          reject({ status: 500, msg: err });
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  },
+
+  /**
+   * Find a user by their username.
+   * @param {string} username - The username of the user to find.
+   * @returns {Promise} A promise that resolves with the user's data if found, or rejects with an error.
+   */
+  findUser: (username) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT * FROM users WHERE username = ?';
+
+      pool.query(sql, [username], (err, results) => {
+        if (err) {
+          reject({ status: 500, msg: err });
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  },
+
+  /**
+   * Adds a new user to the database.
+   * @param {string} username - The username of the new user.
+   * @param {string} password - The password of the new user.
+   * @returns {Promise} A promise that resolves with the result of the insert operation, or rejects with an error.
+   */
+  addUser: (username, password) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
+
+      pool.query(sql, [username, password], (err, results) => {
+        if (err) {
+          reject({ status: 500, msg: err });
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  },
+
+  /**
+   * Adds a new exercise to the database.
+   * @param {string} exerciseName - The name of the new exercise.
+   * @param {string} category - The category of the new exercise.
+   * @param {string} language - The language of the new exercise.
+   * @param {Array} wordPairs - The word pairs of the new exercise.
+   * @param {string} madeBy - The creator of the new exercise.
+   * @param {Date} modified - The date the new exercise was last modified.
+   * @returns {Promise} A promise that resolves with the result of the insert operation, or rejects with an error.
+   */
+  addExercise: (
+    exerciseName,
+    category,
+    language,
+    wordPairs,
+    madeBy,
+    modified,
+  ) => {
+    return new Promise((resolve, reject) => {
+      const sqlExercise =
+        'INSERT INTO exercises (name, category, language, made_by, modified) VALUES (?, ?, ?, ?, ?)';
+      const sqlWordPairs =
+        'INSERT INTO wordpairs (english_word, foreign_word, exercise_id) VALUES ?';
+
+      pool.query(
+        sqlExercise,
+        [exerciseName, category, language, madeBy, modified],
+        (err, results) => {
+          if (err) {
+            reject({ status: 500, msg: err });
+          } else {
+            const exerciseId = results.insertId;
+
+            const values = wordPairs.map((pair) => {
+              return [pair.english, pair.foreign, exerciseId];
+            });
+
+            pool.query(sqlWordPairs, [values], (err) => {
+              if (err) {
+                reject({ status: 500, msg: err });
+              } else {
+                resolve(results);
+              }
+            });
+          }
+        },
+      );
+    });
+  },
+
+  /**
+   * Deletes an exercise from the database.
+   * @param {number} id - The ID of the exercise to delete.
+   * @returns {Promise} A promise that resolves when the delete operation is complete, or rejects with an error.
+   */
+  deleteExercise: (id) => {
+    return new Promise((resolve, reject) => {
+      const sqlExercise = 'DELETE FROM exercises WHERE id = ?';
+      const sqlWordPairs = 'DELETE FROM wordpairs WHERE exercise_id = ?';
+
+      pool.query(sqlWordPairs, [id], (err) => {
+        if (err) {
+          reject({ status: 500, msg: err });
+        } else {
+          pool.query(sqlExercise, [id], (err) => {
+            if (err) {
+              reject({ status: 500, msg: err });
+            } else {
+              resolve();
+            }
+          });
+        }
+      });
+    });
+  },
+
+  /**
+   * Edits an existing exercise in the database.
+   * @param {number} id - The ID of the exercise to edit.
+   * @param {string} exerciseName - The new name of the exercise.
+   * @param {string} category - The new category of the exercise.
+   * @param {string} language - The new language of the exercise.
+   * @param {Array} wordPairs - The new word pairs of the exercise.
+   * @param {Date} modified - The new last modified date of the exercise.
+   * @returns {Promise} A promise that resolves when the update operation is complete, or rejects with an error.
+   */
+  editExercise: (id, exerciseName, category, language, wordPairs, modified) => {
+    return new Promise((resolve, reject) => {
+      const sqlExercise =
+        'UPDATE exercises SET name = ?, category = ?, language = ?, modified = ? WHERE id = ?';
+      const sqlWordPairs =
+        'UPDATE wordpairs SET english_word = ?, foreign_word = ? WHERE id = ?';
+
+      pool.query(
+        sqlExercise,
+        [exerciseName, category, language, modified, id],
+        (err, results) => {
+          if (err) {
+            console.log(err);
+            reject({ status: 500, msg: err });
+          } else {
+            for (const pair of wordPairs) {
+              pool.query(
+                sqlWordPairs,
+                [pair.english, pair.foreign, pair.id],
+                (err) => {
+                  if (err) {
+                    reject({ status: 500, msg: err });
+                  }
+                },
+              );
+            }
+            resolve(results);
+          }
+        },
+      );
+    });
+  },
+
+  /**
+   * Adds word pairs to an existing exercise in the database.
+   * @param {number} exerciseId - The ID of the exercise to add word pairs to.
+   * @param {Array} wordPairs - The word pairs to add to the exercise.
+   * @returns {Promise} A promise that resolves when the insert operation is complete, or rejects with an error.
+   */
+  addWordPairs: (exerciseId, wordPairs) => {
+    return new Promise((resolve, reject) => {
+      const sql =
+        'INSERT INTO wordpairs (english_word, foreign_word, exercise_id) VALUES ?';
+
+      const values = wordPairs.map((pair) => {
+        return [pair.english, pair.foreign, exerciseId];
+      });
+
+      console.log(values);
+
+      pool.query(sql, [values], (err) => {
+        if (err) {
+          reject({ status: 500, msg: err });
+        } else {
+          resolve();
+        }
+      });
+    });
+  },
+
+  /**
+   * Deletes word pairs from the database.
+   * @param {Array} wordPairIds - The IDs of the word pairs to delete.
+   * @returns {Promise} A promise that resolves when the delete operation is complete, or rejects with an error.
+   */
+  deleteWordPairs: (wordPairIds) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM wordpairs WHERE id = ?';
+
+      for (const id of wordPairIds) {
+        pool.query(sql, [id], (err) => {
+          if (err) {
+            reject({ status: 500, msg: err });
+          }
+        });
+      }
+      resolve();
+    });
+  },
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>frontend/src/components/AddExercise.jsx - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-backend_database_dbConfig.html">backend/database/dbConfig</a></li><li><a href="module-data_languages.html">data/languages</a></li><li><a href="module-database_methods.html">database/methods</a><ul class='methods'><li data-type='method'><a href="module-database_methods.html#.addExercise">addExercise</a></li><li data-type='method'><a href="module-database_methods.html#.addUser">addUser</a></li><li data-type='method'><a href="module-database_methods.html#.addWordPairs">addWordPairs</a></li><li data-type='method'><a href="module-database_methods.html#.deleteExercise">deleteExercise</a></li><li data-type='method'><a href="module-database_methods.html#.deleteWordPairs">deleteWordPairs</a></li><li data-type='method'><a href="module-database_methods.html#.editExercise">editExercise</a></li><li data-type='method'><a href="module-database_methods.html#.fetchAllExercises">fetchAllExercises</a></li><li data-type='method'><a href="module-database_methods.html#.fetchExercise">fetchExercise</a></li><li data-type='method'><a href="module-database_methods.html#.findUser">findUser</a></li></ul></li><li><a href="module-frontend_src_main.html">frontend/src/main</a></li><li><a href="module-routes_admin.html">routes/admin</a><ul class='methods'><li data-type='method'><a href="module-routes_admin.html#~verifyToken">verifyToken</a></li></ul></li><li><a href="module-routes_credentials.html">routes/credentials</a></li><li><a href="module-routes_exercise.html">routes/exercise</a></li><li><a href="module-routes_home.html">routes/home</a></li></ul><h3>Global</h3><ul><li><a href="global.html#app">app</a></li><li><a href="global.html#express">express</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">frontend/src/components/AddExercise.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/prop-types */
+
+/**
+ * @fileoverview AddExercise component, a button that adds an exercise
+ * @requires React
+ * @requires @mui/material
+ * @requires @mui/icons-material
+ * @requires ../data/languages
+ */
+import { useState } from "react";
+import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions,
+        Typography, Stepper, Step, StepLabel, Divider, TextField, Autocomplete,
+        IconButton, Snackbar, Alert, CircularProgress } from "@mui/material";
+
+import ClearIcon from '@mui/icons-material/Clear';
+import AddIcon from '@mui/icons-material/Add';
+
+import languages from '../data/languages';
+
+/**
+ * AddExercise button component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.categories - categories array
+ * @param {function} props.handleReload - reload function
+ * @param {boolean} props.openAddExercise - open state
+ * @param {function} props.setOpenAddExercise - open state setter
+ * @returns {JSX.Element} AddExercise component
+*/
+export default function AddExercise({ categories, handleReload, openAddExercise,
+                                      setOpenAddExercise }) {
+
+    // Get the language names from the languages array for language options
+    const languageOptions = languages.map((language) => language.name);
+
+    // Get token from local storage or session storage
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+    // States for the exercise info
+    const [exerciseName, setExerciseName] = useState('');
+    const [category, setCategory] = useState('');
+    const [language, setLanguage] = useState(null);
+
+    // State for the word pairs
+    const [wordPairs, setWordPairs] = useState([{ english: '', foreign: '' }]);
+
+    // States for the errors
+    const [nameError, setNameError] = useState(false);
+    const [categoryError, setCategoryError] = useState(false);
+    const [languageError, setLanguageError] = useState(false);
+    const [wordPairsError, setWordPairsError] = useState(false);
+
+    // State for the loading spinner
+    const [loading, setLoading] = useState(false);
+
+    // State for the active step of the stepper
+    const [activeStep, setActiveStep] = useState(0);
+    // Stepper steps
+    const steps = ['Exercise info', 'Word pairs', 'Check and save'];
+
+
+    /**
+     * Handles the closing of the dialog and resets the states
+     */
+    const handleCloseDialog = () => {
+        setOpenAddExercise(false);
+        setActiveStep(0);
+        setNameError(false);
+        setExerciseName('');
+        setCategory('');
+        setCategoryError(false);
+        setLanguage(null);
+        setLanguageError(false);
+        setWordPairs([{ english: '', foreign: '' }]);
+        setWordPairsError(false);
+        setLoading(false);
+    }
+
+    /**
+     * Handles the next step of the stepper
+     */
+    const handleNext = () => {
+      // If the active step is 0, check if the name, category and language are valid
+      // If the active step is 1, check if the word pairs are valid
+      // If the active step is 2, save the exercise
+        if (activeStep &lt; 2) {
+            if (activeStep === 0 &amp;&amp; isValidName() &amp;&amp; isValidCategory() &amp;&amp; isValidLanguage()) {
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            }
+            else if (activeStep === 1 &amp;&amp; isValidWordPairs()) {
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            }
+        }
+    }
+
+    /**
+     * Handles the closing of the word pairs error alert
+     * @param {Event} event - The event that triggered the function
+     * @param {string} reason - The reason for the function call
+     */
+    const handleCloseAlert = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setWordPairsError(false);
+    };
+
+    /**
+     * Handles the back step of the stepper
+     * If the active step is greater than 0, decrease the active step by 1
+     */
+    const handleBack = () => {
+        if (activeStep > 0) {
+            setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        }
+    }
+
+    /**
+     * Checks if the exercise name is valid
+     * @returns {boolean} - true if the exercise name is valid, false otherwise
+     */
+    const isValidName = () => {
+        if (exerciseName === '') {
+            setNameError(true);
+            return false
+        } else {
+            setNameError(false);
+            return true
+        }
+    }
+
+    /**
+     * Checks if the category is valid
+     * @returns {boolean} - true if the category is valid, false otherwise
+     */
+    const isValidCategory = () => {
+        if (category === '') {
+            setCategoryError(true);
+            return false
+        } else {
+            setCategoryError(false);
+            return true
+        }
+    }
+
+    /**
+     * Checks if the language is valid
+     * @returns {boolean} - true if the language is valid, false otherwise
+     */
+    const isValidLanguage = () => {
+        if (language === null) {
+            setLanguageError(true);
+            return false
+        } else {
+            setLanguageError(false);
+            return true
+        }
+    }
+
+    /**
+     * Checks if the word pairs are valid
+     * @returns {boolean} - true if the word pairs are valid, false otherwise
+     */
+    const isValidWordPairs = () => {
+        if (wordPairs.some((pair) => pair.english === '' || pair.foreign === '')) {
+            setWordPairsError(true);
+            return false
+        } else {
+            setWordPairsError(false);
+            return true
+        }
+    }
+
+    /**
+     * Handles the change of the word pairs
+     * @param {Event} e - The event that triggered the function
+     * @param {number} index - The index of the word pair
+     * @param {string} language - The language of the word pair
+     */
+    const handleWordChange = (e, index, language) => {
+      // Create a copy of the word pairs array and change the value of the word pair at the given index
+      const newWordPairs = [...wordPairs];
+      newWordPairs[index][language] = e.target.value;
+      setWordPairs(newWordPairs);
+    }
+
+    /**
+     * Handles the addition of a word pair
+     */
+    const handleAddPair = () => {
+      setWordPairs([...wordPairs, { english: '', foreign: '' }]);
+    }
+
+    /**
+     * Handles the removal of a word pair
+     * @param {number} index - The index of the word pair
+     */
+    const handleRemovePair = (index) => {
+      // If there are more than one word pairs, create a copy of the word pairs array and remove the word pair at the given index
+      if (wordPairs.length > 1) {
+        const newWordPairs = [...wordPairs];
+        newWordPairs.splice(index, 1);
+        setWordPairs(newWordPairs);
+      }
+    }
+
+    /**
+     * Handles the saving of the exercise
+     * @async
+     * @returns {Promise} - Promise object that represents the result of the HTTP request
+     */
+    const handleSaveExercise = async () => {
+      setLoading(true);
+      // Send a POST request to the server to save the exercise
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/add-exercise`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            exerciseName: exerciseName,
+            category: category,
+            language: language,
+            wordPairs: wordPairs,
+            madeBy: localStorage.getItem('username') || sessionStorage.getItem('username'),
+            modified: null
+          }),
+        },
+      );
+
+      const json = await response.json();
+
+      // If the response is successful, reload the exercises and close the dialog
+      if(json.success) {
+        handleReload();
+        handleCloseDialog();
+      } else {
+        setLoading(false);
+      }
+    }
+
+    return (
+      &lt;>
+        &lt;Dialog
+          open={openAddExercise}
+          maxWidth={'sm'}
+          fullWidth={true}
+          sx={{ mt: '-10vh' }}
+          scroll="paper"
+        >
+          &lt;DialogTitle>
+            &lt;Typography
+              sx={{
+                fontWeight: 'bold',
+                fontSize: '1.2rem',
+                textAlign: 'center',
+                mb: 1,
+              }}
+            >
+              Add new exercise
+            &lt;/Typography>
+            &lt;Stepper
+              activeStep={activeStep}
+              alternativeLabel
+            >
+              {steps.map((label) => (
+                &lt;Step key={label}>
+                  &lt;StepLabel>{label}&lt;/StepLabel>
+                &lt;/Step>
+              ))}
+            &lt;/Stepper>
+          &lt;/DialogTitle>
+          &lt;DialogContent sx={{ maxHeight: '47vh' }}>
+            &lt;Divider />
+            &lt;Box sx={{ mt: 3 }}>
+              {activeStep === 0 &amp;&amp; (
+                &lt;Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  &lt;TextField
+                    required
+                    id="exerciseName"
+                    label="Exercise Name"
+                    name="exerciseName"
+                    sx={{ width: '80%', mb: 2 }}
+                    error={nameError}
+                    helperText={nameError ? 'Name cannot be empty' : ''}
+                    autoFocus
+                    value={exerciseName}
+                    onChange={(e) => setExerciseName(e.target.value)}
+                  />
+                  &lt;Autocomplete
+                    value={category}
+                    onChange={(event, newValue) => {
+                      if (newValue === null) {
+                        setCategory('');
+                      } else {
+                        setCategory(newValue);
+                      }
+                    }}
+                    inputValue={category}
+                    onInputChange={(event, newInputValue) => {
+                      setCategory(newInputValue);
+                    }}
+                    freeSolo
+                    options={categories}
+                    renderInput={(params) => (
+                      &lt;TextField
+                        {...params}
+                        label="Category"
+                        required
+                        error={categoryError}
+                        helperText={
+                          categoryError ? 'Category cannot be empty' : ''
+                        }
+                      />
+                    )}
+                    sx={[{ width: '80%' }, { mb: 2 }]}
+                  >&lt;/Autocomplete>
+                  &lt;Autocomplete
+                    value={language}
+                    onChange={(event, newValue) => {
+                      setLanguage(newValue);
+                    }}
+                    options={languageOptions}
+                    renderInput={(params) => (
+                      &lt;TextField
+                        {...params}
+                        label="Language"
+                        required
+                        error={languageError}
+                        helperText={
+                          languageError ? 'Language cannot be empty' : ''
+                        }
+                      />
+                    )}
+                    sx={[{ width: '80%' }, { mb: 2 }]}
+                  >&lt;/Autocomplete>
+                &lt;/Box>
+              )}
+              {activeStep === 1 &amp;&amp; (
+                &lt;Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  {wordPairs.map((pair, index) => (
+                    &lt;Box
+                      key={index}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        mb: 1,
+                      }}
+                    >
+                      &lt;TextField
+                        label="English word"
+                        required
+                        value={pair.english}
+                        onChange={(e) => handleWordChange(e, index, 'english')}
+                        sx={{ mr: 2 }}
+                      />
+                      &lt;TextField
+                        label={`${language} word`}
+                        required
+                        value={pair.foreign}
+                        onChange={(e) => handleWordChange(e, index, 'foreign')}
+                        sx={{ mr: 2 }}
+                      />
+                      &lt;IconButton
+                        onClick={() => handleRemovePair(index)}
+                        sx={{ p: 0 }}
+                      >
+                        &lt;ClearIcon sx={{ color: 'red', fontSize: '2rem' }} />
+                      &lt;/IconButton>
+                    &lt;/Box>
+                  ))}
+                  &lt;Button
+                    variant="contained"
+                    onClick={handleAddPair}
+                    sx={{ mt: 3, borderRadius: 4, p: 0.5 }}
+                  >
+                    &lt;AddIcon sx={{ pr: 0.5, fontSize: '2rem' }} />
+                    &lt;Typography sx={{ fontWeight: 'bold', pr: 0.5 }}>
+                      Add pair
+                    &lt;/Typography>
+                  &lt;/Button>
+                &lt;/Box>
+              )}
+              {activeStep === 2 &amp;&amp; (
+                &lt;Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  &lt;Typography
+                    sx={{ fontWeight: 'bold', fontSize: '1.3rem', mb: 1 }}
+                  >
+                    {steps[0]}
+                  &lt;/Typography>
+                  &lt;Typography sx={{ mb: 0.5 }}>{exerciseName}&lt;/Typography>
+                  &lt;Typography sx={{ mb: 0.5 }}>{category}&lt;/Typography>
+                  &lt;Typography>{language}&lt;/Typography>
+                  &lt;Typography
+                    sx={{
+                      fontWeight: 'bold',
+                      fontSize: '1.3rem',
+                      mb: 1,
+                      mt: 2,
+                    }}
+                  >
+                    {steps[1]}
+                  &lt;/Typography>
+                  {wordPairs.map((pair, index) => (
+                    &lt;Box
+                      key={index}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        mb: 0.5,
+                      }}
+                    >
+                      &lt;Typography sx={{ mr: 1 }}>{pair.english}&lt;/Typography>
+                      &lt;Typography sx={{ mr: 1 }}>-&lt;/Typography>
+                      &lt;Typography>{pair.foreign}&lt;/Typography>
+                    &lt;/Box>
+                  ))}
+                &lt;/Box>
+              )}
+            &lt;/Box>
+          &lt;/DialogContent>
+          &lt;DialogActions
+            sx={{ display: 'flex', justifyContent: 'space-between' }}
+          >
+            &lt;Button onClick={handleCloseDialog}>Cancel&lt;/Button>
+            &lt;Box sx={{ display: 'flex' }}>
+              &lt;Button onClick={handleBack}>Back&lt;/Button>
+              {activeStep &lt; 2 ? (
+                &lt;Button onClick={handleNext}>Next&lt;/Button>
+              ) : (
+                &lt;Button onClick={handleSaveExercise}>
+                  {loading ? (
+                    &lt;>
+                      Saving...
+                      &lt;CircularProgress
+                        size={20}
+                        sx={{ ml: 1 }}
+                        color="inherit"
+                      />
+                    &lt;/>
+                  ) : (
+                    'Save'
+                  )}
+                &lt;/Button>
+              )}
+            &lt;/Box>
+          &lt;/DialogActions>
+        &lt;/Dialog>
+
+        &lt;Snackbar
+          open={wordPairsError}
+          autoHideDuration={5000}
+          onClose={handleCloseAlert}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          sx={{ mt: '5vh' }}
+        >
+          &lt;Alert
+            onClose={handleCloseAlert}
+            severity="error"
+            sx={{ width: '100%', fontSize: '1.2rem', mt: '11vh' }}
+          >
+            Word pairs cannot be empty.
+          &lt;/Alert>
+        &lt;/Snackbar>
+      &lt;/>
+    );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

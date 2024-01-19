@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>frontend/src/components/ExerciseCard.jsx - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-backend_database_dbConfig.html">backend/database/dbConfig</a></li><li><a href="module-data_languages.html">data/languages</a></li><li><a href="module-database_methods.html">database/methods</a><ul class='methods'><li data-type='method'><a href="module-database_methods.html#.addExercise">addExercise</a></li><li data-type='method'><a href="module-database_methods.html#.addUser">addUser</a></li><li data-type='method'><a href="module-database_methods.html#.addWordPairs">addWordPairs</a></li><li data-type='method'><a href="module-database_methods.html#.deleteExercise">deleteExercise</a></li><li data-type='method'><a href="module-database_methods.html#.deleteWordPairs">deleteWordPairs</a></li><li data-type='method'><a href="module-database_methods.html#.editExercise">editExercise</a></li><li data-type='method'><a href="module-database_methods.html#.fetchAllExercises">fetchAllExercises</a></li><li data-type='method'><a href="module-database_methods.html#.fetchExercise">fetchExercise</a></li><li data-type='method'><a href="module-database_methods.html#.findUser">findUser</a></li></ul></li><li><a href="module-frontend_src_main.html">frontend/src/main</a></li><li><a href="module-routes_admin.html">routes/admin</a><ul class='methods'><li data-type='method'><a href="module-routes_admin.html#~verifyToken">verifyToken</a></li></ul></li><li><a href="module-routes_credentials.html">routes/credentials</a></li><li><a href="module-routes_exercise.html">routes/exercise</a></li><li><a href="module-routes_home.html">routes/home</a></li></ul><h3>Global</h3><ul><li><a href="global.html#app">app</a></li><li><a href="global.html#express">express</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">frontend/src/components/ExerciseCard.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/prop-types */
+
+/**
+ * @fileoverview Exercise card component. This component is used to display an exercise in the home page.
+ * @component
+ * @requires NPM:@mui/material
+ * @requires NPM:react-router-dom
+ * @requires NPM:react
+ */
+
+import { Card, Box, CardHeader, CardContent,
+        Typography, IconButton, Button, Chip,
+        Menu, MenuItem, Skeleton } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+import DeleteExercise from './DeleteExercise';
+import EditExercise from './EditExercise';
+
+import { useState} from 'react';
+import { Link } from 'react-router-dom';
+
+/**
+ * Exercise card component
+ * @param {Object} props
+ * @param {string} props.exerciseName Exercise name
+ * @param {string} props.exerciseCategory Exercise category
+ * @param {string} props.exerciseLanguage Exercise language
+ * @param {string} props.exerciseId Exercise ID
+ * @param {boolean} props.signedIn Whether the user is signed in or not
+ * @param {boolean} props.loading Whether the exercise is loading or not
+ * @param {function} props.handleReload Function to reload the exercises
+ * @param {Array} props.categories Categories array
+ * @param {string} props.madeBy The user who made the exercise
+ * @param {string} props.modified The date when the exercise was last modified
+ * @returns {JSX.Element} Exercise card component
+ */
+export default function ExerciseCard({ exerciseName, exerciseCategory,
+                                       exerciseLanguage, exerciseId,
+                                       signedIn, loading, handleReload,
+                                       categories, madeBy, modified }) {
+
+  // State for the options menu
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  // Get the user score and the total score from the local storage to determine the status of the exercise
+  const userScore = localStorage.getItem(`${exerciseId}-userScore`);
+  const totalScore = localStorage.getItem(`${exerciseId}-totalScore`);
+
+  /**
+   * Handle the options menu click
+   * @param {Object} e Event object that triggered the function
+   */
+  const handleOptionsClick = (e) => {
+    e.stopPropagation();
+    setAnchorEl(e.currentTarget);
+  };
+
+  /**
+   * Handle the options menu close
+   * @param {Object} e Event object that triggered the function
+  */
+  const handleOptionsClose = (e) => {
+    e.stopPropagation();
+    setAnchorEl(null);
+  };
+
+  // Get the username from the local storage or the session storage to determine if the user is the admin or the user who made the exercise
+  const user = localStorage.getItem('username') || sessionStorage.getItem('username');
+
+  /**
+   * Action component
+   * If the user is signed in and the user is the admin or the user who made the exercise, display the options menu
+   * @returns {JSX.Element}
+   */
+  const action = signedIn ? (
+    user === 'admin' ? (
+      &lt;IconButton
+        aria-label="settings"
+        onClick={handleOptionsClick}
+        sx={{ ml: 2}}
+      >
+        &lt;MoreVertIcon />
+      &lt;/IconButton>
+    ) : user === madeBy ? (
+      &lt;IconButton
+        aria-label="settings"
+        onClick={handleOptionsClick}
+        sx={{ ml: 2}}
+      >
+        &lt;MoreVertIcon />
+      &lt;/IconButton>
+    ) : (
+      null
+    )
+    ) : null;
+
+
+  /**
+   * Exercise card component
+   * @returns {JSX.Element}
+   */
+   return (
+     &lt;>
+       &lt;Card
+         key={exerciseId}
+         sx={{ mt: 3, borderRadius: 4, width: 380 }}
+       >
+         &lt;CardHeader
+           action={action}
+           title={
+             loading ? (
+               &lt;Skeleton
+                 animation="wave"
+                 height={30}
+                 width="80%"
+                 style={{ marginBottom: 6 }}
+               />
+             ) : (
+               exerciseName
+             )
+           }
+           subheader={
+             loading ? (
+               &lt;>
+                 &lt;Skeleton
+                   animation="wave"
+                   height={20}
+                   width="40%"
+                 />
+                 &lt;Skeleton
+                   animation="wave"
+                   height={20}
+                   width="40%"
+                 />
+               &lt;/>
+             ) : (
+               &lt;>
+                 &lt;Typography>
+                   Made by: &lt;strong>{madeBy}&lt;/strong>
+                 &lt;/Typography>
+                 &lt;Typography>
+                   {modified ? (
+                     &lt;small>Last modified: {modified}&lt;/small>
+                   ) : (
+                     ''
+                   )}
+                 &lt;/Typography>
+                 &lt;Box sx={{ mt: 1.5 }}>
+                   &lt;Chip
+                     sx={{ mr: 1 }}
+                     label={exerciseCategory}
+                   />
+                   &lt;Chip label={exerciseLanguage} />
+                 &lt;/Box>
+               &lt;/>
+             )
+           }
+         >&lt;/CardHeader>
+         {signedIn &amp;&amp; (
+           &lt;Menu
+             anchorEl={anchorEl}
+             open={Boolean(anchorEl)}
+             onClose={(e) => handleOptionsClose(e)}
+           >
+             &lt;MenuItem onClick={(e) => handleOptionsClose(e)}>
+               &lt;EditExercise
+                 exerciseId={exerciseId}
+                 exerciseName={exerciseName}
+                 exerciseCategory={exerciseCategory}
+                 exerciseLanguage={exerciseLanguage}
+                 categories={categories}
+                 handleReload={handleReload}
+               />
+             &lt;/MenuItem>
+
+             &lt;MenuItem onClick={(e) => handleOptionsClose(e)}>
+               &lt;DeleteExercise
+                 exerciseId={exerciseId}
+                 exerciseName={exerciseName}
+                 handleReload={handleReload}
+               />
+             &lt;/MenuItem>
+           &lt;/Menu>
+         )}
+         &lt;CardContent>
+           {loading ? (
+             &lt;Skeleton
+               animation="wave"
+               variant="rounded"
+               height={40}
+               width={90}
+             />
+           ) : (
+             &lt;Box
+               sx={{
+                 display: 'flex',
+                 justifyContent: 'space-between',
+                 alignItems: 'center',
+               }}
+             >
+               &lt;Link
+                 to={`/exercise/${exerciseId}`}
+                 style={{ textDecoration: 'none', color: 'inherit' }}
+                 state={{ exerciseName: exerciseName, language: exerciseLanguage }}
+               >
+                 &lt;Button
+                   variant="contained"
+                   sx={{ borderRadius: 2, width: 170 }}
+                 >
+                   Study🎓
+                 &lt;/Button>
+               &lt;/Link>
+               &lt;Typography sx={{ mr: 1 }}>
+                 Status:
+                 {(() => {
+                   if (userScore === null) {
+                     return (
+                       &lt;Typography sx={{ fontWeight: 'bold', color: 'red' }}>
+                         Not started❌
+                       &lt;/Typography>
+                     );
+                   } else if (userScore === totalScore) {
+                     return (
+                       &lt;Typography sx={{ fontWeight: 'bold', color: 'green' }}>
+                         Completed🎉
+                       &lt;/Typography>
+                     );
+                   } else {
+                     return (
+                       &lt;Typography sx={{ fontWeight: 'bold', color: 'orange' }}>
+                         In progress⌛
+                       &lt;/Typography>
+                     );
+                   }
+                 })()}
+               &lt;/Typography>
+             &lt;/Box>
+           )}
+         &lt;/CardContent>
+       &lt;/Card>
+     &lt;/>
+   );
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

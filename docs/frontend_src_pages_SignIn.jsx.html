@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>frontend/src/pages/SignIn.jsx - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-backend_database_dbConfig.html">backend/database/dbConfig</a></li><li><a href="module-data_languages.html">data/languages</a></li><li><a href="module-database_methods.html">database/methods</a><ul class='methods'><li data-type='method'><a href="module-database_methods.html#.addExercise">addExercise</a></li><li data-type='method'><a href="module-database_methods.html#.addUser">addUser</a></li><li data-type='method'><a href="module-database_methods.html#.addWordPairs">addWordPairs</a></li><li data-type='method'><a href="module-database_methods.html#.deleteExercise">deleteExercise</a></li><li data-type='method'><a href="module-database_methods.html#.deleteWordPairs">deleteWordPairs</a></li><li data-type='method'><a href="module-database_methods.html#.editExercise">editExercise</a></li><li data-type='method'><a href="module-database_methods.html#.fetchAllExercises">fetchAllExercises</a></li><li data-type='method'><a href="module-database_methods.html#.fetchExercise">fetchExercise</a></li><li data-type='method'><a href="module-database_methods.html#.findUser">findUser</a></li></ul></li><li><a href="module-frontend_src_main.html">frontend/src/main</a></li><li><a href="module-routes_admin.html">routes/admin</a><ul class='methods'><li data-type='method'><a href="module-routes_admin.html#~verifyToken">verifyToken</a></li></ul></li><li><a href="module-routes_credentials.html">routes/credentials</a></li><li><a href="module-routes_exercise.html">routes/exercise</a></li><li><a href="module-routes_home.html">routes/home</a></li></ul><h3>Global</h3><ul><li><a href="global.html#app">app</a></li><li><a href="global.html#express">express</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">frontend/src/pages/SignIn.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable react/prop-types */
+/**
+ * @fileoverview SignIn page component
+ * @description This component renders the sign in form and handles the sign in process
+ * @component
+ * @requires npm:@mui/material
+ * @requires npm:@mui/icons-material
+ * @requires npm:@react-router-dom
+ * @requires npm:react
+ * @returns {JSX.Element} - Rendered component
+ */
+
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import {
+  IconButton,
+  InputAdornment,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Checkbox,
+  FormControlLabel,
+  CssBaseline,
+  Avatar,
+  Button,
+  Snackbar,
+  Alert,
+  CircularProgress,
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+
+/**
+ * SignIn component - renders the sign in form
+ * @param {Function} props.setSignedIn - Function to set the signed in state
+ * @returns {React.Component} - Returns the component
+ */
+export default function SignIn({ setSignedIn }) {
+  // State for the password visibility
+  const [showPassword, setShowPassword] = useState(false);
+
+  // State for the snackbar
+  const [open, setOpen] = useState(false);
+
+  // State for the loading spinner
+  const [loading, setLoading] = useState(false);
+
+  // Hook for navigation
+  const navigate = useNavigate();
+
+  /**
+   * Handles the closing of the snackbar
+   * @param {Event} event - The event that triggered the function
+   * @param {string} reason - The reason for the function call
+   */
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  /**
+   * Handles the submission of the sign in form
+   * @param {Event} event - The event that triggered the function
+   */
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    // Create a new FormData object from the form
+    const data = new FormData(event.currentTarget);
+
+    // Send POST request to backend
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/credentials/signin`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          username: data.get('username'),
+          password: data.get('password'),
+          remember: data.get('remember'),
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      },
+    );
+
+    // Get the response as JSON
+    const json = await response.json();
+
+    // If the response is success
+    if (json.success) {
+      // Store the token and username in local or session storage depending on the remember me checkbox
+      if (data.get('remember')) {
+        localStorage.setItem('token', json.token);
+        localStorage.setItem('username', data.get('username'));
+      } else {
+        sessionStorage.setItem('username', data.get('username'));
+        sessionStorage.setItem('token', json.token);
+      }
+      // Set the signed in state to true and navigate to the home page
+      setSignedIn(true);
+      setLoading(false);
+      navigate('/');
+    } else {
+      // If the response is not success, show the error snackbar
+      setOpen(true);
+      setLoading(false);
+    }
+  };
+
+  /**
+   * Renders the SignIn component.
+   * @returns {JSX.Element} The rendered SignIn component.
+   */
+  return (
+    &lt;>
+      &lt;Container
+        component="main"
+        maxWidth="xs"
+      >
+        &lt;CssBaseline />
+        &lt;Box
+          sx={{
+            marginTop: '90px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          &lt;Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            &lt;LockOutlinedIcon />
+          &lt;/Avatar>
+          &lt;Typography
+            component="h1"
+            variant="h5"
+            sx={{ mb: 1 }}
+          >
+            Sign in
+          &lt;/Typography>
+          &lt;Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            &lt;TextField
+              margin="normal"
+              sx={{ mt: 0 }}
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoFocus
+            />
+            &lt;TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              InputProps={{
+                endAdornment: (
+                  &lt;InputAdornment position="end">
+                    &lt;IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      onMouseDown={(e) => e.preventDefault()}
+                    >
+                      {showPassword ? &lt;VisibilityOff /> : &lt;Visibility />}
+                    &lt;/IconButton>
+                  &lt;/InputAdornment>
+                ),
+              }}
+            />
+            &lt;FormControlLabel
+              control={
+                &lt;Checkbox
+                  value="remember"
+                  color="primary"
+                  name="remember"
+                />
+              }
+              label="Remember me"
+            />
+            &lt;Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              {loading ? (
+                &lt;>
+                  Signing in...
+                  &lt;CircularProgress
+                    size={20}
+                    sx={{ ml: 2 }}
+                    color="inherit"
+                  />
+                &lt;/>
+              ) : (
+                'Sign In'
+              )}
+            &lt;/Button>
+            &lt;Grid container>
+              &lt;Grid item>
+                &lt;Link
+                  component={RouterLink}
+                  to="/signup"
+                  variant="body2"
+                >
+                  {"Don't have an account? Sign Up"}
+                &lt;/Link>
+              &lt;/Grid>
+            &lt;/Grid>
+          &lt;/Box>
+        &lt;/Box>
+      &lt;/Container>
+      &lt;Snackbar
+        open={open}
+        autoHideDuration={8000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        &lt;Alert
+          onClose={handleClose}
+          severity="error"
+          sx={{ width: '100%', fontSize: '1.2rem', mt: '10vh' }}
+        >
+          Invalid username or password.
+        &lt;/Alert>
+      &lt;/Snackbar>
+    &lt;/>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
