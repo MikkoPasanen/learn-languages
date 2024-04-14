@@ -4,7 +4,7 @@
 
 ## About
 
-This app provides quiz styled learning experience for learning basics of different languages.
+This app provides quiz styled learning experience for learning the basics of different languages.
 
 The app is aimed for younger users to learn languages in a more interesting way. <br>
 Parents / teachers can sign up and create language exercises.
@@ -37,12 +37,6 @@ Learn languages is deployed to [Render](https://learn-languages.onrender.com/) <
 2. When in root directory, install dependencies: `npm run install-all`
 3. Start the app while in root directory: `npm run start`
 4. Head to [localhost](http:localhost:5173)
-
-## Screencast
-
-Link to youtube screencast video of the project: <br>
-https://youtu.be/V8y07bfViWg
-
 
 ## Pictures
 
