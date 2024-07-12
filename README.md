@@ -2,6 +2,9 @@
 
 <img align="right" height="250px" width="250px" alt="languages" src="./pics/language-gif.gif">
 
+# NOTE!
+<b>The database used in this project was shut down, so the app is not currently working.</b>
+
 ## About
 
 This app provides quiz styled learning experience for learning the basics of different languages.
