@@ -32,8 +32,8 @@ App was made as part of TAMK's Backend Development courses end project.
 ## Usage
 
 ### <ins>Cloud</ins>
-Learn languages is deployed to [Render](https://learn-languages.onrender.com/) <br>
-(Loading may take a while)
+No running cloud version currently due to the database shutdown.
+
 
 ### <ins>Locally</ins>
 1. Clone this repository
